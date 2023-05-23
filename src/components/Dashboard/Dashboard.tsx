@@ -3,7 +3,6 @@ import React, { useLayoutEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { RootState } from '../../interface';
-import Footer from '../Footer/Footer';
 
 
 const Dashboard = () => {
@@ -21,12 +20,10 @@ const Dashboard = () => {
         Navigate('/createform')
     }
     return (
-
-        user ? (
-            <div className='w-full min-h-min   flex flex-col flex-grow '>
-                <div className='lg:flex flex-grow min-h-min w-full justify-center'>
+        <>
+            {user ? (
+                <div className='w-full min-h-min flex-grow flex justify-center  '>
                     <div className="w-[80%]">
-
                         <div className="py-3 bg-[#e7f2fe] gap-5 flex">
                             <div className='border-transparent drop-shadow-2xl border-2  rounded-xl bg-white'>
                                 <Button className='p-10 ' onClick={handleSubmit}>
@@ -38,10 +35,8 @@ const Dashboard = () => {
                         </div>
                     </div>
                 </div>
-            </div>
-        ) : <div>No user Avaliable</div>
-
-
+            ) : <div>No user Avaliable</div>}
+        </>
     )
 }
 export default Dashboard;
