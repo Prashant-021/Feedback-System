@@ -2,61 +2,64 @@ import {
     List,
     ListItem,
     ListItemPrefix,
-    ListItemSuffix,
-    Chip,
 } from "@material-tailwind/react";
 import {
     PresentationChartBarIcon,
     UserCircleIcon,
+    DocumentPlusIcon,
     Cog6ToothIcon,
-    InboxIcon,
     PowerIcon,
+    PlusCircleIcon
 } from "@heroicons/react/24/solid";
-import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function Sidebar() {
-
-    const title = useLocation()
+    const Navigate = useNavigate()
+    function handleSubmit() {
+        Navigate('/login');
+        sessionStorage.clear()
+    }
     return (
-        title.pathname.includes('/login') || title.pathname.includes('/signup') || title.pathname === '/' ? <></> :
-            <div className=" bg-white  p-4 ">
+        <div className="w-[3.5rem] hover:w-[20rem] transition-width duration-300 overflow-hidden hidden sm:block  bg-white">
+            <List className="group">
+                <ListItem onClick={() => Navigate('/dashboard')}>
+                    <ListItemPrefix >
+                        <PresentationChartBarIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Dashboard</p>
+                </ListItem>
+                <ListItem  onClick={() => Navigate('/categories')}>
+                    <ListItemPrefix>
+                        <PlusCircleIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Add Category</p>
+                </ListItem>
+                <ListItem  onClick={() => Navigate('/createform')}>
+                    <ListItemPrefix>
+                        <DocumentPlusIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Create Form</p>
+                </ListItem>
+                <ListItem  onClick={() => Navigate('/profile')}>
+                    <ListItemPrefix>
+                        <UserCircleIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Profile</p>
+                </ListItem>
+                <ListItem >
+                    <ListItemPrefix>
+                        <Cog6ToothIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Settings</p>
+                </ListItem>
 
-                <List>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <PresentationChartBarIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Dashboard
-                    </ListItem>
-
-                    <ListItem>
-                        <ListItemPrefix>
-                            <InboxIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Create Form
-                        <ListItemSuffix>
-                            <Chip value="14" size="sm" variant="ghost" color="blue-gray" className="rounded-full" />
-                        </ListItemSuffix>
-                    </ListItem>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <UserCircleIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Profile
-                    </ListItem>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <Cog6ToothIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Settings
-                    </ListItem>
-                    <ListItem>
-                        <ListItemPrefix>
-                            <PowerIcon className="h-5 w-5" />
-                        </ListItemPrefix>
-                        Log Out
-                    </ListItem>
-                </List>
-            </div>
+                <ListItem  onClick={() => handleSubmit()}>
+                    <ListItemPrefix>
+                        <PowerIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p > Log Out</p>
+                </ListItem>
+            </List>
+        </div>
     );
 }

@@ -43,16 +43,16 @@ const Login = (props: Props) => {
         }
     })
     return (
-        <div className='flex bg-white rounded-xl mx-2 my-8 md:w-[100vh] drop-shadow-2xl'>
-            <div className='w-1/2 bg-[#005ae6] rounded-l-xl  hidden md:flex'>
-                <div className=' px-4 py-7'>
+        <div className='flex h-screen'>
+            <div className='w-1/2 bg-[#005ae6]   hidden md:flex'>
+                <div className=' px-4 py-7 overflow-hidden'>
                     <p className='text-4xl font-bold text-white ms-3'>Login</p>
                     <div className='w-11/12'>
-                        <img src="/img/Login/login.jpg" alt="" />
+                        <img src="/img/Login/login.jpg" alt="" height={"100%"} width={"100%"} />
                     </div>
                 </div>
             </div>
-            <div className='w-full md:w-1/2 bg-[#fffff] p-5 flex flex-col justify-center items-center'>
+            <div className='w-screen md:w-1/2 bg-white p-5 flex flex-col justify-center items-center'>
                 <div className="w-full flex justify-center">
                     <img className=" md:hidden rounded-full h-32 w-32" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png" alt="user avatar" />
                 </div>
@@ -66,7 +66,7 @@ const Login = (props: Props) => {
                         {errors.password && touched.password ? (<Typography variant="small" color="red" className="absolute">{errors.password}</Typography>) : null}
                     </div>
                     <div className="mt-5">
-                        <Checkbox label={showPassword ? "Hide Password" : "Show Password"} onClick={() => { setshowPassword(prevshowPassword => !prevshowPassword) }} name='togglePassword' />
+                        <Checkbox className='outline-0' label={showPassword ? "Hide Password" : "Show Password"} onClick={() => { setshowPassword(prevshowPassword => !prevshowPassword) }} name='togglePassword' />
                     </div>
                     <div className="submitSec w-full flex justify-center mt-7">
                         <Button type="submit" className='py-2 px-8 bg-[#005ae6] rounded-md text-white hover:bg-black '>Login</Button>

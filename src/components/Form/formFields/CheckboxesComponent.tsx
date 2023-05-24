@@ -1,0 +1,39 @@
+import { Checkbox, Input } from '@material-tailwind/react'
+import React, { useState } from 'react'
+import { ComponentData } from '../../../interface';
+
+type Props = {}
+
+const CheckboxesComponent = (props: Props) => {
+  const [createdOption, setCreatedOption] = useState<ComponentData[]>([]);
+  const addOption = () => {
+    const newOption: ComponentData = {
+      id: Date.now(),
+      contentValue: '',
+    };
+    setCreatedOption([...createdOption, newOption]);
+    console.log(createdOption);
+
+  }
+  return (
+    <div>
+      <div className="option flex w-[80%] flex-col items-start">
+        <div className='flex '>
+          <Checkbox id="html" name="type" disabled />
+          <Input label='' variant='static' placeholder='Option 1'></Input>
+        </div>
+        {createdOption.map((component, index) =>
+          <div key={component.id} className='flex'>
+            <Checkbox id="html" name="type" disabled />
+            <Input label='' variant='static' placeholder={`Option ${index + 2}`} />
+          </div>
+        )
+        }
+        <button className='w-18 mt-2 text-blue-500' onClick={addOption}>Add options</button>
+
+      </div>
+    </div>
+  )
+}
+
+export default CheckboxesComponent

@@ -1,5 +1,5 @@
-export interface User { 
-    profilepicture: string | ArrayBuffer | null,   
+export interface User {
+    profilepicture: string | ArrayBuffer | null,
     name: string,
     email: string,
     password: string,
@@ -16,4 +16,9 @@ export interface RootState {
         userList: User[],
         currentUser: currentUser
     }
+}
+
+export interface ComponentData {
+    id: number;
+    contentValue: string;
 }

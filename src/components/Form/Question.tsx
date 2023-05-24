@@ -1,4 +1,4 @@
-import { Input, Select, Option, Button } from '@material-tailwind/react';
+import { Input, Select, Option } from '@material-tailwind/react';
 import React, { useState } from 'react';
 import CheckboxesComponent from './formFields/CheckboxesComponent';
 import DropdownComponent from './formFields/DropdownComponent';
@@ -37,7 +37,7 @@ const Question = ({ onChange, value }: Props) => {
   };
 
   return (
-    <div className='w-[95%] titleSection rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-11 h-fit'>
+    <div className=' titleSection rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-11 h-fit'>
       <div className='flex gap-5'>
         <Input
           className='placeholder-gray-700 text-[1rem] bg-gray-100 hover:bg-gray-300 ps-4 w-[100%] text-black'

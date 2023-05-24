@@ -31,6 +31,8 @@ const Header = () => {
                         </MenuHandler>
                         <MenuList className='divide-y divide-slate-200'>
                             <MenuItem onClick={() => handleSubmit('profile')}>Profile</MenuItem>
+                            <MenuItem onClick={() => handleSubmit('categories')}>Add Category</MenuItem>
+                            <MenuItem onClick={() => handleSubmit('createform')}>Createform</MenuItem>
                             <MenuItem onClick={() => handleSubmit('dashboard')}>Dashboard</MenuItem>
                             <MenuItem className='text-red-500' onClick={() => handleSubmit('login')}>Logout</MenuItem>
                         </MenuList>

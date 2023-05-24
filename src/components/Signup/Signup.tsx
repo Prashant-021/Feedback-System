@@ -5,7 +5,7 @@ import { SignUpSchema } from '../../schema';
 import { RootState, User } from '../../interface';
 import { useDispatch, useSelector } from 'react-redux';
 import { addUser } from '../redux/slice/slice';
-import { Checkbox, Input, Typography } from '@material-tailwind/react';
+import { Checkbox, Input } from '@material-tailwind/react';
 
 type Props = {};
 
@@ -66,16 +66,16 @@ const Signup = (props: Props) => {
     }
 
     return (
-        <div className='flex bg-white  rounded-xl mx-2 my-8 md:w-[100vh] drop-shadow-2xl'>
-            <div className='w-1/2 bg-[#005ae6] rounded-l-xl  hidden md:flex'>
-                <div className='w-full px-4 py-7 '>
+        <div className='flex w-full'>
+            <div className='w-1/2 bg-[#005ae6]  hidden md:flex'>
+                <div className='w-full px-4 py-7'>
                     <p className='text-4xl text-center font-bold text-white me-3'>SignUp</p>
-                    <div className='w-full h-[80%] flex justify-center items-center'>
-                        <img src="/img/Signup.svg" width={'80%'} alt="" />
+                    <div className='w-full flex justify-center'>
+                        <img src="/img/Signup.svg" width={"70%"} alt="" />
                     </div>
                 </div>
             </div>
-            <div className='w-full md:w-1/2 bg-[#fffff] p-5 flex flex-col justify-center items-center'>
+            <div className='w-full md:w-1/2 bg-white p-5 flex flex-col justify-center items-center'>
                 <p className='text-4xl text-center font-bold md:hidden me-3'>SignUp</p>
                 <form action="" onSubmit={handleSubmit}>
 
