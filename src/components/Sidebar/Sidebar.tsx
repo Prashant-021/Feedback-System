@@ -28,19 +28,19 @@ export default function Sidebar() {
                     </ListItemPrefix>
                     <p > Dashboard</p>
                 </ListItem>
-                <ListItem  onClick={() => Navigate('/categories')}>
+                <ListItem onClick={() => Navigate('/categories')}>
                     <ListItemPrefix>
                         <PlusCircleIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p > Add Category</p>
                 </ListItem>
-                <ListItem  onClick={() => Navigate('/createform')}>
+                <ListItem onClick={() => Navigate('/createform')}>
                     <ListItemPrefix>
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p > Create Form</p>
                 </ListItem>
-                <ListItem  onClick={() => Navigate('/profile')}>
+                <ListItem onClick={() => Navigate('/profile')}>
                     <ListItemPrefix>
                         <UserCircleIcon className="h-5 w-5" />
                     </ListItemPrefix>
@@ -53,7 +53,7 @@ export default function Sidebar() {
                     <p > Settings</p>
                 </ListItem>
 
-                <ListItem  onClick={() => handleSubmit()}>
+                <ListItem onClick={() => handleSubmit()}>
                     <ListItemPrefix>
                         <PowerIcon className="h-5 w-5" />
                     </ListItemPrefix>

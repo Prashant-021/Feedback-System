@@ -9,32 +9,37 @@ const TABLE_ROWS = [
     name: "John Michael",
     description: "Manager",
     date: "23/04/18",
+    
   },
   {
     name: "Shoes",
     description: "",
     date: "23/04/18",
+    
   },
   {
     name: "Mouse",
     description: "Executive",
     date: "19/09/17",
+    
   },
   {
     name: "Keyboard",
     description: "Developer",
     date: "24/12/08",
+    
   },
   {
     name: "Monitor",
     description: "Manager",
     date: "04/10/21",
+    
   },
 ];
 
 type Props = {}
 
-const Categories = (props: Props) => {
+const CategoriesList = (props: Props) => {
 
   return (
     <>
@@ -78,8 +83,8 @@ const Categories = (props: Props) => {
                       {date}
                     </Typography>
                   </td>
-                  <td className="p-4">
-                    <Typography as="a" href="#" variant="small" color="blue" className="font-medium">
+                  <td className="p-4" >
+                    <Typography  variant="small" color="blue" className="font-medium" onClick={() => <AddCategory/>}>
                       Edit
                     </Typography>
                   </td>
@@ -94,4 +99,4 @@ const Categories = (props: Props) => {
 
   );
 }
-export default Categories
+export default CategoriesList

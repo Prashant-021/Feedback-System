@@ -20,8 +20,9 @@ const Header = () => {
 
     return (
         <nav className="bg-white  h-22 w-full border-gray-200 dark:bg-gray-900">
+            
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
-                <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white capitalize">{title.pathname.replace('/', '')}</span>
+                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white capitalize">{title.pathname.replace('/', '')}</span>
                 <div className="flex items-center md:order-2">
                     <Menu placement="bottom-end">
                         <MenuHandler>

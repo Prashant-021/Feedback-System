@@ -20,8 +20,13 @@ const Dashboard = () => {
     return (
         <>
             {user ? (
-                // <div className="w-full m-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4">
-                <div className="w-full justify-center lg:justify-start m-8 flex flex-wrap h-fit gap-3">
+                <div className="w-full justify-center sm:justify-start m-8 flex flex-wrap h-fit gap-14">
+                    <CategoryInfo/>
+                    <CategoryInfo/>
+                    <CategoryInfo/>
+                    <CategoryInfo/>
+                    <CategoryInfo/>
+                    <CategoryInfo/> 
                     <CategoryInfo/>
                     <CategoryInfo/>
                     <CategoryInfo/>
@@ -29,7 +34,7 @@ const Dashboard = () => {
                     <CategoryInfo/>
                     <CategoryInfo/> 
                     <CategoryInfo/> 
-                    <CategoryInfo/> 
+                    
                 </div>
 
             ) : <></>}

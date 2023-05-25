@@ -29,7 +29,7 @@ const MultipleChoiceComponent = (props: Props) => {
           </div>
         )
         }
-        <button className='w-18 mt-2 text-blue-500' onClick={addOption}>Add options</button>
+        <button className='w-18 ms-10 mt-4 text-blue-500' onClick={addOption}>Add options</button>
       </div>
     </div>
   )
