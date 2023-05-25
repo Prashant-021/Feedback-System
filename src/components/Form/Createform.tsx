@@ -3,7 +3,6 @@ import { Button, Input } from '@material-tailwind/react';
 import Question from './Question';
 import { TrashIcon } from "@heroicons/react/24/solid";
 import { ComponentData } from '../../interface';
-import { throttle } from 'lodash';
 
 type Props = {};
 
@@ -20,14 +19,10 @@ const Createform = (props: Props) => {
     };
     setCreatedComponents([...createdComponents, newComponent]);
 
-    // setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 1000);
-    throttleScrollIntoView();
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 10);
+    
 
   };
-
-  const throttleScrollIntoView = throttle(() => {
-    bottomRef.current?.scrollIntoView({ behavior: 'auto' });
-  }, 500);
 
   const handleDelete = (index: number) => {
     const updatedComponents = [...createdComponents];
@@ -42,8 +37,8 @@ const Createform = (props: Props) => {
   };
   return (
     <div className='w-full min-h-min flex flex-col flex-grow items-center'>
-      <div id='questionList' className='md:w-[70%] flex lg:flex mt-12 flex-grow flex-col h-[60vh] overflow-y-scroll overflow-x-visible no-scrollbar  gap-4 relative'>
-        <div className='titleSection rounded-lg shadow-xl border-l-8 border-transparent  focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit'>
+      <div id='questionList' className='w-[90%] md:w-[70%] flex lg:flex mt-12 flex-grow flex-col h-[60vh] overflow-y-scroll overflow-x-visible no-scrollbar  gap-4 relative'>
+        <div className=' titleSection rounded-lg shadow-xl border-l-8 border-transparent  focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit'>
           <Input className='placeholder-black text-xl text-black' variant="static" label="" placeholder="Category Title" />
           <Input className='placeholder-black text-black ' variant="static" label="" placeholder="Category Description" />
         </div>
@@ -52,7 +47,7 @@ const Createform = (props: Props) => {
 
           return (
 
-            <div key={component.id} className=' titleSection  rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-11 h-fit'>
+            <div key={component.id} className=' titleSection  rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit'>
               <Question
                 value={component.contentValue}
                 onChange={(value) => handleQuestionChange(index, value)}

@@ -34,7 +34,7 @@ function App() {
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </div>
-      {hideHeader ? <></> : <Footer />}
+      {/* {hideHeader ? <></> : <Footer />} */}
     </div>
 
   );
