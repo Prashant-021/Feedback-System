@@ -56,7 +56,7 @@ const Signup = (props: Props) => {
             const reader = new FileReader()
 
             reader.onload = (e: ProgressEvent<FileReader>) => {
-                if (e.target) {
+                if (e.target) { 
                     const imageUrl = e.target.result as string;
                     setFieldValue('profilepicture', imageUrl);
                 }

@@ -22,3 +22,17 @@ export interface ComponentData {
     id: number;
     contentValue: string;
 }
+
+interface option {
+    optionValue: string;
+}
+export interface IQuestion {
+    questionTitle: string;
+    type: string;
+    options?: option[];
+}
+export interface IFormTemplate {
+    title: string;
+    description: string;
+    questions: IQuestion[]
+}
