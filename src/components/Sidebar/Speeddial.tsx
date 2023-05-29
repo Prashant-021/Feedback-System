@@ -33,7 +33,7 @@ export default function DefaultSpeedDial() {
                         <PlusCircleIcon className="h-5 w-5" onClick={() => Navigate('/categories')}/>
                     </SpeedDialAction>
                     <SpeedDialAction>
-                        <DocumentPlusIcon className="h-5 w-5" onClick={() => Navigate('/createform')}/>
+                        <DocumentPlusIcon className="h-5 w-5" onClick={() => Navigate('/forms')}/>
                     </SpeedDialAction>
                     <SpeedDialAction>
                         <UserCircleIcon className="h-5 w-5" onClick={() => Navigate('/profile')}/>

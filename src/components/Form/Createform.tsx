@@ -1,9 +1,10 @@
 import React, { useRef, useState } from 'react';
 import { Button } from '@material-tailwind/react';
 import Question from './Question';
-import { TrashIcon } from "@heroicons/react/24/solid";
+import { TrashIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
 import { ComponentData, IFormTemplate, IQuestion } from '../../interface';
 import FormHeader from './formFields/FormHeader';
+import { Link } from 'react-router-dom';
 
 type Props = {};
 
@@ -14,9 +15,8 @@ const Createform = (props: Props) => {
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const categoryHeaderRef = useRef<{ title: string, description: string }>({ title: 'Title', description: 'Description' });
-  // const categoryQuestionRef = useRef<IQuestion>();
   const [createdComponents, setCreatedComponents] = useState<ComponentData[]>([]);
-  
+
   const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
     title: '',
     description: '',
@@ -28,7 +28,11 @@ const Createform = (props: Props) => {
   const handleClick = () => {
     const newComponent: ComponentData = {
       id: Date.now(),
-      contentValue: '',
+      contentValue: {
+        questionTitle: '',
+        type: '',
+        options: []
+      },
     };
     setCreatedComponents(prevComponents => [...prevComponents, newComponent]);
 
@@ -40,16 +44,12 @@ const Createform = (props: Props) => {
   const handleDelete = (index: number) => {
     const updatedComponents = [...createdComponents];
     updatedComponents.splice(index, 1);
-    setCreatedComponents(prevComponents => {
-      const updatedComponents = [...prevComponents];
-      updatedComponents.splice(index, 1);
-      return updatedComponents;
-    });
+    setCreatedComponents(updatedComponents);
   };
 
-  const handleQuestionChange = (index: number, value: string) => {
+  const handleQuestionChange = (index: number, value: IQuestion) => {
     const updatedComponents = [...createdComponents];
-    updatedComponents[index].contentValue = value;
+    updatedComponents[index].contentValue = {questionTitle:value.questionTitle,type:value.type};
     setCreatedComponents(updatedComponents);
   };
 
@@ -58,42 +58,40 @@ const Createform = (props: Props) => {
     categoryHeaderRef.current.title = formHead.title;
     categoryHeaderRef.current.description = formHead.description;
   }
-  const setQuestionsInfo = () => {
-    createdComponents.forEach((createdComponent) => {
-      createdComponent.contentValue = 'adfews'
-    })
-  }
-  console.log(createdComponents);
+  // const getQuestions = () => {
+    
+  //   const questionInfo: IQuestion[] = []
+  //   createdComponents.map((component)=> {
+  //     questionInfo.push(component.contentValue)
+  //   })
+  //   return questionInfo
+  // }
+  const getQuestions = () => {
+    return createdComponents.map((component) => {
+      return component.contentValue;
+    });
+  };
   const handleSave = () => {
-    setQuestionsInfo()
     setFormTemplate(() => {
       const updatedFormTemplate: IFormTemplate = {
         title: categoryHeaderRef.current.title,
         description: categoryHeaderRef.current.description,
-        questions: [
-          {
-            questionTitle: 'Question 1',
-            type: 'shortAnswer',
-          },
-          {
-            questionTitle: 'Question 2',
-            type: 'Mcq',
-            options: [
-              { optionValue: 'option 1' },
-              { optionValue: 'option 2' },
-            ],
-          },
-        ],
+        questions: getQuestions()
       };
-  
-      console.log(updatedFormTemplate, createdComponents);
+
+      console.log(updatedFormTemplate);
       return updatedFormTemplate;
     });
   };
-  
+
   return (
     <div className='w-full min-h-min flex flex-col flex-grow items-center'>
       <div className='my-4 w-[90%] md:w-[70%]'>
+        <Link to={'/forms'} >
+          <Button className="float-left items-center gap-3">
+            <ArrowUturnLeftIcon className="h-5 w-5" />
+          </Button>
+        </Link>
         <Button className='float-right' onClick={handleSave}>Save</Button>
       </div>
       <div id='questionList' className='w-[90%] md:w-[70%] flex lg:flex flex-grow flex-col h-[60vh] overflow-y-scroll  no-scrollbar  gap-4 relative'>

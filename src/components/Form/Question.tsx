@@ -1,5 +1,6 @@
 import { Input, Select, Option } from '@material-tailwind/react';
 import React, { useState } from 'react';
+import { IQuestion } from '../../interface';
 import CheckboxesComponent from './formFields/CheckboxesComponent';
 import DropdownComponent from './formFields/DropdownComponent';
 import MultipleChoiceComponent from './formFields/MultipleChoiceComponent';
@@ -7,16 +8,21 @@ import ParagraphComponent from './formFields/ParagraphComponent';
 import ShortAnswerComponent from './formFields/ShortAnswerComponent';
 
 type Props = {
-  onChange: (value: string) => void;
-  value: string;
+  onChange: (value: IQuestion) => void;
+  value: IQuestion;
 };
 
 const Question = ({ onChange, value }: Props) => {
-  const [questionType, setQuestionType] = useState(value);
+  // console.log(value.questionTitle);
+
+  const [questionType, setQuestionType] = useState(value.type);
+  const [questionTitle, setQuestionTitle] = useState(value.questionTitle);
 
   const handleChange = (event: string) => {
     setQuestionType(event);
-    onChange(event);
+    console.log(event);
+
+    onChange({ questionTitle: questionTitle, type: event });
   };
 
   const renderComponent = () => {
@@ -44,6 +50,7 @@ const Question = ({ onChange, value }: Props) => {
           variant='static'
           label=''
           placeholder='Question'
+          onChange={(event) => setQuestionTitle(event?.target.value)}
         />
         <Select
           label='Select Question Type'

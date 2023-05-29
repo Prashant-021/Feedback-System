@@ -20,10 +20,11 @@ export interface RootState {
 
 export interface ComponentData {
     id: number;
-    contentValue: string;
+    contentValue: IQuestion;
 }
 
-interface option {
+export interface option {
+    id: number;
     optionValue: string;
 }
 export interface IQuestion {

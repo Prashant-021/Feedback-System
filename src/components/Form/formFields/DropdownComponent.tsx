@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { Input } from '@material-tailwind/react'
-import { ComponentData } from '../../../interface'
+import { option } from '../../../interface'
 
 type Props = {}
 
 const DropdownComponent = (props: Props) => {
-  const [createdOption, setCreatedOption] = useState<ComponentData[]>([]);
+  const [createdOption, setCreatedOption] = useState<option[]>([]);
   const addOption = () => {
-    const newOption: ComponentData = {
+    const newOption: option = {
       id: Date.now(),
-      contentValue: '',
+      optionValue: ''
     };
     setCreatedOption([...createdOption, newOption]);
     console.log(createdOption);

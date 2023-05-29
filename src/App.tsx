@@ -5,10 +5,10 @@ import Login from './components/login/Login';
 import Signup from './components/Signup/Signup';
 import Dashboard from './components/Dashboard/Dashboard';
 import PageNotFound from './components/404/PageNotFound';
+import FormList from './components/Form/FormList/Formlist';
 import Createform from './components/Form/Createform';
 import Header from './components/Header/Header';
 import Profile from './components/Profile/Profile';
-import Footer from './components/Footer/Footer';
 import Sidebar from './components/Sidebar/Sidebar';
 import Addcategory from './components/Category/CategoriesList';
 import DefaultSpeedDial from './components/Sidebar/Speeddial';
@@ -29,6 +29,7 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/categories' element={<Addcategory />} />
+          <Route path='/forms' element={<FormList />} />
           <Route path='/createform' element={<Createform />} />
           <Route path='/profile' element={<Profile />} />
           <Route path='*' element={<PageNotFound />} />

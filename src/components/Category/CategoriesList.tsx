@@ -4,38 +4,8 @@ import {Card, Typography} from "@material-tailwind/react";
 import AddCategory from './AddCategory';
 const TABLE_HEAD = ["Category Name", "Description", "Created On", ""];
 
-const TABLE_ROWS = [
-  {
-    name: "John Michael",
-    description: "Manager",
-    date: "23/04/18",
-    
-  },
-  {
-    name: "Shoes",
-    description: "",
-    date: "23/04/18",
-    
-  },
-  {
-    name: "Mouse",
-    description: "Executive",
-    date: "19/09/17",
-    
-  },
-  {
-    name: "Keyboard",
-    description: "Developer",
-    date: "24/12/08",
-    
-  },
-  {
-    name: "Monitor",
-    description: "Manager",
-    date: "04/10/21",
-    
-  },
-];
+const TABLE_ROWS: [{title: string, description: string, date: Date}] = JSON.parse(localStorage.getItem('Category') as string)
+console.log(TABLE_ROWS);
 
 type Props = {}
 
@@ -66,21 +36,23 @@ const CategoriesList = (props: Props) => {
               </tr>
             </thead>
             <tbody>
-              {TABLE_ROWS.map(({ name, description, date }, index) => (
-                <tr key={name} className="even:bg-blue-gray-50/50">
+              
+              {TABLE_ROWS && TABLE_ROWS.map((category, index) => (
+                
+                <tr key={category.title} className="even:bg-blue-gray-50/50">
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {name}
+                      {category.title}
                     </Typography>
                   </td>
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {description}
+                      {category.description}
                     </Typography>
                   </td>
                   <td className="p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                      {date}
+                      {category.date}
                     </Typography>
                   </td>
                   <td className="p-4" >

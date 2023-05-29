@@ -34,11 +34,11 @@ export default function Sidebar() {
                     </ListItemPrefix>
                     <p > Add Category</p>
                 </ListItem>
-                <ListItem onClick={() => Navigate('/createform')}>
+                <ListItem onClick={() => Navigate('/forms')}>
                     <ListItemPrefix>
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p > Create Form</p>
+                    <p > Forms</p>
                 </ListItem>
                 <ListItem onClick={() => Navigate('/profile')}>
                     <ListItemPrefix>

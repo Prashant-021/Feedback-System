@@ -1,15 +1,15 @@
 import { Checkbox, Input } from '@material-tailwind/react'
 import React, { useState } from 'react'
-import { ComponentData } from '../../../interface';
+import {  option } from '../../../interface';
 
 type Props = {}
 
 const CheckboxesComponent = (props: Props) => {
-  const [createdOption, setCreatedOption] = useState<ComponentData[]>([]);
+  const [createdOption, setCreatedOption] = useState<option[]>([]);
   const addOption = () => {
-    const newOption: ComponentData = {
+    const newOption: option = {
       id: Date.now(),
-      contentValue: '',
+      optionValue: '',
     };
     setCreatedOption([...createdOption, newOption]);
     console.log(createdOption);
