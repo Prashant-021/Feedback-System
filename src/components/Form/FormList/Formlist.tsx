@@ -1,73 +1,71 @@
-import { MagnifyingGlassIcon, ChevronUpDownIcon } from "@heroicons/react/24/outline";
-import { PencilIcon, UserPlusIcon } from "@heroicons/react/24/solid";
+import { MagnifyingGlassIcon, ChevronUpDownIcon } from '@heroicons/react/24/outline'
+import { PencilIcon, UserPlusIcon } from '@heroicons/react/24/solid'
 import {
-    Card,
-    CardHeader,
-    Input,
-    Typography,
-    Button,
-    CardBody,
-    Chip,
-    CardFooter,
-    Avatar,
-    IconButton,
-    Tooltip,
-} from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+  Card,
+  CardHeader,
+  Input,
+  Typography,
+  Button,
+  CardBody,
+  Chip,
+  CardFooter,
+  Avatar,
+  IconButton,
+  Tooltip
+} from '@material-tailwind/react'
+import { Link } from 'react-router-dom'
 
-
-const TABLE_HEAD = ["Member", "Function", "Status", "Employed", ""];
+const TABLE_HEAD = ['Member', 'Function', 'Status', 'Employed', '']
 
 const TABLE_ROWS = [
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg",
-        name: "John Michael",
-        email: "john@creative-tim.com",
-        job: "Manager",
-        org: "Organization",
-        online: true,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg",
-        name: "Alexa Liras",
-        email: "alexa@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: false,
-        date: "23/04/18",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg",
-        name: "Laurent Perrier",
-        email: "laurent@creative-tim.com",
-        job: "Executive",
-        org: "Projects",
-        online: false,
-        date: "19/09/17",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg",
-        name: "Michael Levi",
-        email: "michael@creative-tim.com",
-        job: "Programator",
-        org: "Developer",
-        online: true,
-        date: "24/12/08",
-    },
-    {
-        img: "https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg",
-        name: "Richard Gran",
-        email: "richard@creative-tim.com",
-        job: "Manager",
-        org: "Executive",
-        online: false,
-        date: "04/10/21",
-    },
-];
-
-export default function FormList() {
-    return (
+  {
+    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
+    name: 'John Michael',
+    email: 'john@creative-tim.com',
+    job: 'Manager',
+    org: 'Organization',
+    online: true,
+    date: '23/04/18'
+  },
+  {
+    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
+    name: 'Alexa Liras',
+    email: 'alexa@creative-tim.com',
+    job: 'Programator',
+    org: 'Developer',
+    online: false,
+    date: '23/04/18'
+  },
+  {
+    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
+    name: 'Laurent Perrier',
+    email: 'laurent@creative-tim.com',
+    job: 'Executive',
+    org: 'Projects',
+    online: false,
+    date: '19/09/17'
+  },
+  {
+    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg',
+    name: 'Michael Levi',
+    email: 'michael@creative-tim.com',
+    job: 'Programator',
+    org: 'Developer',
+    online: true,
+    date: '24/12/08'
+  },
+  {
+    img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg',
+    name: 'Richard Gran',
+    email: 'richard@creative-tim.com',
+    job: 'Manager',
+    org: 'Executive',
+    online: false,
+    date: '04/10/21'
+  }
+]
+const FormList: React.FC = () => {
+  return (
         <div className="flex-grow w-full flex items-center justify-center">
 
             <Card className=" w-full sm:w-[60%]">
@@ -85,7 +83,7 @@ export default function FormList() {
                             <Button variant="outlined" color="blue-gray" size="sm">
                                 view all
                             </Button>
-                            <Link to={'/createform'}  >
+                            <Link to={'/createform'} >
                                 <Button className="flex items-center gap-3" color="blue" size="sm">
                                     <UserPlusIcon strokeWidth={2} className="h-4 w-4" />  Add Form
                                 </Button>
@@ -112,7 +110,7 @@ export default function FormList() {
                                             color="blue-gray"
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                                         >
-                                            {head}{" "}
+                                            {head}{' '}
                                             {index !== TABLE_HEAD.length - 1 && (
                                                 <ChevronUpDownIcon strokeWidth={2} className="h-4 w-4" />
                                             )}
@@ -123,10 +121,10 @@ export default function FormList() {
                         </thead>
                         <tbody>
                             {TABLE_ROWS.map(({ img, name, email, job, org, online, date }, index) => {
-                                const isLast = index === TABLE_ROWS.length - 1;
-                                const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50";
+                              const isLast = index === TABLE_ROWS.length - 1
+                              const classes = isLast ? 'p-4' : 'p-4 border-b border-blue-gray-50'
 
-                                return (
+                              return (
                                     <tr key={name}>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
@@ -164,8 +162,8 @@ export default function FormList() {
                                                 <Chip
                                                     variant="ghost"
                                                     size="sm"
-                                                    value={online ? "online" : "offline"}
-                                                    color={online ? "green" : "blue-gray"}
+                                                    value={online ? 'online' : 'offline'}
+                                                    color={online ? 'green' : 'blue-gray'}
                                                 />
                                             </div>
                                         </td>
@@ -182,7 +180,7 @@ export default function FormList() {
                                             </Tooltip>
                                         </td>
                                     </tr>
-                                );
+                              )
                             })}
                         </tbody>
                     </table>
@@ -203,5 +201,7 @@ export default function FormList() {
             </Card>
         </div>
 
-    );
+  )
 }
+
+export default FormList

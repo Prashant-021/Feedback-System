@@ -1,21 +1,16 @@
-import React, { useRef, useState } from 'react';
-import { Button } from '@material-tailwind/react';
-import Question from './Question';
-import { TrashIcon, ArrowUturnLeftIcon } from "@heroicons/react/24/solid";
-import { ComponentData, IFormTemplate, IQuestion } from '../../interface';
-import FormHeader from './formFields/FormHeader';
-import { Link } from 'react-router-dom';
+import React, { useRef, useState } from 'react'
+import { Button } from '@material-tailwind/react'
+import Question from './Question'
+import { TrashIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
+import { type ComponentData, type IFormTemplate, type IQuestion } from '../../interface'
+import FormHeader from './formFields/FormHeader'
+import { Link } from 'react-router-dom'
 
-type Props = {};
+const Createform: React.FC = () => {
+  const bottomRef = useRef<HTMLDivElement>(null)
 
-
-
-const Createform = (props: Props) => {
-
-  const bottomRef = useRef<HTMLDivElement>(null);
-
-  const categoryHeaderRef = useRef<{ title: string, description: string }>({ title: 'Title', description: 'Description' });
-  const [createdComponents, setCreatedComponents] = useState<ComponentData[]>([]);
+  const categoryHeaderRef = useRef<{ title: string, description: string }>({ title: 'Title', description: 'Description' })
+  const [createdComponents, setCreatedComponents] = useState<ComponentData[]>([])
 
   const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
     title: '',
@@ -25,64 +20,70 @@ const Createform = (props: Props) => {
       type: ''
     }]
   })
-  const handleClick = () => {
+  const handleClick = (): void => {
     const newComponent: ComponentData = {
       id: Date.now(),
       contentValue: {
         questionTitle: '',
         type: '',
         options: []
-      },
-    };
-    setCreatedComponents(prevComponents => [...prevComponents, newComponent]);
+      }
+    }
+    setCreatedComponents(prevComponents => [...prevComponents, newComponent])
 
-    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 10);
+    setTimeout(() => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }), 10)
+  }
 
+  const handleDelete = (index: number): void => {
+    const updatedComponents = [...createdComponents]
+    updatedComponents.splice(index, 1)
+    setCreatedComponents(updatedComponents)
+  }
 
-  };
+  const handleQuestionChange = (index: number, value: IQuestion): void => {
+    const updatedComponents = [...createdComponents]
+    updatedComponents[index].contentValue = { questionTitle: value.questionTitle, type: value.type }
+    setCreatedComponents(updatedComponents)
+  }
 
-  const handleDelete = (index: number) => {
-    const updatedComponents = [...createdComponents];
-    updatedComponents.splice(index, 1);
-    setCreatedComponents(updatedComponents);
-  };
-
-  const handleQuestionChange = (index: number, value: IQuestion) => {
-    const updatedComponents = [...createdComponents];
-    updatedComponents[index].contentValue = {questionTitle:value.questionTitle,type:value.type};
-    setCreatedComponents(updatedComponents);
-  };
-
-
-  const handleHeaderInfo = (formHead: { title: string; description: string; }) => {
-    categoryHeaderRef.current.title = formHead.title;
-    categoryHeaderRef.current.description = formHead.description;
+  const handleHeaderInfo = (formHead: { title: string, description: string }): void => {
+    categoryHeaderRef.current.title = formHead.title
+    categoryHeaderRef.current.description = formHead.description
   }
   // const getQuestions = () => {
-    
+
   //   const questionInfo: IQuestion[] = []
   //   createdComponents.map((component)=> {
   //     questionInfo.push(component.contentValue)
   //   })
   //   return questionInfo
   // }
-  const getQuestions = () => {
+  const getQuestions = (): IQuestion[] => {
     return createdComponents.map((component) => {
-      return component.contentValue;
-    });
-  };
-  const handleSave = () => {
-    setFormTemplate(() => {
-      const updatedFormTemplate: IFormTemplate = {
-        title: categoryHeaderRef.current.title,
-        description: categoryHeaderRef.current.description,
-        questions: getQuestions()
-      };
+      return component.contentValue
+    })
+  }
+  // const handleSave = (): void => {
+  //   setFormTemplate(() => {
+  //     const updatedFormTemplate: IFormTemplate = {
+  //       title: categoryHeaderRef.current.title,
+  //       description: categoryHeaderRef.current.description,
+  //       questions: getQuestions()
+  //     }
 
-      console.log(updatedFormTemplate);
-      return updatedFormTemplate;
-    });
-  };
+  //     console.log(updatedFormTemplate)
+  //     return updatedFormTemplate
+  //   })
+  // }
+  const handleSave = (): void => {
+    setFormTemplate({
+      title: categoryHeaderRef.current.title,
+      description: categoryHeaderRef.current.description,
+      questions: getQuestions()
+    }
+    )
+  }
+  console.log(formTemplate)
 
   return (
     <div className='w-full min-h-min flex flex-col flex-grow items-center'>
@@ -97,20 +98,19 @@ const Createform = (props: Props) => {
       <div id='questionList' className='w-[90%] md:w-[70%] flex lg:flex flex-grow flex-col h-[60vh] overflow-y-scroll  no-scrollbar  gap-4 relative'>
         <FormHeader headerInfo={handleHeaderInfo} />
         {createdComponents.map((component, index) => {
-
           return (
 
             <div key={component.id} className=' rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit'>
               <Question
                 value={component.contentValue}
-                onChange={(value) => handleQuestionChange(index, value)}
+                onChange={(value) => { handleQuestionChange(index, value) }}
               />
               <div>
 
                 <Button
                   variant="text"
                   className=' text-red-500 p-2 rounded-md float-right'
-                  onClick={() => handleDelete(index)}
+                  onClick={() => { handleDelete(index) }}
                 >
                   <TrashIcon className="h-5 w-5" />
                 </Button>
@@ -137,7 +137,7 @@ const Createform = (props: Props) => {
       </div>
 
     </div>
-  );
-};
+  )
+}
 
-export default Createform;
+export default Createform

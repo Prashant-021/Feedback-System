@@ -1,19 +1,16 @@
 import { Input, Radio } from '@material-tailwind/react'
 import React, { useState } from 'react'
-import {  option } from '../../../interface';
+import { type option } from '../../../interface'
 
-type Props = {}
-
-const MultipleChoiceComponent = (props: Props) => {
-  const [createdOption, setCreatedOption] = useState<option[]>([]);
-  const addOption = () => {
+const MultipleChoiceComponent: React.FC = () => {
+  const [createdOption, setCreatedOption] = useState<option[]>([])
+  const addOption = (): void => {
     const newOption: option = {
       id: Date.now(),
-      optionValue: '',
-    };
-    setCreatedOption([...createdOption, newOption]);
-    console.log(createdOption);
-
+      optionValue: ''
+    }
+    setCreatedOption([...createdOption, newOption])
+    console.log(createdOption)
   }
   return (
     <div>

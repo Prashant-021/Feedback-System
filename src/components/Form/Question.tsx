@@ -1,46 +1,46 @@
-import { Input, Select, Option } from '@material-tailwind/react';
-import React, { useState } from 'react';
-import { IQuestion } from '../../interface';
-import CheckboxesComponent from './formFields/CheckboxesComponent';
-import DropdownComponent from './formFields/DropdownComponent';
-import MultipleChoiceComponent from './formFields/MultipleChoiceComponent';
-import ParagraphComponent from './formFields/ParagraphComponent';
-import ShortAnswerComponent from './formFields/ShortAnswerComponent';
+import { Input, Select, Option } from '@material-tailwind/react'
+import React, { useState } from 'react'
+import { type IQuestion } from '../../interface'
+import CheckboxesComponent from './formFields/CheckboxesComponent'
+import DropdownComponent from './formFields/DropdownComponent'
+import MultipleChoiceComponent from './formFields/MultipleChoiceComponent'
+import ParagraphComponent from './formFields/ParagraphComponent'
+import ShortAnswerComponent from './formFields/ShortAnswerComponent'
 
-type Props = {
-  onChange: (value: IQuestion) => void;
-  value: IQuestion;
-};
+interface Props {
+  onChange: (value: IQuestion) => void
+  value: IQuestion
+}
 
-const Question = ({ onChange, value }: Props) => {
+const Question: React.FC<Props> = ({ onChange, value }) => {
   // console.log(value.questionTitle);
 
-  const [questionType, setQuestionType] = useState(value.type);
-  const [questionTitle, setQuestionTitle] = useState(value.questionTitle);
+  const [questionType, setQuestionType] = useState(value.type)
+  const [questionTitle, setQuestionTitle] = useState(value.questionTitle)
 
-  const handleChange = (event: string) => {
-    setQuestionType(event);
-    console.log(event);
+  const handleChange = (event: string): void => {
+    setQuestionType(event)
+    console.log(event)
 
-    onChange({ questionTitle: questionTitle, type: event });
-  };
+    onChange({ questionTitle, type: event })
+  }
 
-  const renderComponent = () => {
+  const renderComponent = (): JSX.Element | null => {
     switch (questionType) {
       case 'shortAnswer':
-        return <ShortAnswerComponent />;
+        return <ShortAnswerComponent />
       case 'paragraph':
-        return <ParagraphComponent />;
+        return <ParagraphComponent />
       case 'multipleChoice':
-        return <MultipleChoiceComponent />;
+        return <MultipleChoiceComponent />
       case 'checkboxes':
-        return <CheckboxesComponent />;
+        return <CheckboxesComponent />
       case 'dropdown':
-        return <DropdownComponent />;
+        return <DropdownComponent />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   return (
     <div className=' '>
@@ -50,13 +50,13 @@ const Question = ({ onChange, value }: Props) => {
           variant='static'
           label=''
           placeholder='Question'
-          onChange={(event) => setQuestionTitle(event?.target.value)}
+          onChange={(event) => { setQuestionTitle(event?.target.value) }}
         />
         <Select
           label='Select Question Type'
           className='float-right'
           value={questionType}
-          onChange={(event) => handleChange(event as string)}
+          onChange={(event) => { handleChange(event as string) }}
         >
           <Option value='shortAnswer'>Short Answer</Option>
           <Option value='paragraph'>Paragraph</Option>
@@ -67,7 +67,7 @@ const Question = ({ onChange, value }: Props) => {
       </div>
       <div className='mt-5'>{renderComponent()}</div>
     </div>
-  );
-};
+  )
+}
 
-export default Question;
+export default Question

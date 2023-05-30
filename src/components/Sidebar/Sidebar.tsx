@@ -1,46 +1,46 @@
 import {
-    List,
-    ListItem,
-    ListItemPrefix,
-} from "@material-tailwind/react";
+  List,
+  ListItem,
+  ListItemPrefix
+} from '@material-tailwind/react'
 import {
-    PresentationChartBarIcon,
-    UserCircleIcon,
-    DocumentPlusIcon,
-    Cog6ToothIcon,
-    PowerIcon,
-    PlusCircleIcon
-} from "@heroicons/react/24/solid";
-import { useNavigate } from "react-router-dom";
+  PresentationChartBarIcon,
+  UserCircleIcon,
+  DocumentPlusIcon,
+  Cog6ToothIcon,
+  PowerIcon,
+  PlusCircleIcon
+} from '@heroicons/react/24/solid'
+import { useNavigate } from 'react-router-dom'
 
-export default function Sidebar() {
-    const Navigate = useNavigate()
-    function handleSubmit() {
-        Navigate('/login');
-        sessionStorage.clear()
-    }
-    return (
+const Sidebar: React.FC = () => {
+  const Navigate = useNavigate()
+  function handleSubmit (): void {
+    Navigate('/login')
+    sessionStorage.clear()
+  }
+  return (
         <div className="w-[3.5rem] hover:w-[20rem] transition-width duration-300 overflow-hidden hidden sm:block  bg-white">
             <List className="group">
-                <ListItem onClick={() => Navigate('/dashboard')}>
+                <ListItem onClick={() => { Navigate('/dashboard') }}>
                     <ListItemPrefix >
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p > Dashboard</p>
                 </ListItem>
-                <ListItem onClick={() => Navigate('/categories')}>
+                <ListItem onClick={() => { Navigate('/categories') }}>
                     <ListItemPrefix>
                         <PlusCircleIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p > Add Category</p>
                 </ListItem>
-                <ListItem onClick={() => Navigate('/forms')}>
+                <ListItem onClick={() => { Navigate('/forms') }}>
                     <ListItemPrefix>
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p > Forms</p>
                 </ListItem>
-                <ListItem onClick={() => Navigate('/profile')}>
+                <ListItem onClick={() => { Navigate('/profile') }}>
                     <ListItemPrefix>
                         <UserCircleIcon className="h-5 w-5" />
                     </ListItemPrefix>
@@ -53,7 +53,7 @@ export default function Sidebar() {
                     <p > Settings</p>
                 </ListItem>
 
-                <ListItem onClick={() => handleSubmit()}>
+                <ListItem onClick={() => { handleSubmit() }}>
                     <ListItemPrefix>
                         <PowerIcon className="h-5 w-5" />
                     </ListItemPrefix>
@@ -61,5 +61,6 @@ export default function Sidebar() {
                 </ListItem>
             </List>
         </div>
-    );
+  )
 }
+export default Sidebar

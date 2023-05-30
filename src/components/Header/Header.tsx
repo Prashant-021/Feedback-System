@@ -2,25 +2,22 @@ import React from 'react'
 import { Avatar, Menu, MenuHandler, MenuItem, MenuList } from '@material-tailwind/react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { RootState } from '../../interface'
+import { type RootState } from '../../interface'
 
+const Header: React.FC = () => {
+  const Navigate = useNavigate()
+  const title = useLocation()
+  const users = useSelector((state: RootState) => state.user?.userList)
+  const loggedInUser = sessionStorage.getItem('currentUser')
+  const user = users.find(user => user.email === loggedInUser)
+  function handleSubmit (value: string): void {
+    Navigate(`/${value}`)
+    if (value === 'login') { sessionStorage.clear() }
+  }
 
-const Header = () => {
-    const Navigate = useNavigate()
-    const title = useLocation()
-    const users = useSelector((state: RootState) => state.user?.userList);
-    const loggedInUser = sessionStorage.getItem('currentUser');
-    const user = users.find(user => user.email === loggedInUser)
-    function handleSubmit(value: string) {
-        Navigate(`/${value}`);
-        if (value === 'login')
-            sessionStorage.clear()
-    }
-
-
-    return (
+  return (
         <nav className="bg-white  h-22 w-full border-gray-200 dark:bg-gray-900">
-            
+
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
                  <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white capitalize">{title.pathname.replace('/', '')}</span>
                 <div className="flex items-center md:order-2">
@@ -31,17 +28,17 @@ const Header = () => {
                             </button>
                         </MenuHandler>
                         <MenuList className='divide-y divide-slate-200'>
-                            <MenuItem onClick={() => handleSubmit('profile')}>Profile</MenuItem>
-                            <MenuItem onClick={() => handleSubmit('categories')}>Add Category</MenuItem>
-                            <MenuItem onClick={() => handleSubmit('createform')}>Createform</MenuItem>
-                            <MenuItem onClick={() => handleSubmit('dashboard')}>Dashboard</MenuItem>
-                            <MenuItem className='text-red-500' onClick={() => handleSubmit('login')}>Logout</MenuItem>
+                            <MenuItem onClick={() => { handleSubmit('profile') }}>Profile</MenuItem>
+                            <MenuItem onClick={() => { handleSubmit('categories') }}>Add Category</MenuItem>
+                            <MenuItem onClick={() => { handleSubmit('createform') }}>Createform</MenuItem>
+                            <MenuItem onClick={() => { handleSubmit('dashboard') }}>Dashboard</MenuItem>
+                            <MenuItem className='text-red-500' onClick={() => { handleSubmit('login') }}>Logout</MenuItem>
                         </MenuList>
                     </Menu>
                 </div>
             </div>
         </nav>
-    )
+  )
 }
 
 export default Header

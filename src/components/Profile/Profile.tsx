@@ -1,24 +1,21 @@
 import React, { useLayoutEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../../interface';
+import { useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import { type RootState } from '../../interface'
 
-type Props = {}
-
-const Profile = (props: Props) => {
-
-    const users = useSelector((state: RootState) => state.user?.userList);
-    const loggedInUser = sessionStorage.getItem('currentUser');
-    const user = users.find(user => user.email === loggedInUser)
-    const Navigate = useNavigate()
-    useLayoutEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
+const Profile: React.FC = () => {
+  const users = useSelector((state: RootState) => state.user?.userList)
+  const loggedInUser = sessionStorage.getItem('currentUser')
+  const user = users.find(user => user.email === loggedInUser)
+  const Navigate = useNavigate()
+  useLayoutEffect(() => {
+    if (sessionStorage.length === 0) {
+      Navigate('/login')
+    }
+  }, [Navigate])
   return (
-    user?
-    <div className='lg:flex flex-grow min-h-min w-screen '>
+    (user != null)
+      ? <div className='lg:flex flex-grow min-h-min w-screen '>
                     <div className="lg:w-1/5 py-3  bg-[#005ae6] flex items-center justify-center relative">
                         <div className="overflow-hidden flex items-center justify-center lg:absolute rounded-full  drop-shadow-2xl h-60 w-60 md:h-80 md:w-80 right-auto bottom-0 lg:bottom-auto lg:-right-40 ">
                             <img src={user.profilepicture as string} alt="" className='h-[100%] w-[100%]' />
@@ -36,8 +33,8 @@ const Profile = (props: Props) => {
                             </div>
                         </div>
                     </div>
-                </div>:
-                <div></div>
+                </div>
+      : <div></div>
   )
 }
 
