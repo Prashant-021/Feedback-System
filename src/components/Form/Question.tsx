@@ -32,7 +32,13 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
             case 'paragraph':
                 return <ParagraphComponent />
             case 'multipleChoice':
-                return <MultipleChoiceComponent />
+                return (
+                    <MultipleChoiceComponent
+                        onOptionChange={(value) => {
+                            handleOptionChange(value)
+                        }}
+                    />
+                )
             case 'checkboxes':
                 return (
                     <CheckboxesComponent
@@ -42,7 +48,13 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                     />
                 )
             case 'dropdown':
-                return <DropdownComponent />
+                return (
+                    <DropdownComponent
+                        onOptionChange={(value) => {
+                            handleOptionChange(value)
+                        }}
+                    />
+                )
             default:
                 return null
         }

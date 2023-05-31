@@ -79,6 +79,17 @@ const Createform: React.FC = () => {
             return component.contentValue
         })
     }
+
+    // useEffect(() => {
+    //     const saveTimer = setTimeout(() => {
+    //         handleSave()
+    //     }, 2000)
+
+    //     return () => {
+    //         clearTimeout(saveTimer)
+    //     }
+    // }, [createdComponents])
+
     const handleSave = (): void => {
         const updatedFormTemplate: IFormTemplate = {
             title: categoryHeaderRef.current.title,

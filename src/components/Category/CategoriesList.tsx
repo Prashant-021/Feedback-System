@@ -11,7 +11,6 @@ const CategoriesList: React.FC = () => {
     const TABLE_ROWS = useSelector(
         (state: RootState) => state.category.category
     )
-    console.log(TABLE_ROWS)
     const dispatch = useDispatch()
     return (
         <>

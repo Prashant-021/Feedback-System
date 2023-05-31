@@ -1,6 +1,6 @@
 import { Button, Checkbox, Input } from '@material-tailwind/react'
 import React, { useEffect, useState } from 'react'
-import { TrashIcon } from '@heroicons/react/24/solid'
+import { XMarkIcon } from '@heroicons/react/24/solid'
 import { type Ioption } from '../../../interface'
 
 interface Props {
@@ -57,7 +57,7 @@ const CheckboxesComponent: React.FC<Props> = ({ onOptionChange }) => {
                                 handleDelete(index)
                             }}
                         >
-                            <TrashIcon className="h-5 w-5" />
+                            <XMarkIcon className="text-black h-5 w-5" />
                         </Button>
                     </div>
                 ))}

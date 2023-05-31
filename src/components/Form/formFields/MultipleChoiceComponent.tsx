@@ -1,8 +1,12 @@
-import { Input, Radio } from '@material-tailwind/react'
-import React, { useState } from 'react'
+import { Button, Input, Radio } from '@material-tailwind/react'
+import React, { useEffect, useState } from 'react'
+import { XMarkIcon } from '@heroicons/react/24/solid'
 import { type Ioption } from '../../../interface'
 
-const MultipleChoiceComponent: React.FC = () => {
+interface Props {
+    onOptionChange: (value: Ioption[]) => void
+}
+const MultipleChoiceComponent: React.FC<Props> = ({ onOptionChange }) => {
     const [createdOption, setCreatedOption] = useState<Ioption[]>([])
     const addOption = (): void => {
         const newOption: Ioption = {
@@ -10,27 +14,50 @@ const MultipleChoiceComponent: React.FC = () => {
             optionValue: '',
         }
         setCreatedOption([...createdOption, newOption])
-        console.log(createdOption)
+    }
+    const handleChange = (): void => {
+        onOptionChange(createdOption)
+    }
+    const handleDelete = (index: number): void => {
+        const updatedOptions = [...createdOption]
+        updatedOptions.splice(index, 1)
+        setCreatedOption(updatedOptions)
+    }
+    useEffect(() => {
+        handleChange()
+    }, [createdOption])
+
+    const handleOptionValueChange = (index: number, value: string): void => {
+        const updatedOptions = [...createdOption]
+        updatedOptions[index].optionValue = value
+        setCreatedOption(updatedOptions)
     }
     return (
         <div>
             <div className="option flex w-[80%] flex-col items-start">
-                <div className="flex">
-                    <Radio id="html" name="type" disabled />
-                    <Input
-                        label=""
-                        variant="static"
-                        placeholder="Option 1"
-                    ></Input>
-                </div>
                 {createdOption.map((component, index) => (
                     <div key={component.id} className="flex">
                         <Radio id="html" name="type" disabled />
                         <Input
                             label=""
                             variant="static"
-                            placeholder={`Option ${index + 2}`}
+                            placeholder={`Option ${index + 1}`}
+                            onBlur={(event) => {
+                                handleOptionValueChange(
+                                    index,
+                                    event.target.value
+                                )
+                            }}
                         />
+                        <Button
+                            variant="text"
+                            className=" text-red-500 p-2 rounded-md float-right"
+                            onClick={() => {
+                                handleDelete(index)
+                            }}
+                        >
+                            <XMarkIcon className="text-black h-5 w-5" />
+                        </Button>
                     </div>
                 ))}
                 <button
