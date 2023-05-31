@@ -70,9 +70,11 @@ const Createform: React.FC = () => {
     const handleHeaderInfo = (formHead: {
         title: string
         description: string
+        categoru: string
     }): void => {
         categoryHeaderRef.current.title = formHead.title
         categoryHeaderRef.current.description = formHead.description
+        categoryHeaderRef.current.category = formHead.category
     }
     const getQuestions = (): IQuestion[] => {
         return createdComponents.map((component) => {
