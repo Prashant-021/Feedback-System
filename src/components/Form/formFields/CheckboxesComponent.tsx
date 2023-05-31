@@ -1,36 +1,75 @@
-import { Checkbox, Input } from '@material-tailwind/react'
-import React, { useState } from 'react'
-import { type option } from '../../../interface'
+import { Button, Checkbox, Input } from '@material-tailwind/react'
+import React, { useEffect, useState } from 'react'
+import { TrashIcon } from '@heroicons/react/24/solid'
+import { type Ioption } from '../../../interface'
 
-const CheckboxesComponent: React.FC = () => {
-  const [createdOption, setCreatedOption] = useState<option[]>([])
-  const addOption = (): void => {
-    const newOption: option = {
-      id: Date.now(),
-      optionValue: ''
-    }
-    setCreatedOption([...createdOption, newOption])
-    console.log(createdOption)
-  }
-  return (
-    <div>
-      <div className="option flex w-[80%] flex-col items-start">
-        <div className='flex '>
-          <Checkbox id="html" name="type" disabled />
-          <Input label='' variant='static' placeholder='Option 1'></Input>
-        </div>
-        {createdOption.map((component, index) =>
-          <div key={component.id} className='flex'>
-            <Checkbox id="html" name="type" disabled />
-            <Input label='' variant='static' placeholder={`Option ${index + 2}`} />
-          </div>
-        )
+interface Props {
+    onOptionChange: (value: Ioption[]) => void
+}
+const CheckboxesComponent: React.FC<Props> = ({ onOptionChange }) => {
+    const [createdOption, setCreatedOption] = useState<Ioption[]>([])
+    const addOption = (): void => {
+        const newOption: Ioption = {
+            id: Date.now(),
+            optionValue: '',
         }
-        <button className='w-18 ms-10 mt-4 text-blue-500' onClick={addOption}>Add options</button>
+        setCreatedOption([...createdOption, newOption])
+    }
+    const handleChange = (): void => {
+        onOptionChange(createdOption)
+    }
 
-      </div>
-    </div>
-  )
+    const handleDelete = (index: number): void => {
+        const updatedOptions = [...createdOption]
+        updatedOptions.splice(index, 1)
+        setCreatedOption(updatedOptions)
+    }
+    useEffect(() => {
+        handleChange()
+    }, [createdOption])
+
+    const handleOptionValueChange = (index: number, value: string): void => {
+        const updatedOptions = [...createdOption]
+        updatedOptions[index].optionValue = value
+        setCreatedOption(updatedOptions)
+    }
+    return (
+        <div>
+            <div className="option flex w-[80%] flex-col items-start">
+                {createdOption.map((component, index) => (
+                    <div key={component.id} className="flex">
+                        <Checkbox id="html" name="type" disabled />
+                        <Input
+                            label=""
+                            variant="static"
+                            placeholder={`Option ${index + 1}`}
+                            onBlur={(event) => {
+                                handleOptionValueChange(
+                                    index,
+                                    event.target.value
+                                )
+                            }}
+                        />
+                        <Button
+                            variant="text"
+                            className=" text-red-500 p-2 rounded-md float-right"
+                            onClick={() => {
+                                handleDelete(index)
+                            }}
+                        >
+                            <TrashIcon className="h-5 w-5" />
+                        </Button>
+                    </div>
+                ))}
+                <button
+                    className="w-18 ms-10 mt-4 text-blue-500"
+                    onClick={addOption}
+                >
+                    Add options
+                </button>
+            </div>
+        </div>
+    )
 }
 
 export default CheckboxesComponent
