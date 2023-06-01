@@ -19,6 +19,9 @@ export interface RootState {
     category: {
         category: ICategory[]
     }
+    form: {
+        form: IFormTemplate[]
+    }
 }
 
 export interface ComponentData {
@@ -27,7 +30,7 @@ export interface ComponentData {
 }
 
 export interface Ioption {
-    id: number
+    id: string
     optionValue: string
 }
 export interface IQuestion {
@@ -36,8 +39,10 @@ export interface IQuestion {
     options?: Ioption[]
 }
 export interface IFormTemplate {
+    id: string
     title: string
     description: string
+    categoryName: string
     questions: IQuestion[]
 }
 

@@ -2,36 +2,61 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@material-tailwind/react'
 import Question from './Question'
 import { TrashIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
+import FormHeader from './formFields/FormHeader'
+import { Link, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { addForm } from '../redux/slice/slice'
 import {
+    type RootState,
     type ComponentData,
     type IFormTemplate,
     type IQuestion,
 } from '../../interface'
-import FormHeader from './formFields/FormHeader'
-import { Link } from 'react-router-dom'
 
 const Createform: React.FC = () => {
+    const location = useLocation()
+    const { formId } = location.state
+    console.log(formId)
+    const formDetails = useSelector((state: RootState) => state.form.form)
+    const form = formDetails.find((form) => form.id === formId)
+    console.log(form)
     const bottomRef = useRef<HTMLDivElement>(null)
 
-    const categoryHeaderRef = useRef<{ title: string; description: string }>({
+    const categoryHeaderRef = useRef<{
+        title: string
+        description: string
+        categoryName: string
+    }>({
         title: 'Title',
         description: 'Description',
+        categoryName: 'Category',
     })
     const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
         []
     )
 
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
+        id: '',
         title: '',
         description: '',
+        categoryName: '',
         questions: [
             {
                 questionTitle: '',
                 type: '',
-                options: [{ id: 0, optionValue: '' }],
             },
         ],
     })
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
+        undefined
+    )
+
+    useEffect(() => {
+        return () => {
+            clearTimeout(timeoutRef.current)
+        }
+    }, [])
+
     const handleClick = (): void => {
         const newComponent: ComponentData = {
             id: Date.now(),
@@ -45,7 +70,7 @@ const Createform: React.FC = () => {
             newComponent,
         ])
 
-        setTimeout(
+        timeoutRef.current = setTimeout(
             () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
             10
         )
@@ -70,11 +95,11 @@ const Createform: React.FC = () => {
     const handleHeaderInfo = (formHead: {
         title: string
         description: string
-        categoru: string
+        categoryName: string
     }): void => {
         categoryHeaderRef.current.title = formHead.title
         categoryHeaderRef.current.description = formHead.description
-        categoryHeaderRef.current.category = formHead.category
+        categoryHeaderRef.current.categoryName = formHead.categoryName
     }
     const getQuestions = (): IQuestion[] => {
         return createdComponents.map((component) => {
@@ -92,16 +117,19 @@ const Createform: React.FC = () => {
     //     }
     // }, [createdComponents])
 
+    const dispatch = useDispatch()
     const handleSave = (): void => {
         const updatedFormTemplate: IFormTemplate = {
+            id: formId,
             title: categoryHeaderRef.current.title,
             description: categoryHeaderRef.current.description,
+            categoryName: categoryHeaderRef.current.categoryName,
             questions: getQuestions(),
         }
         setFormTemplate(updatedFormTemplate)
     }
     useEffect(() => {
-        console.log(formTemplate)
+        if (formTemplate.id !== '') dispatch(addForm(formTemplate))
     }, [formTemplate])
 
     return (
@@ -152,7 +180,7 @@ const Createform: React.FC = () => {
             </div>
             <div className="flex justify-center mb-2 rounded-md">
                 <Button
-                    className=" flex items-center  p-3 bg-white text-black"
+                    className=" flex items-center p-3 bg-white text-black"
                     onClick={handleClick}
                 >
                     <svg

@@ -1,6 +1,7 @@
 import { Button, Input, Radio } from '@material-tailwind/react'
 import React, { useEffect, useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
+import { nanoid } from '@reduxjs/toolkit'
 import { type Ioption } from '../../../interface'
 
 interface Props {
@@ -10,7 +11,7 @@ const MultipleChoiceComponent: React.FC<Props> = ({ onOptionChange }) => {
     const [createdOption, setCreatedOption] = useState<Ioption[]>([])
     const addOption = (): void => {
         const newOption: Ioption = {
-            id: Date.now(),
+            id: nanoid(),
             optionValue: '',
         }
         setCreatedOption([...createdOption, newOption])

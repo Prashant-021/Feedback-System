@@ -16,7 +16,7 @@ const Sidebar: React.FC = () => {
         sessionStorage.clear()
     }
     return (
-        <div className="w-[3.5rem] hover:w-[20rem] transition-width duration-300 overflow-hidden hidden sm:block  bg-white">
+        <div className=" w-[3.5rem] hover:w-[20rem] transition-width duration-300 overflow-hidden hidden sm:block  bg-white">
             <List className="group">
                 <ListItem
                     onClick={() => {

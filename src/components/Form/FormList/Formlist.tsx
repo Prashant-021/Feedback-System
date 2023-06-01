@@ -2,7 +2,12 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from '@heroicons/react/24/outline'
-import { PencilIcon, UserPlusIcon } from '@heroicons/react/24/solid'
+import {
+    PencilIcon,
+    DocumentPlusIcon,
+    LinkIcon,
+    TrashIcon,
+} from '@heroicons/react/24/solid'
 import {
     Card,
     CardHeader,
@@ -10,64 +15,22 @@ import {
     Typography,
     Button,
     CardBody,
-    Chip,
-    CardFooter,
-    Avatar,
-    IconButton,
     Tooltip,
+    IconButton,
 } from '@material-tailwind/react'
+import { useDispatch, useSelector } from 'react-redux'
+import { type RootState } from '../../../interface'
+import { nanoid } from '@reduxjs/toolkit'
 import { Link } from 'react-router-dom'
+import { getDate } from '../../../utils'
+import { deleteForm } from '../../redux/slice/slice'
 
-const TABLE_HEAD = ['Member', 'Function', 'Status', 'Employed', '']
+const TABLE_HEAD = ['Title', 'Category', 'Created on', 'Actions']
+const date = new Date()
 
-const TABLE_ROWS = [
-    {
-        img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-3.jpg',
-        name: 'John Michael',
-        email: 'john@creative-tim.com',
-        job: 'Manager',
-        org: 'Organization',
-        online: true,
-        date: '23/04/18',
-    },
-    {
-        img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-2.jpg',
-        name: 'Alexa Liras',
-        email: 'alexa@creative-tim.com',
-        job: 'Programator',
-        org: 'Developer',
-        online: false,
-        date: '23/04/18',
-    },
-    {
-        img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-1.jpg',
-        name: 'Laurent Perrier',
-        email: 'laurent@creative-tim.com',
-        job: 'Executive',
-        org: 'Projects',
-        online: false,
-        date: '19/09/17',
-    },
-    {
-        img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-4.jpg',
-        name: 'Michael Levi',
-        email: 'michael@creative-tim.com',
-        job: 'Programator',
-        org: 'Developer',
-        online: true,
-        date: '24/12/08',
-    },
-    {
-        img: 'https://demos.creative-tim.com/test/corporate-ui-dashboard/assets/img/team-5.jpg',
-        name: 'Richard Gran',
-        email: 'richard@creative-tim.com',
-        job: 'Manager',
-        org: 'Executive',
-        online: false,
-        date: '04/10/21',
-    },
-]
 const FormList: React.FC = () => {
+    const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
+    const dispatch = useDispatch()
     return (
         <div className="flex-grow w-full flex items-center justify-center">
             <Card className=" w-full sm:w-[60%]">
@@ -96,13 +59,17 @@ const FormList: React.FC = () => {
                             >
                                 view all
                             </Button>
-                            <Link to={'/createform'}>
+                            <Link
+                                to={'/forms/createform'}
+                                state={{ formId: nanoid() }}
+                            >
                                 <Button
                                     className="flex items-center gap-3"
                                     color="blue"
                                     size="sm"
+                                    // onClick={() => <Createform formId={nanoid()} />}
                                 >
-                                    <UserPlusIcon
+                                    <DocumentPlusIcon
                                         strokeWidth={2}
                                         className="h-4 w-4"
                                     />{' '}
@@ -152,15 +119,7 @@ const FormList: React.FC = () => {
                         <tbody>
                             {TABLE_ROWS.map(
                                 (
-                                    {
-                                        img,
-                                        name,
-                                        email,
-                                        job,
-                                        org,
-                                        online,
-                                        date,
-                                    },
+                                    { title, categoryName, description, id },
                                     index
                                 ) => {
                                     const isLast =
@@ -170,28 +129,23 @@ const FormList: React.FC = () => {
                                         : 'p-4 border-b border-blue-gray-50'
 
                                     return (
-                                        <tr key={name}>
+                                        <tr key={id}>
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
-                                                    <Avatar
-                                                        src={img}
-                                                        alt={name}
-                                                        size="sm"
-                                                    />
                                                     <div className="flex flex-col">
                                                         <Typography
                                                             variant="small"
                                                             color="blue-gray"
                                                             className="font-normal"
                                                         >
-                                                            {name}
+                                                            {title}
                                                         </Typography>
                                                         <Typography
                                                             variant="small"
                                                             color="blue-gray"
                                                             className="font-normal opacity-70"
                                                         >
-                                                            {email}
+                                                            {description}
                                                         </Typography>
                                                     </div>
                                                 </div>
@@ -203,33 +157,8 @@ const FormList: React.FC = () => {
                                                         color="blue-gray"
                                                         className="font-normal"
                                                     >
-                                                        {job}
+                                                        {categoryName}
                                                     </Typography>
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal opacity-70"
-                                                    >
-                                                        {org}
-                                                    </Typography>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <div className="w-max">
-                                                    <Chip
-                                                        variant="ghost"
-                                                        size="sm"
-                                                        value={
-                                                            online
-                                                                ? 'online'
-                                                                : 'offline'
-                                                        }
-                                                        color={
-                                                            online
-                                                                ? 'green'
-                                                                : 'blue-gray'
-                                                        }
-                                                    />
                                                 </div>
                                             </td>
                                             <td className={classes}>
@@ -238,16 +167,42 @@ const FormList: React.FC = () => {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {date}
+                                                    {getDate(date)}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
-                                                <Tooltip content="Edit User">
+                                                <Tooltip content="Edit Form">
+                                                    <Link
+                                                        to={'/forms/createform'}
+                                                        state={{ formId: id }}
+                                                    >
+                                                        <IconButton
+                                                            variant="text"
+                                                            color="blue-gray"
+                                                        >
+                                                            <PencilIcon className="h-4 w-4" />
+                                                        </IconButton>
+                                                    </Link>
+                                                </Tooltip>
+                                                <Tooltip content="Generate Link">
                                                     <IconButton
                                                         variant="text"
-                                                        color="blue-gray"
+                                                        color="blue"
                                                     >
-                                                        <PencilIcon className="h-4 w-4" />
+                                                        <LinkIcon className="h-4 w-4" />
+                                                    </IconButton>
+                                                </Tooltip>
+                                                <Tooltip content="Delete">
+                                                    <IconButton
+                                                        variant="text"
+                                                        color="red"
+                                                        onClick={() =>
+                                                            dispatch(
+                                                                deleteForm(id)
+                                                            )
+                                                        }
+                                                    >
+                                                        <TrashIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip>
                                             </td>
@@ -258,7 +213,7 @@ const FormList: React.FC = () => {
                         </tbody>
                     </table>
                 </CardBody>
-                <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
+                {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                     <Typography
                         variant="small"
                         color="blue-gray"
@@ -274,7 +229,7 @@ const FormList: React.FC = () => {
                             Next
                         </Button>
                     </div>
-                </CardFooter>
+                </CardFooter> */}
             </Card>
         </div>
     )

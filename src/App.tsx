@@ -10,8 +10,8 @@ import Createform from './components/Form/Createform'
 import Header from './components/Header/Header'
 import Profile from './components/Profile/Profile'
 import Sidebar from './components/Sidebar/Sidebar'
-import Addcategory from './components/Category/CategoriesList'
 import DefaultSpeedDial from './components/Sidebar/Speeddial'
+import CategoriesList from './components/Category/CategoriesList'
 
 const App: React.FC = () => {
     const title = useLocation()
@@ -37,9 +37,9 @@ const App: React.FC = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/categories" element={<Addcategory />} />
+                    <Route path="/categories" element={<CategoriesList />} />
                     <Route path="/forms" element={<FormList />} />
-                    <Route path="/createform" element={<Createform />} />
+                    <Route path="/forms/createform" element={<Createform />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>

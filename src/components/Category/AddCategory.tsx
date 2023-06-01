@@ -11,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { addCategory } from '../redux/slice/slice'
 import type { RootState } from '../../interface'
+import { getDate } from '../../utils'
 
 const AddCategory: React.FC = () => {
     const date = new Date()
@@ -19,12 +20,17 @@ const AddCategory: React.FC = () => {
     const [categoryDescription, setCategoryDescription] = useState('')
 
     const handleOpen = (): void => {
+        clearInputs()
         setOpen(!open)
     }
     const dispatch = useDispatch()
     const storedCategory = useSelector(
         (state: RootState) => state.category.category
     )
+    const clearInputs = (): void => {
+        setCategoryName('')
+        setCategoryDescription('')
+    }
     const handleSave = (): void => {
         if (categoryName !== '' && categoryDescription !== '') {
             const categoryExist = storedCategory.find(
@@ -42,12 +48,8 @@ const AddCategory: React.FC = () => {
                 )
             }
         }
+        clearInputs()
         setOpen(!open)
-    }
-    const getDate = (dateTime: Date): string => {
-        return `${dateTime.getDate()}-${
-            dateTime.getMonth() + 1
-        }-${dateTime.getFullYear()}`
     }
 
     return (

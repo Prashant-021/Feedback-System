@@ -38,9 +38,9 @@ const CategoriesList: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {TABLE_ROWS.map((category) => (
+                            {TABLE_ROWS.map((category, index) => (
                                 <tr
-                                    key={category.title}
+                                    key={index}
                                     className="even:bg-blue-gray-50/50"
                                 >
                                     <td className="p-4">
@@ -71,17 +71,18 @@ const CategoriesList: React.FC = () => {
                                         </Typography>
                                     </td>
                                     <td className="p-4 flex justify-evenly">
-                                        <Typography
-                                            variant="small"
+                                        <Button
+                                            variant="text"
                                             color="blue"
+                                            size="sm"
                                             className="font-medium"
-                                            onClick={() => <AddCategory />}
                                         >
                                             Edit
-                                        </Typography>
+                                        </Button>
                                         <Button
                                             variant="text"
                                             color="red"
+                                            size="sm"
                                             className="font-medium"
                                             onClick={() =>
                                                 dispatch(

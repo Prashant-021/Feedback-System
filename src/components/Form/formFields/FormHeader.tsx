@@ -7,18 +7,18 @@ interface Props {
     headerInfo: (formHead: {
         title: string
         description: string
-        category: string
+        categoryName: string
     }) => void
 }
 
-const FormHeader: FC<Props> = ({ headerInfo }: any) => {
-    const [title, setTitle] = useState<string>('')
+const FormHeader: FC<Props> = ({ headerInfo }) => {
+    const [title, setTitle] = useState<string>('Untitled Form')
     const [description, setDescription] = useState<string>('')
+    const [categoryType, setCategoryType] = useState<string>('')
     const categories = useSelector(
         (state: RootState) => state.category.category
     )
-    console.log(categories)
-    headerInfo({ title, description, categoryName })
+    headerInfo({ title, description, categoryName: categoryType })
 
     return (
         <div className="titleSection rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit ">
@@ -43,9 +43,16 @@ const FormHeader: FC<Props> = ({ headerInfo }: any) => {
                 }}
             />
             <div className="mt-6 ">
-                <Select label="Select Category">
+                <Select
+                    label="Select Category"
+                    onChange={(event) => {
+                        setCategoryType(event as string)
+                    }}
+                >
                     {categories.map((category) => (
-                        <Option key={category.title}>{category.title}</Option>
+                        <Option key={category.title} value={category.title}>
+                            {category.title}
+                        </Option>
                     ))}
                 </Select>
             </div>
