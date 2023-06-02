@@ -89,10 +89,10 @@ const FormList: React.FC = () => {
                         </div>
                     </div>
                 </CardHeader>
-                <CardBody className="overflow-scroll px-0">
-                    <table className="mt-4 w-full min-w-max table-auto text-left">
+                <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
+                    <table className=" w-full min-w-max table-auto text-left">
                         <thead>
-                            <tr>
+                            <tr className="sticky top-0">
                                 {TABLE_HEAD.map((head, index) => (
                                     <th
                                         key={head}
@@ -116,7 +116,7 @@ const FormList: React.FC = () => {
                                 ))}
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="">
                             {TABLE_ROWS.map(
                                 (
                                     { title, categoryName, description, id },

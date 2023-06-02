@@ -48,6 +48,7 @@ const categorySlice = createSlice({
     reducers: {
         addCategory: (state, action: PayloadAction<ICategory>) => {
             const newCategory = action.payload
+            console.log(newCategory)
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
             localStorage.setItem('Category', JSON.stringify(state.category))
@@ -57,6 +58,21 @@ const categorySlice = createSlice({
             const updatedCategory = state.category.filter(
                 (category) => category.title !== titleToDelete
             )
+            state.category = updatedCategory
+            localStorage.setItem('Category', JSON.stringify(state.category))
+        },
+        updateCategory: (state, action: PayloadAction<ICategory>) => {
+            const updatedCategory = state.category.map((category) => {
+                if (category.id === action.payload.id) {
+                    return {
+                        ...category,
+                        title: action.payload.title,
+                        description: action.payload.description,
+                    }
+                }
+                return category
+            })
+
             state.category = updatedCategory
             localStorage.setItem('Category', JSON.stringify(state.category))
         },
@@ -96,7 +112,8 @@ const formSlice = createSlice({
 })
 
 export const { addUser } = userSlice.actions
-export const { addCategory, deleteCategory } = categorySlice.actions
+export const { addCategory, deleteCategory, updateCategory } =
+    categorySlice.actions
 export const { addForm, deleteForm } = formSlice.actions
 
 export const userReducer = userSlice.reducer

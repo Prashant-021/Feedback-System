@@ -1,27 +1,52 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Typography } from '@material-tailwind/react'
 import AddCategory from './AddCategory'
-import type { RootState } from '../../interface'
+import type { ICategory, RootState } from '../../interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCategory } from '../redux/slice/slice'
 
-const TABLE_HEAD = ['Category Name', 'Description', 'Created On', '']
+const TABLE_HEAD = ['Category Name', 'Description', 'Last Modified', '']
 
 const CategoriesList: React.FC = () => {
     const TABLE_ROWS = useSelector(
         (state: RootState) => state.category.category
     )
     const dispatch = useDispatch()
+    const [open, setOpen] = useState(false)
+    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
+        null
+    )
+
+    const handleOpen = (): void => {
+        setOpen(!open)
+    }
+
+    const handleEdit = (category: ICategory): void => {
+        setSelectedCategory(category)
+        handleOpen()
+    }
     return (
         <>
             <div className="w-full flex flex-col justify-center items-center overflow-scroll">
                 <div>
-                    <AddCategory />
+                    <Button
+                        className=""
+                        onClick={handleOpen}
+                        variant="gradient"
+                    >
+                        Add Category
+                    </Button>
+                    <AddCategory
+                        open={open}
+                        handleOpen={handleOpen}
+                        editCategory={selectedCategory}
+                    />
                 </div>
-                <Card className="w-3/5 mt-4">
-                    <table className="w-full min-w-max table-auto text-left">
-                        <thead>
-                            <tr>
+
+                <Card className="w-3/5 mt-4 overflow-scroll h-4/5">
+                    <table className="w-full min-w-max table-auto text-left ">
+                        <thead className="">
+                            <tr className="top-0 w-full sticky">
                                 {TABLE_HEAD.map((head) => (
                                     <th
                                         key={head}
@@ -76,6 +101,9 @@ const CategoriesList: React.FC = () => {
                                             color="blue"
                                             size="sm"
                                             className="font-medium"
+                                            onClick={() => {
+                                                handleEdit(category)
+                                            }}
                                         >
                                             Edit
                                         </Button>

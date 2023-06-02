@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import {
     Dialog,
     DialogHeader,
@@ -9,54 +9,86 @@ import {
     Textarea,
 } from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
-import { addCategory } from '../redux/slice/slice'
-import type { RootState } from '../../interface'
+import { addCategory, updateCategory } from '../redux/slice/slice'
+import type { ICategory, RootState } from '../../interface'
 import { getDate } from '../../utils'
+import { nanoid } from '@reduxjs/toolkit'
 
-const AddCategory: React.FC = () => {
+interface Props {
+    open: boolean
+    handleOpen: () => void
+    editCategory: ICategory | null
+}
+
+const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
     const date = new Date()
-    const [open, setOpen] = useState(false)
+    const [categoryId, setCategoryId] = useState<string>('')
     const [categoryName, setCategoryName] = useState('')
     const [categoryDescription, setCategoryDescription] = useState('')
-
-    const handleOpen = (): void => {
-        clearInputs()
-        setOpen(!open)
-    }
+    const [isEdit, setIsEdit] = useState(false)
     const dispatch = useDispatch()
     const storedCategory = useSelector(
         (state: RootState) => state.category.category
     )
+
+    useEffect(() => {
+        if (editCategory != null) {
+            setIsEdit(true)
+            setCategoryId(editCategory.id)
+            setCategoryName(editCategory.title)
+            setCategoryDescription(editCategory.description)
+        } else {
+            setIsEdit(false)
+            setCategoryName('')
+            setCategoryDescription('')
+        }
+    }, [editCategory])
+
     const clearInputs = (): void => {
         setCategoryName('')
         setCategoryDescription('')
     }
+
     const handleSave = (): void => {
         if (categoryName !== '' && categoryDescription !== '') {
             const categoryExist = storedCategory.find(
                 (c) => c.title === categoryName
             )
-            if (categoryExist !== undefined) {
-                alert('Category Already exists')
-            } else {
+
+            if (isEdit) {
                 dispatch(
-                    addCategory({
+                    updateCategory({
+                        id: categoryId,
                         title: categoryName,
                         description: categoryDescription,
                         createdDate: getDate(date),
                     })
                 )
+            } else {
+                if (categoryExist !== undefined) {
+                    alert('Category Already exists')
+                } else {
+                    dispatch(
+                        addCategory({
+                            id: nanoid(),
+                            title: categoryName,
+                            description: categoryDescription,
+                            createdDate: getDate(date),
+                        })
+                    )
+                }
             }
         }
+
         clearInputs()
-        setOpen(!open)
+        handleOpen()
     }
 
     return (
         <Fragment>
-            <Button className="" onClick={handleOpen} variant="gradient">
+            {/* <Button className="" onClick={handleOpen} variant="gradient">
                 Add Category
-            </Button>
+            </Button> */}
             <Dialog open={open} handler={handleOpen}>
                 <DialogHeader>Add Category</DialogHeader>
                 <DialogBody className="flex justify-center " divider>

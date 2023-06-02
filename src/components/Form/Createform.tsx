@@ -22,6 +22,10 @@ const Createform: React.FC = () => {
         console.log(formId)
         const form = formDetails.find((form) => form.id === formId)
         console.log(form)
+        return () => {
+            console.log('cleared')
+            clearTimeout(timeoutRef.current)
+        }
     }, [])
     const bottomRef = useRef<HTMLDivElement>(null)
     const categoryHeaderRef = useRef<{
@@ -52,12 +56,6 @@ const Createform: React.FC = () => {
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
     )
-
-    useEffect(() => {
-        return () => {
-            clearTimeout(timeoutRef.current)
-        }
-    }, [])
 
     const handleClick = (): void => {
         const newComponent: ComponentData = {
