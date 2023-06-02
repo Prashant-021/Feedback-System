@@ -16,12 +16,14 @@ import {
 const Createform: React.FC = () => {
     const location = useLocation()
     const { formId } = location.state
-    console.log(formId)
     const formDetails = useSelector((state: RootState) => state.form.form)
-    const form = formDetails.find((form) => form.id === formId)
-    console.log(form)
-    const bottomRef = useRef<HTMLDivElement>(null)
 
+    useEffect(() => {
+        console.log(formId)
+        const form = formDetails.find((form) => form.id === formId)
+        console.log(form)
+    }, [])
+    const bottomRef = useRef<HTMLDivElement>(null)
     const categoryHeaderRef = useRef<{
         title: string
         description: string
