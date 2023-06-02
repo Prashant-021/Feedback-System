@@ -15,6 +15,9 @@ interface Props {
 const Question: React.FC<Props> = ({ onChange, value }) => {
     const [question, setQuestion] = useState<IQuestion>(value)
     useEffect(() => {
+        // if (value.type === 'multipleChoice) {
+        //     handleOptionChange(value.options)
+        // }
         onChange(question)
     }, [question])
 

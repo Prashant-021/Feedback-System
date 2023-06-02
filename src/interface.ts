@@ -24,8 +24,14 @@ export interface RootState {
     }
 }
 
+export interface IFormHeader {
+    title: string
+    description: string
+    categoryName: string
+}
+
 export interface ComponentData {
-    id: number
+    id: string
     contentValue: IQuestion
 }
 

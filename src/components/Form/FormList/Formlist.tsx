@@ -25,7 +25,7 @@ import { Link } from 'react-router-dom'
 import { getDate } from '../../../utils'
 import { deleteForm } from '../../redux/slice/slice'
 
-const TABLE_HEAD = ['Title', 'Category', 'Created on', 'Actions']
+const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
 const date = new Date()
 
 const FormList: React.FC = () => {
@@ -67,7 +67,6 @@ const FormList: React.FC = () => {
                                     className="flex items-center gap-3"
                                     color="blue"
                                     size="sm"
-                                    // onClick={() => <Createform formId={nanoid()} />}
                                 >
                                     <DocumentPlusIcon
                                         strokeWidth={2}
@@ -118,10 +117,7 @@ const FormList: React.FC = () => {
                         </thead>
                         <tbody className="">
                             {TABLE_ROWS.map(
-                                (
-                                    { title, categoryName, description, id },
-                                    index
-                                ) => {
+                                ({ title, categoryName, id }, index) => {
                                     const isLast =
                                         index === TABLE_ROWS.length - 1
                                     const classes = isLast
@@ -139,13 +135,6 @@ const FormList: React.FC = () => {
                                                             className="font-normal"
                                                         >
                                                             {title}
-                                                        </Typography>
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-normal opacity-70"
-                                                        >
-                                                            {description}
                                                         </Typography>
                                                     </div>
                                                 </div>
@@ -213,23 +202,6 @@ const FormList: React.FC = () => {
                         </tbody>
                     </table>
                 </CardBody>
-                {/* <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
-                    <Typography
-                        variant="small"
-                        color="blue-gray"
-                        className="font-normal"
-                    >
-                        Page 1 of 10
-                    </Typography>
-                    <div className="flex gap-2">
-                        <Button variant="outlined" color="blue-gray" size="sm">
-                            Previous
-                        </Button>
-                        <Button variant="outlined" color="blue-gray" size="sm">
-                            Next
-                        </Button>
-                    </div>
-                </CardFooter> */}
             </Card>
         </div>
     )

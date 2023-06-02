@@ -12,34 +12,46 @@ import {
     type IFormTemplate,
     type IQuestion,
 } from '../../interface'
+import { nanoid } from '@reduxjs/toolkit'
 
 const Createform: React.FC = () => {
     const location = useLocation()
     const { formId } = location.state
-    const formDetails = useSelector((state: RootState) => state.form.form)
-
-    useEffect(() => {
-        console.log(formId)
-        const form = formDetails.find((form) => form.id === formId)
-        console.log(form)
-        return () => {
-            console.log('cleared')
-            clearTimeout(timeoutRef.current)
-        }
-    }, [])
     const bottomRef = useRef<HTMLDivElement>(null)
+
+    const savedForm = useSelector((state: RootState) =>
+        state.form.form.find((form) => form.id === formId)
+    )
+
     const categoryHeaderRef = useRef<{
         title: string
         description: string
         categoryName: string
     }>({
-        title: 'Title',
-        description: 'Description',
-        categoryName: 'Category',
+        title: savedForm != null ? savedForm.title : 'Title',
+        description: savedForm != null ? savedForm.description : 'Description',
+        categoryName: savedForm != null ? savedForm.categoryName : 'Category',
     })
     const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
-        []
+        savedForm != null
+            ? savedForm.questions.map((question) => ({
+                  id: nanoid(),
+                  contentValue: question,
+              }))
+            : []
     )
+
+    useEffect(() => {
+        if (savedForm != null) {
+            setCreatedComponents(
+                savedForm.questions.map((question) => ({
+                    id: nanoid(),
+                    contentValue: question,
+                }))
+            )
+            setFormTemplate(savedForm)
+        }
+    }, [savedForm, formId])
 
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: '',
@@ -59,7 +71,7 @@ const Createform: React.FC = () => {
 
     const handleClick = (): void => {
         const newComponent: ComponentData = {
-            id: Date.now(),
+            id: nanoid(),
             contentValue: {
                 questionTitle: '',
                 type: '',
@@ -107,16 +119,6 @@ const Createform: React.FC = () => {
         })
     }
 
-    // useEffect(() => {
-    //     const saveTimer = setTimeout(() => {
-    //         handleSave()
-    //     }, 2000)
-
-    //     return () => {
-    //         clearTimeout(saveTimer)
-    //     }
-    // }, [createdComponents])
-
     const dispatch = useDispatch()
     const handleSave = (): void => {
         const updatedFormTemplate: IFormTemplate = {
@@ -131,7 +133,7 @@ const Createform: React.FC = () => {
     useEffect(() => {
         if (formTemplate.id !== '') dispatch(addForm(formTemplate))
     }, [formTemplate])
-
+    console.log(createdComponents)
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
@@ -148,7 +150,15 @@ const Createform: React.FC = () => {
                 id="questionList"
                 className="w-[90%] md:w-[70%] flex lg:flex flex-grow flex-col h-[60vh] overflow-y-scroll  no-scrollbar  gap-4 relative"
             >
-                <FormHeader headerInfo={handleHeaderInfo} />
+                <FormHeader
+                    headerInfo={handleHeaderInfo}
+                    savedData={{
+                        title: savedForm?.title ?? 'Untitled Form',
+                        description:
+                            savedForm?.description ?? 'Form description',
+                        categoryName: savedForm?.categoryName ?? 'category',
+                    }}
+                />
                 {createdComponents.map((component, index) => {
                     return (
                         <div

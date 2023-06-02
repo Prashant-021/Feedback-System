@@ -113,7 +113,10 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                     <Button
                         variant="text"
                         color="red"
-                        onClick={handleOpen}
+                        onClick={() => {
+                            clearInputs()
+                            handleOpen()
+                        }}
                         className="mr-1"
                     >
                         <span>Cancel</span>

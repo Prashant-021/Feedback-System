@@ -3,11 +3,15 @@ import React, { useEffect, useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { nanoid } from '@reduxjs/toolkit'
 import { type Ioption } from '../../../interface'
+import { useLocation } from 'react-router-dom'
 
 interface Props {
     onOptionChange: (value: Ioption[]) => void
 }
 const MultipleChoiceComponent: React.FC<Props> = ({ onOptionChange }) => {
+    const location = useLocation()
+    const { formId } = location.state
+    console.log(formId)
     const [createdOption, setCreatedOption] = useState<Ioption[]>([])
     const addOption = (): void => {
         const newOption: Ioption = {

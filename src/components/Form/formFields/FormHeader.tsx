@@ -1,20 +1,21 @@
 import { Input, Option, Select } from '@material-tailwind/react'
 import React, { type FC, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { type RootState } from '../../../interface'
+import { type IFormHeader, type RootState } from '../../../interface'
 
 interface Props {
-    headerInfo: (formHead: {
-        title: string
-        description: string
-        categoryName: string
-    }) => void
+    headerInfo: (formHead: IFormHeader) => void
+    savedData: IFormHeader
 }
 
-const FormHeader: FC<Props> = ({ headerInfo }) => {
-    const [title, setTitle] = useState<string>('Untitled Form')
-    const [description, setDescription] = useState<string>('')
-    const [categoryType, setCategoryType] = useState<string>('')
+const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
+    const [title, setTitle] = useState<string>(savedData.title)
+    const [description, setDescription] = useState<string>(
+        savedData.description
+    )
+    const [categoryType, setCategoryType] = useState<string>(
+        savedData.categoryName
+    )
     const categories = useSelector(
         (state: RootState) => state.category.category
     )
@@ -45,6 +46,7 @@ const FormHeader: FC<Props> = ({ headerInfo }) => {
             <div className="mt-6 ">
                 <Select
                     label="Select Category"
+                    value={categoryType}
                     onChange={(event) => {
                         setCategoryType(event as string)
                     }}
