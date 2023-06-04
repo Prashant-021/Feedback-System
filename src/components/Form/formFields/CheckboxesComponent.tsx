@@ -6,9 +6,15 @@ import { nanoid } from '@reduxjs/toolkit'
 
 interface Props {
     onOptionChange: (value: Ioption[]) => void
+    optionsValue: Ioption[]
 }
-const CheckboxesComponent: React.FC<Props> = ({ onOptionChange }) => {
-    const [createdOption, setCreatedOption] = useState<Ioption[]>([])
+const CheckboxesComponent: React.FC<Props> = ({
+    onOptionChange,
+    optionsValue,
+}) => {
+    const [createdOption, setCreatedOption] = useState<Ioption[]>(
+        optionsValue.map((option) => ({ ...option }))
+    )
     const addOption = (): void => {
         const newOption: Ioption = {
             id: nanoid(),
@@ -43,6 +49,7 @@ const CheckboxesComponent: React.FC<Props> = ({ onOptionChange }) => {
                         <Input
                             label=""
                             variant="static"
+                            defaultValue={component.optionValue}
                             placeholder={`Option ${index + 1}`}
                             onBlur={(event) => {
                                 handleOptionValueChange(

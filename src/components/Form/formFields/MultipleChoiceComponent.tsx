@@ -3,16 +3,17 @@ import React, { useEffect, useState } from 'react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { nanoid } from '@reduxjs/toolkit'
 import { type Ioption } from '../../../interface'
-import { useLocation } from 'react-router-dom'
-
 interface Props {
     onOptionChange: (value: Ioption[]) => void
+    optionsValue: Ioption[]
 }
-const MultipleChoiceComponent: React.FC<Props> = ({ onOptionChange }) => {
-    const location = useLocation()
-    const { formId } = location.state
-    console.log(formId)
-    const [createdOption, setCreatedOption] = useState<Ioption[]>([])
+const MultipleChoiceComponent: React.FC<Props> = ({
+    onOptionChange,
+    optionsValue,
+}) => {
+    const [createdOption, setCreatedOption] = useState<Ioption[]>(
+        optionsValue.map((option) => ({ ...option }))
+    )
     const addOption = (): void => {
         const newOption: Ioption = {
             id: nanoid(),
@@ -47,6 +48,7 @@ const MultipleChoiceComponent: React.FC<Props> = ({ onOptionChange }) => {
                             label=""
                             variant="static"
                             placeholder={`Option ${index + 1}`}
+                            defaultValue={component.optionValue}
                             onBlur={(event) => {
                                 handleOptionValueChange(
                                     index,

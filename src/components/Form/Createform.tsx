@@ -133,7 +133,6 @@ const Createform: React.FC = () => {
     useEffect(() => {
         if (formTemplate.id !== '') dispatch(addForm(formTemplate))
     }, [formTemplate])
-    console.log(createdComponents)
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">

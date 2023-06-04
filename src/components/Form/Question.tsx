@@ -38,8 +38,9 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                 return (
                     <MultipleChoiceComponent
                         onOptionChange={(value) => {
-                            handleOptionChange(value)
-                        }}
+                            handleOptionChange(value) 
+                        }} 
+                        optionsValue={value.options ?? []}
                     />
                 )
             case 'checkboxes':
@@ -48,6 +49,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                         onOptionChange={(value) => {
                             handleOptionChange(value)
                         }}
+                        optionsValue={value.options ?? []}
                     />
                 )
             case 'dropdown':
@@ -56,6 +58,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                         onOptionChange={(value) => {
                             handleOptionChange(value)
                         }}
+                        optionsValue={value.options ?? []}
                     />
                 )
             default:
