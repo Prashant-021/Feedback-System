@@ -50,45 +50,47 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
     }
 
     const handleSave = (): void => {
-        if (categoryName !== '' && categoryDescription !== '') {
-            const categoryExist = storedCategory.find(
-                (c) => c.title === categoryName
-            )
-
-            if (isEdit) {
-                dispatch(
-                    updateCategory({
-                        id: categoryId,
-                        title: categoryName,
-                        description: categoryDescription,
-                        createdDate: getDate(date),
-                    })
-                )
+        if (categoryName === '') {
+            alert('Please enter a category name')
+        } else {
+            if (categoryDescription === '') {
+                alert('Please enter a category description')
             } else {
-                if (categoryExist !== undefined) {
-                    alert('Category Already exists')
-                } else {
+                const categoryExist = storedCategory.find(
+                    (c) => c.title === categoryName
+                )
+
+                if (isEdit) {
                     dispatch(
-                        addCategory({
-                            id: nanoid(),
+                        updateCategory({
+                            id: categoryId,
                             title: categoryName,
                             description: categoryDescription,
                             createdDate: getDate(date),
                         })
                     )
+                } else {
+                    if (categoryExist !== undefined) {
+                        alert('Category Already exists')
+                    } else {
+                        dispatch(
+                            addCategory({
+                                id: nanoid(),
+                                title: categoryName,
+                                description: categoryDescription,
+                                createdDate: getDate(date),
+                            })
+                        )
+                    }
                 }
+                clearInputs()
+                handleOpen()
             }
         }
-
-        clearInputs()
-        handleOpen()
     }
 
     return (
         <Fragment>
-            {/* <Button className="" onClick={handleOpen} variant="gradient">
-                Add Category
-            </Button> */}
             <Dialog open={open} handler={handleOpen}>
                 <DialogHeader>Add Category</DialogHeader>
                 <DialogBody className="flex justify-center " divider>

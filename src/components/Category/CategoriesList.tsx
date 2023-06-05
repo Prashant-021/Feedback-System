@@ -5,7 +5,7 @@ import type { ICategory, RootState } from '../../interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteCategory } from '../redux/slice/slice'
 
-const TABLE_HEAD = ['Category Name', 'Description', 'Last Modified', '']
+const TABLE_HEAD = ['Category Name', 'Description', 'Created On', '']
 
 const CategoriesList: React.FC = () => {
     const TABLE_ROWS = useSelector(

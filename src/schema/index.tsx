@@ -42,3 +42,8 @@ export const LoginSchema = yup.object().shape({
     Email: yup.string().email().required('Please enter your email'),
     password: yup.string().required('Please enter your password'),
 })
+
+export const CategorySchema = yup.object().shape({
+    title: yup.string().required('Please enter Category Title'),
+    desctiption: yup.string().required('Please enter Category Description'),
+})

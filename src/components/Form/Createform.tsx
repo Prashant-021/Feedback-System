@@ -62,6 +62,7 @@ const Createform: React.FC = () => {
             {
                 questionTitle: '',
                 type: '',
+                required: false,
             },
         ],
     })
@@ -75,6 +76,7 @@ const Createform: React.FC = () => {
             contentValue: {
                 questionTitle: '',
                 type: '',
+                required: false,
             },
         }
         setCreatedComponents((prevComponents) => [
@@ -100,6 +102,7 @@ const Createform: React.FC = () => {
             questionTitle: value.questionTitle,
             type: value.type,
             options: value.options,
+            required: value.required,
         }
         setCreatedComponents(updatedComponents)
     }

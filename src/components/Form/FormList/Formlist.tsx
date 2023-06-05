@@ -161,22 +161,32 @@ const FormList: React.FC = () => {
                                             </td>
                                             <td className={classes}>
                                                 <Tooltip content="Edit Form">
-                                                    <Link
-                                                        to={'/forms/createform'}
-                                                        state={{ formId: id }}
+                                                    <IconButton
+                                                        variant="text"
+                                                        color="blue-gray"
                                                     >
-                                                        <IconButton
-                                                            variant="text"
-                                                            color="blue-gray"
+                                                        <Link
+                                                            to={
+                                                                '/forms/createform'
+                                                            }
+                                                            state={{
+                                                                formId: id,
+                                                            }}
                                                         >
                                                             <PencilIcon className="h-4 w-4" />
-                                                        </IconButton>
-                                                    </Link>
+                                                        </Link>
+                                                    </IconButton>
                                                 </Tooltip>
                                                 <Tooltip content="Generate Link">
                                                     <IconButton
                                                         variant="text"
                                                         color="blue"
+                                                        onClick={() => {
+                                                            const link = `http://localhost:3000/viewform.html?attr1=${encodeURIComponent(
+                                                                id
+                                                            )}`
+                                                            console.log(link)
+                                                        }}
                                                     >
                                                         <LinkIcon className="h-4 w-4" />
                                                     </IconButton>

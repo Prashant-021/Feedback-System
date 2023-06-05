@@ -43,6 +43,7 @@ export interface IQuestion {
     questionTitle: string
     type: string
     options?: Ioption[]
+    required: boolean
 }
 export interface IFormTemplate {
     id: string

@@ -48,7 +48,6 @@ const categorySlice = createSlice({
     reducers: {
         addCategory: (state, action: PayloadAction<ICategory>) => {
             const newCategory = action.payload
-            console.log(newCategory)
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
             localStorage.setItem('Category', JSON.stringify(state.category))

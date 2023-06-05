@@ -1,4 +1,5 @@
-import { Input, Select, Option } from '@material-tailwind/react'
+import { Input, Select, Option, Switch } from '@material-tailwind/react'
+import { nanoid } from '@reduxjs/toolkit'
 import React, { useEffect, useState } from 'react'
 import { type Ioption, type IQuestion } from '../../interface'
 import CheckboxesComponent from './formFields/CheckboxesComponent'
@@ -15,9 +16,6 @@ interface Props {
 const Question: React.FC<Props> = ({ onChange, value }) => {
     const [question, setQuestion] = useState<IQuestion>(value)
     useEffect(() => {
-        // if (value.type === 'multipleChoice) {
-        //     handleOptionChange(value.options)
-        // }
         onChange(question)
     }, [question])
 
@@ -38,8 +36,8 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                 return (
                     <MultipleChoiceComponent
                         onOptionChange={(value) => {
-                            handleOptionChange(value) 
-                        }} 
+                            handleOptionChange(value)
+                        }}
                         optionsValue={value.options ?? []}
                     />
                 )
@@ -65,7 +63,6 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                 return null
         }
     }
-
     return (
         <div className=" ">
             <div className="flex flex-col md:flex-row gap-5">
@@ -101,6 +98,19 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                 </Select>
             </div>
             <div className="mt-5">{renderComponent()}</div>
+            <div className="mt-5 ">
+                <Switch
+                    id={`required${nanoid()}`}
+                    label="Required"
+                    checked={value.required}
+                    onChange={(event) => {
+                        setQuestion((prevQuestion) => ({
+                            ...prevQuestion,
+                            required: event.target.checked,
+                        }))
+                    }}
+                />
+            </div>
         </div>
     )
 }
