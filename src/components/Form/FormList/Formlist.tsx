@@ -182,7 +182,7 @@ const FormList: React.FC = () => {
                                                         variant="text"
                                                         color="blue"
                                                         onClick={() => {
-                                                            const link = `http://localhost:3000/viewform.html?attr1=${encodeURIComponent(
+                                                            const link = `http://localhost:3000/viewform/${encodeURIComponent(
                                                                 id
                                                             )}`
                                                             console.log(link)

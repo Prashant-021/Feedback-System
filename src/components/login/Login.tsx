@@ -4,7 +4,8 @@ import { useFormik } from 'formik'
 import { LoginSchema } from '../../schema'
 import { type currentUser, type RootState } from '../../interface'
 import { useSelector } from 'react-redux'
-import { Button, Checkbox, Input, Typography } from '@material-tailwind/react'
+import { Button, Input, Typography } from '@material-tailwind/react'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 const initialValues: currentUser = {
     Email: '',
@@ -91,15 +92,42 @@ const Login: React.FC = () => {
                         )}
                     </div>
                     <div className="inputGroup pt-2 pb-3">
-                        <Input
-                            label="Password"
-                            name="password"
-                            type={showPassword ? 'text' : 'password'}
-                            value={values.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
-                        {/*  error={!!(errors.password && touched.password)} */}
+                        <div className="relative flex group">
+                            <Input
+                                label="Password"
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <label
+                                className="absolute right-3 top-[0.6rem] hidden group-hover:block"
+                                htmlFor="togglePassword"
+                                onClick={() => {
+                                    setshowPassword(
+                                        (prevshowPassword) => !prevshowPassword
+                                    )
+                                }}
+                            >
+                                {showPassword ? (
+                                    <EyeIcon
+                                        strokeWidth={2}
+                                        className="h-5 w-5"
+                                    />
+                                ) : (
+                                    <EyeSlashIcon
+                                        strokeWidth={2}
+                                        className="h-5 w-5"
+                                    />
+                                )}
+                            </label>
+                            <input
+                                type="checkbox"
+                                className="outline-0 hidden"
+                                name="togglePassword"
+                            />
+                        </div>
                         {Boolean(errors.password) &&
                             Boolean(touched.password) && (
                                 <Typography
@@ -110,20 +138,6 @@ const Login: React.FC = () => {
                                     {errors.password}
                                 </Typography>
                             )}
-                    </div>
-                    <div className="mt-5">
-                        <Checkbox
-                            className="outline-0"
-                            label={
-                                showPassword ? 'Hide Password' : 'Show Password'
-                            }
-                            onClick={() => {
-                                setshowPassword(
-                                    (prevshowPassword) => !prevshowPassword
-                                )
-                            }}
-                            name="togglePassword"
-                        />
                     </div>
                     <div className="submitSec w-full flex justify-center mt-7">
                         <Button

@@ -12,7 +12,7 @@ import Profile from './components/Profile/Profile'
 import Sidebar from './components/Sidebar/Sidebar'
 import DefaultSpeedDial from './components/Sidebar/Speeddial'
 import CategoriesList from './components/Category/CategoriesList'
-import Userform from './components/UserForm/Userform'
+import Viewform from './components/Form/Viewform'
 
 const App: React.FC = () => {
     const title = useLocation()
@@ -20,7 +20,7 @@ const App: React.FC = () => {
     if (
         title.pathname.includes('/login') ||
         title.pathname.includes('/signup') ||
-        title.pathname.includes('/form/')
+        title.pathname.includes('/viewform')
     ) {
         hideHeader = true
     }
@@ -42,8 +42,8 @@ const App: React.FC = () => {
                     <Route path="/categories" element={<CategoriesList />} />
                     <Route path="/forms" element={<FormList />} />
                     <Route path="/forms/createform" element={<Createform />} />
+                    <Route path="/viewform/:id" element={<Viewform />} />
                     <Route path="/profile" element={<Profile />} />
-                    <Route path="/viewform" element={<Userform />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </div>

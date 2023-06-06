@@ -5,7 +5,8 @@ import { SignUpSchema } from '../../schema'
 import { type RootState, type IUser } from '../../interface'
 import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../redux/slice/slice'
-import { Checkbox, Input } from '@material-tailwind/react'
+import { Input } from '@material-tailwind/react'
+import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 
 const initialValues: IUser = {
     profilepicture: null,
@@ -122,35 +123,50 @@ const Signup: React.FC = () => {
                         )}
                     </div>
                     <div className="inputGroup pb-2 pt-4">
-                        <Input
-                            label="Password"
-                            name="password"
-                            type={showPassword ? 'text' : 'password'}
-                            autoComplete="off"
-                            className=" bg-inherit  outline-0 "
-                            value={values.password}
-                            onChange={handleChange}
-                            onBlur={handleBlur}
-                        />
+                        <div className="relative flex group">
+                            <Input
+                                label="Password"
+                                name="password"
+                                type={showPassword ? 'text' : 'password'}
+                                autoComplete="off"
+                                className=" bg-inherit  outline-0 "
+                                value={values.password}
+                                onChange={handleChange}
+                                onBlur={handleBlur}
+                            />
+                            <label
+                                className="absolute right-3 top-[0.6rem] hidden group-hover:block"
+                                htmlFor="togglePassword"
+                                onClick={() => {
+                                    setshowPassword(
+                                        (prevshowPassword) => !prevshowPassword
+                                    )
+                                }}
+                            >
+                                {showPassword ? (
+                                    <EyeIcon
+                                        strokeWidth={2}
+                                        className="h-5 w-5"
+                                    />
+                                ) : (
+                                    <EyeSlashIcon
+                                        strokeWidth={2}
+                                        className="h-5 w-5"
+                                    />
+                                )}
+                            </label>
+                            <input
+                                type="checkbox"
+                                className="outline-0 hidden"
+                                name="togglePassword"
+                            />
+                        </div>
                         {Boolean(errors.password) &&
                             Boolean(touched.password) && (
                                 <p className="text-red-600 absolute">
                                     {errors.password}
                                 </p>
                             )}
-                    </div>
-                    <div className="">
-                        <Checkbox
-                            label={
-                                showPassword ? 'Hide Password' : 'Show Password'
-                            }
-                            onClick={() => {
-                                setshowPassword(
-                                    (prevshowPassword) => !prevshowPassword
-                                )
-                            }}
-                            name="togglePassword"
-                        />
                     </div>
                     <div className="inputGroup pb-5 pt-4">
                         <Input

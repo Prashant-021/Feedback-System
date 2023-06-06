@@ -1,4 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { handleSubmitAction } from '../../../handles/handleSubmit'
 import {
     type IUser,
     type ICategory,
@@ -32,12 +33,18 @@ const userSlice = createSlice({
     name: 'user',
     initialState: userInitialState,
     reducers: {
-        addUser: (state, action: PayloadAction<IUser>) => {
+        addUser: (state, action: PayloadAction<IUser>): void => {
             const newUser = action.payload
             const updatedUser = [...state.userList, newUser]
             state.userList = updatedUser
             localStorage.setItem('userList', JSON.stringify(state.userList))
-            alert(`Welcome ${newUser.name}`)
+            handleSubmitAction(action.payload, 'User')
+                .then(() => {
+                    alert(`Welcome ${newUser.name}`)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
         },
     },
 })
@@ -50,6 +57,13 @@ const categorySlice = createSlice({
             const newCategory = action.payload
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
+            handleSubmitAction(action.payload, 'Category')
+                .then(() => {
+                    console.log(`Category Added Successfully`)
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
             localStorage.setItem('Category', JSON.stringify(state.category))
         },
         deleteCategory: (state, action: PayloadAction<string>) => {
