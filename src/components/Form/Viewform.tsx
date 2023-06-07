@@ -2,7 +2,11 @@ import { Button, Typography } from '@material-tailwind/react'
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { type RootState } from '../../interface'
+import { type Ioption, type RootState } from '../../interface'
+import Checkboxes from './FormComponents/Checkboxes'
+import Dropdown from './FormComponents/Dropdow.'
+import MultipleChoice from './FormComponents/MultipleChoice'
+import Paragraph from './FormComponents/Paragraph'
 import ShortAnswer from './FormComponents/ShortAnswer'
 
 const Viewform: React.FC = () => {
@@ -10,44 +14,32 @@ const Viewform: React.FC = () => {
     const formId = location.pathname.split('/')
     const Viewforms = useSelector((state: RootState) => state.form.form)
     const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
-    console.log(form?.questions[1].required)
 
-    const renderQuestionType = (questionType: string): JSX.Element | null => {
+    const renderQuestionType = (
+        questionType: string,
+        questionOptions: Ioption[] | undefined
+    ): JSX.Element | null => {
         switch (questionType) {
             case 'shortAnswer':
                 return <ShortAnswer />
-            // case 'paragraph':
-            //     return <ParagraphComponent />
-            // case 'multipleChoice':
-            //     return (
-            //         <MultipleChoiceComponent
-            //             onOptionChange={(value) => {
-            //                 handleOptionChange(value)
-            //             }}
-            //             optionsValue={value.options ?? []}
-            //         />
-            //     )
-            // case 'checkboxes':
-            //     return (
-            //         <CheckboxesComponent
-            //             onOptionChange={(value) => {
-            //                 handleOptionChange(value)
-            //             }}
-            //             optionsValue={value.options ?? []}
-            //         />
-            //     )
-            // case 'dropdown':
-            //     return (
-            //         <DropdownComponent
-            //             onOptionChange={(value) => {
-            //                 handleOptionChange(value)
-            //             }}
-            //             optionsValue={value.options ?? []}
-            //         />
-            //     )
+            case 'paragraph':
+                return <Paragraph />
+            case 'multipleChoice':
+                return (
+                    <MultipleChoice optionlist={questionOptions as Ioption[]} />
+                )
+            case 'checkboxes':
+                return <Checkboxes optionlist={questionOptions as Ioption[]} />
+            case 'dropdown':
+                return <Dropdown optionlist={questionOptions as Ioption[]} />
             default:
                 return null
         }
+    }
+
+    const handleSubmit = (event: any): void => {
+        event.preventDefault()
+        console.log(event.target.value)
     }
     return (
         <div className="flex items-center flex-col w-full my-20 gap-4">
@@ -65,7 +57,10 @@ const Viewform: React.FC = () => {
                     />
                 </div>
             </div>
-            <div className="formQuestions gap-4 grid w-[90%] md:w-8/12 mt-7">
+            <form
+                onSubmit={handleSubmit}
+                className="formQuestions gap-4 grid w-[90%] md:w-8/12 mt-7"
+            >
                 {form?.questions.map((question, index) => (
                     <div
                         key={index}
@@ -81,20 +76,25 @@ const Viewform: React.FC = () => {
                                 ''
                             )}
                         </div>
-                        <div>{renderQuestionType(question.type)}</div>
+                        <div>
+                            {renderQuestionType(
+                                question.type,
+                                question.options
+                            )}
+                        </div>
                         <Button variant="text" className="float-right">
                             {' '}
                             clear selection
                         </Button>
                     </div>
                 ))}
-            </div>
-            <div className="submitBtn w-[90%] md:w-8/12 flex justify-between">
-                <Button>Submit</Button>
-                <Button variant="text" className="p-2">
-                    Clear Form
-                </Button>
-            </div>
+                <div className="submitBtn w-[90%] md:w-8/12 flex justify-between">
+                    <Button type="submit">Submit</Button>
+                    <Button variant="text" className="p-2">
+                        Clear Form
+                    </Button>
+                </div>
+            </form>
         </div>
     )
 }
