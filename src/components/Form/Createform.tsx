@@ -190,7 +190,7 @@ const Createform: React.FC = () => {
 
                 <div ref={bottomRef} />
             </div>
-            <div className="flex justify-center mb-2 rounded-md">
+            <div className="flex justify-center my-4 rounded-md">
                 <Button
                     className=" flex items-center p-3 bg-white text-black"
                     onClick={handleClick}

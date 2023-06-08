@@ -7,12 +7,18 @@ import {
     Typography,
 } from '@material-tailwind/react'
 import { type Ioption } from '../../../interface'
+import React from 'react'
 
 interface Props {
     optionlist: Ioption[]
+    onChange: (value: string, id: string) => void
+    id: string
 }
 
-const MultipleChoice: React.FC<Props> = ({ optionlist }) => {
+const MultipleChoice: React.FC<Props> = ({ id, onChange, optionlist }) => {
+    const handleValueChange = (event: { target: { value: any } }): void => {
+        onChange(event.target.value, id)
+    }
     return (
         <div>
             <List>
@@ -25,12 +31,14 @@ const MultipleChoice: React.FC<Props> = ({ optionlist }) => {
                             <ListItemPrefix className="mr-3">
                                 <Radio
                                     name="vertical-list"
-                                    id="MCQ-vertical-list"
+                                    id={`MCQ-vertical-${option.id}`}
                                     ripple={false}
                                     className="hover:before:opacity-0"
                                     containerProps={{
                                         className: 'p-0',
                                     }}
+                                    value={option.optionValue}
+                                    onChange={handleValueChange}
                                 />
                             </ListItemPrefix>
                             <Typography
@@ -42,48 +50,6 @@ const MultipleChoice: React.FC<Props> = ({ optionlist }) => {
                         </label>
                     </ListItem>
                 ))}
-                {/* <ListItem className="p-0">
-                    <label
-                        htmlFor="vertical-list-vue"
-                        className="px-3 py-2 flex items-center w-full cursor-pointer"
-                    >
-                        <ListItemPrefix className="mr-3">
-                            <Radio
-                                name="vertical-list"
-                                id="vertical-list-vue"
-                                ripple={false}
-                                className="hover:before:opacity-0"
-                                containerProps={{
-                                    className: 'p-0',
-                                }}
-                            />
-                        </ListItemPrefix>
-                        <Typography color="blue-gray" className="font-medium">
-                            Vue.js
-                        </Typography>
-                    </label>
-                </ListItem>
-                <ListItem className="p-0">
-                    <label
-                        htmlFor="vertical-list-svelte"
-                        className="px-3 py-2 flex items-center w-full cursor-pointer"
-                    >
-                        <ListItemPrefix className="mr-3">
-                            <Radio
-                                name="vertical-list"
-                                id="vertical-list-svelte"
-                                ripple={false}
-                                className="hover:before:opacity-0"
-                                containerProps={{
-                                    className: 'p-0',
-                                }}
-                            />
-                        </ListItemPrefix>
-                        <Typography color="blue-gray" className="font-medium">
-                            Svelte.js
-                        </Typography>
-                    </label>
-                </ListItem> */}
             </List>
         </div>
     )

@@ -17,6 +17,8 @@ import {
     CardBody,
     Tooltip,
     IconButton,
+    Dialog,
+    DialogFooter,
 } from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { type RootState } from '../../../interface'
@@ -24,11 +26,17 @@ import { nanoid } from '@reduxjs/toolkit'
 import { Link } from 'react-router-dom'
 import { getDate } from '../../../utils'
 import { deleteForm } from '../../redux/slice/slice'
+import { useState } from 'react'
+import DialogInfo from './dialogInfo/DialogInfo'
 
 const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
 const date = new Date()
-
+let link: string = ''
 const FormList: React.FC = () => {
+    const [open, setOpen] = useState<boolean>(false)
+    const handleOpen = (): void => {
+        setOpen(!open)
+    }
     const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
     const dispatch = useDispatch()
     return (
@@ -161,36 +169,53 @@ const FormList: React.FC = () => {
                                             </td>
                                             <td className={classes}>
                                                 <Tooltip content="Edit Form">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="blue-gray"
+                                                    <Link
+                                                        to={'/forms/createform'}
+                                                        state={{
+                                                            formId: id,
+                                                        }}
                                                     >
-                                                        <Link
-                                                            to={
-                                                                '/forms/createform'
-                                                            }
-                                                            state={{
-                                                                formId: id,
-                                                            }}
+                                                        <IconButton
+                                                            variant="text"
+                                                            color="blue-gray"
                                                         >
                                                             <PencilIcon className="h-4 w-4" />
-                                                        </Link>
-                                                    </IconButton>
+                                                        </IconButton>
+                                                    </Link>
                                                 </Tooltip>
                                                 <Tooltip content="Generate Link">
                                                     <IconButton
                                                         variant="text"
                                                         color="blue"
                                                         onClick={() => {
-                                                            const link = `http://localhost:3000/viewform/${encodeURIComponent(
+                                                            link = `http://localhost:3000/viewform/${encodeURIComponent(
                                                                 id
                                                             )}`
                                                             console.log(link)
+                                                            handleOpen()
                                                         }}
                                                     >
                                                         <LinkIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip>
+                                                <Dialog
+                                                    open={open}
+                                                    handler={handleOpen}
+                                                >
+                                                    <DialogInfo
+                                                        formLink={link}
+                                                    />
+                                                    <DialogFooter>
+                                                        <Button
+                                                            variant="text"
+                                                            color="red"
+                                                            onClick={handleOpen}
+                                                            className="mr-1"
+                                                        >
+                                                            <span>Cancel</span>
+                                                        </Button>
+                                                    </DialogFooter>
+                                                </Dialog>
                                                 <Tooltip content="Delete">
                                                     <IconButton
                                                         variant="text"

@@ -1,10 +1,11 @@
 import { Button, Typography } from '@material-tailwind/react'
-import React from 'react'
+import { nanoid } from '@reduxjs/toolkit'
+import { useRef } from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
 import { type Ioption, type RootState } from '../../interface'
 import Checkboxes from './FormComponents/Checkboxes'
-import Dropdown from './FormComponents/Dropdow.'
+import Dropdown from './FormComponents/Dropdown'
 import MultipleChoice from './FormComponents/MultipleChoice'
 import Paragraph from './FormComponents/Paragraph'
 import ShortAnswer from './FormComponents/ShortAnswer'
@@ -14,41 +15,84 @@ const Viewform: React.FC = () => {
     const formId = location.pathname.split('/')
     const Viewforms = useSelector((state: RootState) => state.form.form)
     const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
+    const inputValueRef = useRef<Record<string, any>>({})
 
+    console.log(form?.questions)
+    const handleSubmit = (event: React.FormEvent): void => {
+        event.preventDefault()
+        console.log(inputValueRef.current)
+    }
+    const updateOption = (value: string | string[], id: string): void => {
+        inputValueRef.current[id] = value
+    }
     const renderQuestionType = (
         questionType: string,
-        questionOptions: Ioption[] | undefined
+        questionOptions: Ioption[] | undefined,
+        questionRequired: boolean
     ): JSX.Element | null => {
+        const uniqueid: string = nanoid()
         switch (questionType) {
             case 'shortAnswer':
-                return <ShortAnswer />
+                return (
+                    <ShortAnswer
+                        onChange={updateOption}
+                        isRequired={questionRequired}
+                        key={uniqueid}
+                        id={uniqueid}
+                    />
+                )
             case 'paragraph':
-                return <Paragraph />
+                return (
+                    <Paragraph
+                        onChange={updateOption}
+                        key={uniqueid}
+                        id={uniqueid}
+                    />
+                )
             case 'multipleChoice':
                 return (
-                    <MultipleChoice optionlist={questionOptions as Ioption[]} />
+                    <MultipleChoice
+                        key={uniqueid}
+                        onChange={updateOption}
+                        id={uniqueid}
+                        optionlist={questionOptions as Ioption[]}
+                    />
                 )
             case 'checkboxes':
-                return <Checkboxes optionlist={questionOptions as Ioption[]} />
+                return (
+                    <Checkboxes
+                        optionlist={questionOptions as Ioption[]}
+                        onChange={updateOption}
+                        key={uniqueid}
+                        id={uniqueid}
+                    />
+                )
             case 'dropdown':
-                return <Dropdown optionlist={questionOptions as Ioption[]} />
+                return (
+                    <Dropdown
+                        optionlist={questionOptions as Ioption[]}
+                        id={uniqueid}
+                        key={uniqueid}
+                        onChange={updateOption}
+                    />
+                )
             default:
                 return null
         }
     }
 
-    const handleSubmit = (event: any): void => {
-        event.preventDefault()
-        console.log(event.target.value)
+    const clearValues = (): void => {
+        inputValueRef.current = {}
     }
+
     return (
         <div className="flex items-center flex-col w-full my-20 gap-4">
             <div className="formHeader rounded-lg shadow-xl bg-white py-12 border-blue-600 border-t-8  px-6 md:p-11 h-fit w-[90%] md:w-8/12">
                 <Typography variant="h3" color="blue-gray" className="mb-2">
-                    {form?.title}
+                    Form: {form?.title}
                 </Typography>
-                <Typography>{form?.description}</Typography>
-                <div className="emailSection pt-3 border-gray-300 border-t-2">
+                <Typography>Form Description: {form?.description}</Typography>
+                <div className="emailSection py-3 border-gray-300 border-t-2">
                     <label htmlFor="email">Email: </label>
                     <input
                         type="email"
@@ -56,14 +100,15 @@ const Viewform: React.FC = () => {
                         placeholder="Enter Email"
                     />
                 </div>
+                <Typography>Category: {form?.categoryName}</Typography>
             </div>
             <form
                 onSubmit={handleSubmit}
                 className="formQuestions gap-4 grid w-[90%] md:w-8/12 mt-7"
             >
-                {form?.questions.map((question, index) => (
+                {form?.questions.map((question) => (
                     <div
-                        key={index}
+                        key={nanoid()}
                         className="rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit w-full"
                     >
                         <div className="flex">
@@ -79,7 +124,8 @@ const Viewform: React.FC = () => {
                         <div>
                             {renderQuestionType(
                                 question.type,
-                                question.options
+                                question.options,
+                                question.required
                             )}
                         </div>
                         <Button variant="text" className="float-right">
@@ -88,9 +134,14 @@ const Viewform: React.FC = () => {
                         </Button>
                     </div>
                 ))}
-                <div className="submitBtn w-[90%] md:w-8/12 flex justify-between">
+                <div className="submitBtn flex justify-between">
                     <Button type="submit">Submit</Button>
-                    <Button variant="text" className="p-2">
+                    <Button
+                        variant="text"
+                        className="p-2"
+                        type="reset"
+                        onClick={clearValues}
+                    >
                         Clear Form
                     </Button>
                 </div>
