@@ -26,17 +26,19 @@ const Viewform: React.FC = () => {
         inputValueRef.current[id] = value
     }
     const renderQuestionType = (
+        questionTitle: string,
         questionType: string,
         questionOptions: Ioption[] | undefined,
-        questionRequired: boolean
+        isRequired: boolean
     ): JSX.Element | null => {
         const uniqueid: string = nanoid()
         switch (questionType) {
             case 'shortAnswer':
                 return (
                     <ShortAnswer
+                        questionTitle={questionTitle}
                         onChange={updateOption}
-                        isRequired={questionRequired}
+                        isRequired={isRequired}
                         key={uniqueid}
                         id={uniqueid}
                     />
@@ -44,7 +46,9 @@ const Viewform: React.FC = () => {
             case 'paragraph':
                 return (
                     <Paragraph
+                        questionTitle={questionTitle}
                         onChange={updateOption}
+                        isRequired={isRequired}
                         key={uniqueid}
                         id={uniqueid}
                     />
@@ -111,27 +115,14 @@ const Viewform: React.FC = () => {
                         key={nanoid()}
                         className="rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit w-full"
                     >
-                        <div className="flex">
-                            <Typography variant="h5">
-                                {question.questionTitle}
-                            </Typography>
-                            {question.required ? (
-                                <p className="text-red-400 text-2xl ms-2">*</p>
-                            ) : (
-                                ''
-                            )}
-                        </div>
                         <div>
                             {renderQuestionType(
+                                question.questionTitle,
                                 question.type,
                                 question.options,
                                 question.required
                             )}
                         </div>
-                        <Button variant="text" className="float-right">
-                            {' '}
-                            clear selection
-                        </Button>
                     </div>
                 ))}
                 <div className="submitBtn flex justify-between">
