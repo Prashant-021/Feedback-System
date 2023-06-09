@@ -20,14 +20,12 @@ import {
     Dialog,
     DialogFooter,
 } from '@material-tailwind/react'
-import { useDispatch, useSelector } from 'react-redux'
-import { type RootState } from '../../../interface'
-import { nanoid } from '@reduxjs/toolkit'
-import { Link } from 'react-router-dom'
+import { type IFormTemplate } from '../../../interface'
+import { useNavigate } from 'react-router-dom'
 import { getDate } from '../../../utils'
-import { deleteForm } from '../../redux/slice/slice'
-import { useState } from 'react'
 import DialogInfo from './dialogInfo/DialogInfo'
+import FormService from '../../../FirebaseFiles/handle/requestFunctions'
+import { useEffect, useState } from 'react'
 
 const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
 const date = new Date()
@@ -37,8 +35,51 @@ const FormList: React.FC = () => {
     const handleOpen = (): void => {
         setOpen(!open)
     }
-    const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
-    const dispatch = useDispatch()
+    // const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
+    const [TABLE_ROWS, setTableRows] = useState([] as IFormTemplate[])
+
+    useEffect(() => {
+        FormService.getAllForms()
+            .then((querySnapshot) => {
+                const data: IFormTemplate[] = []
+                querySnapshot.forEach((doc) => {
+                    console.log(doc.data())
+                    data.push(doc.data() as IFormTemplate)
+                })
+                setTableRows(data)
+            })
+            .catch((error) => {
+                console.error('Error fetching forms:', error)
+            })
+    }, [])
+
+    // const dispatch = useDispatch()
+    const FormTemplate: IFormTemplate = {
+        id: '',
+        title: '',
+        description: '',
+        categoryName: '',
+        questions: [
+            {
+                questionTitle: '',
+                type: '',
+                required: false,
+                options: [],
+            },
+        ],
+    }
+    const Navigate = useNavigate()
+    const createForm = (): void => {
+        FormService.addNewForm(FormTemplate)
+            .then((response) => {
+                console.log('Form Created')
+                Navigate(`/forms/createform/${response.id}`)
+            })
+            .catch((err) => {
+                console.log(err)
+                return err
+            })
+    }
     return (
         <div className="flex-grow w-full flex items-center justify-center">
             <Card className=" w-full sm:w-[60%]">
@@ -67,22 +108,20 @@ const FormList: React.FC = () => {
                             >
                                 view all
                             </Button>
-                            <Link
-                                to={'/forms/createform'}
-                                state={{ formId: nanoid() }}
+                            <Button
+                                className="flex items-center gap-3"
+                                color="blue"
+                                size="sm"
+                                onClick={() => {
+                                    createForm()
+                                }}
                             >
-                                <Button
-                                    className="flex items-center gap-3"
-                                    color="blue"
-                                    size="sm"
-                                >
-                                    <DocumentPlusIcon
-                                        strokeWidth={2}
-                                        className="h-4 w-4"
-                                    />{' '}
-                                    Add Form
-                                </Button>
-                            </Link>
+                                <DocumentPlusIcon
+                                    strokeWidth={2}
+                                    className="h-4 w-4"
+                                />{' '}
+                                Add Form
+                            </Button>
                         </div>
                     </div>
                     <div className="flex flex-col items-center justify-end gap-4 md:flex-row">
@@ -169,19 +208,17 @@ const FormList: React.FC = () => {
                                             </td>
                                             <td className={classes}>
                                                 <Tooltip content="Edit Form">
-                                                    <Link
-                                                        to={'/forms/createform'}
-                                                        state={{
-                                                            formId: id,
+                                                    <IconButton
+                                                        variant="text"
+                                                        color="blue-gray"
+                                                        onClick={() => {
+                                                            Navigate(
+                                                                `/forms/createform/${id}`
+                                                            )
                                                         }}
                                                     >
-                                                        <IconButton
-                                                            variant="text"
-                                                            color="blue-gray"
-                                                        >
-                                                            <PencilIcon className="h-4 w-4" />
-                                                        </IconButton>
-                                                    </Link>
+                                                        <PencilIcon className="h-4 w-4" />
+                                                    </IconButton>
                                                 </Tooltip>
                                                 <Tooltip content="Generate Link">
                                                     <IconButton
@@ -220,11 +257,11 @@ const FormList: React.FC = () => {
                                                     <IconButton
                                                         variant="text"
                                                         color="red"
-                                                        onClick={() =>
-                                                            dispatch(
-                                                                deleteForm(id)
-                                                            )
-                                                        }
+                                                        // onClick={() =>
+                                                        //     dispatch(
+                                                        //         deleteForm(id)
+                                                        //     )
+                                                        // }
                                                     >
                                                         <TrashIcon className="h-4 w-4" />
                                                     </IconButton>

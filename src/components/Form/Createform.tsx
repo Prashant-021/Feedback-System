@@ -2,12 +2,9 @@ import React, { useEffect, useRef, useState } from 'react'
 import { Button } from '@material-tailwind/react'
 import Question from './Question'
 import { TrashIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
-import FormHeader from './formFields/FormHeader'
 import { Link, useLocation } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
-import { addForm } from '../redux/slice/slice'
+import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import {
-    type RootState,
     type ComponentData,
     type IFormTemplate,
     type IQuestion,
@@ -16,45 +13,11 @@ import { nanoid } from '@reduxjs/toolkit'
 
 const Createform: React.FC = () => {
     const location = useLocation()
-    const { formId } = location.state
+    const path = location.pathname.split('/')
+    const formId = path[path.length - 1]
     const bottomRef = useRef<HTMLDivElement>(null)
-
-    const savedForm = useSelector((state: RootState) =>
-        state.form.form.find((form) => form.id === formId)
-    )
-
-    const categoryHeaderRef = useRef<{
-        title: string
-        description: string
-        categoryName: string
-    }>({
-        title: savedForm != null ? savedForm.title : 'Title',
-        description: savedForm != null ? savedForm.description : 'Description',
-        categoryName: savedForm != null ? savedForm.categoryName : 'Category',
-    })
-    const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
-        savedForm != null
-            ? savedForm.questions.map((question) => ({
-                  id: nanoid(),
-                  contentValue: question,
-              }))
-            : []
-    )
-
-    useEffect(() => {
-        if (savedForm != null) {
-            setCreatedComponents(
-                savedForm.questions.map((question) => ({
-                    id: nanoid(),
-                    contentValue: question,
-                }))
-            )
-            setFormTemplate(savedForm)
-        }
-    }, [savedForm, formId])
-
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
-        id: '',
+        id: formId,
         title: '',
         description: '',
         categoryName: '',
@@ -63,9 +26,60 @@ const Createform: React.FC = () => {
                 questionTitle: '',
                 type: '',
                 required: false,
+                options: [],
             },
         ],
     })
+    console.log(formTemplate)
+
+    const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
+        formTemplate != null
+            ? formTemplate.questions.map((question) => ({
+                  id: nanoid(),
+                  contentValue: question,
+              }))
+            : []
+    )
+
+    useEffect((): void => {
+        FormService.getForm(formId)
+            .then((categoryDoc) => {
+                if (categoryDoc !== null) {
+                    const categoryData = categoryDoc.data()
+                    console.log('Category data:', categoryData)
+                    // Process the category data as needed
+                    setFormTemplate(categoryData as IFormTemplate)
+                } else {
+                    console.log('Category not found')
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching category:', error)
+            })
+    }, [])
+    const [formHeader, setFormHeader] = useState<{
+        title: string
+        description: string
+        categoryName: string
+    }>()
+
+    useEffect(() => {
+        if (formTemplate != null) {
+            setFormHeader({
+                title: formTemplate.title,
+                description: formTemplate.description,
+                categoryName: formTemplate.categoryName,
+            })
+            setCreatedComponents(
+                formTemplate.questions.map((question) => ({
+                    id: nanoid(),
+                    contentValue: question,
+                }))
+            )
+            setFormTemplate(formTemplate)
+        }
+    }, [formTemplate, formId])
+
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
     )
@@ -77,6 +91,7 @@ const Createform: React.FC = () => {
                 questionTitle: '',
                 type: '',
                 required: false,
+                options: [],
             },
         }
         setCreatedComponents((prevComponents) => [
@@ -106,36 +121,29 @@ const Createform: React.FC = () => {
         }
         setCreatedComponents(updatedComponents)
     }
-
-    const handleHeaderInfo = (formHead: {
-        title: string
-        description: string
-        categoryName: string
-    }): void => {
-        categoryHeaderRef.current.title = formHead.title
-        categoryHeaderRef.current.description = formHead.description
-        categoryHeaderRef.current.categoryName = formHead.categoryName
-    }
     const getQuestions = (): IQuestion[] => {
         return createdComponents.map((component) => {
             return component.contentValue
         })
     }
-
-    const dispatch = useDispatch()
     const handleSave = (): void => {
         const updatedFormTemplate: IFormTemplate = {
             id: formId,
-            title: categoryHeaderRef.current.title,
-            description: categoryHeaderRef.current.description,
-            categoryName: categoryHeaderRef.current.categoryName,
+            title: formHeader?.title ?? '',
+            description: formHeader?.description ?? '',
+            categoryName: formHeader?.categoryName ?? '',
             questions: getQuestions(),
         }
         setFormTemplate(updatedFormTemplate)
+        console.log(formId)
+        FormService.updateform(formId, updatedFormTemplate)
+            .then(() => {
+                console.log('Form updated')
+            })
+            .catch((err) => {
+                console.log(err)
+            })
     }
-    useEffect(() => {
-        if (formTemplate.id !== '') dispatch(addForm(formTemplate))
-    }, [formTemplate])
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
@@ -152,15 +160,6 @@ const Createform: React.FC = () => {
                 id="questionList"
                 className="w-[90%] md:w-[70%] flex lg:flex flex-grow flex-col h-[60vh] overflow-y-scroll  no-scrollbar  gap-4 relative"
             >
-                <FormHeader
-                    headerInfo={handleHeaderInfo}
-                    savedData={{
-                        title: savedForm?.title ?? 'Untitled Form',
-                        description:
-                            savedForm?.description ?? 'Form description',
-                        categoryName: savedForm?.categoryName ?? 'category',
-                    }}
-                />
                 {createdComponents.map((component, index) => {
                     return (
                         <div

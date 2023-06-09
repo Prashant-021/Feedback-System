@@ -42,7 +42,7 @@ export interface Ioption {
 export interface IQuestion {
     questionTitle: string
     type: string
-    options?: Ioption[]
+    options: Ioption[]
     required: boolean
 }
 export interface IFormTemplate {

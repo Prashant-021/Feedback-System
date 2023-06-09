@@ -41,7 +41,10 @@ const App: React.FC = () => {
                     <Route path="/dashboard" element={<Dashboard />} />
                     <Route path="/categories" element={<CategoriesList />} />
                     <Route path="/forms" element={<FormList />} />
-                    <Route path="/forms/createform" element={<Createform />} />
+                    <Route
+                        path="/forms/createform/:id"
+                        element={<Createform />}
+                    />
                     <Route path="/viewform/:id" element={<Viewform />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="*" element={<PageNotFound />} />

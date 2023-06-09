@@ -1,5 +1,5 @@
 import { Input, Option, Select } from '@material-tailwind/react'
-import React, { type FC, useState } from 'react'
+import React, { type FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { type IFormHeader, type RootState } from '../../../interface'
 
@@ -19,7 +19,10 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
     const categories = useSelector(
         (state: RootState) => state.category.category
     )
-    headerInfo({ title, description, categoryName: categoryType })
+
+    useEffect(() => {
+        headerInfo({ title, description, categoryName: categoryType })
+    }, [title, description, categoryType])
 
     return (
         <div className="titleSection rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit ">
