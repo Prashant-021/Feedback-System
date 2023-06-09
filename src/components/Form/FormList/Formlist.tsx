@@ -188,7 +188,7 @@ const FormList: React.FC = () => {
                                                         variant="text"
                                                         color="blue"
                                                         onClick={() => {
-                                                            link = `http://localhost:3000/viewform/${encodeURIComponent(
+                                                            link = `https://dainty-bienenstitch-3297a3.netlify.app/viewform/${encodeURIComponent(
                                                                 id
                                                             )}`
                                                             console.log(link)
