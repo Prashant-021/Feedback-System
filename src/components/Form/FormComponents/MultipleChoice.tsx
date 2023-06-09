@@ -11,16 +11,24 @@ import React from 'react'
 
 interface Props {
     optionlist: Ioption[]
+    questionTitle: string
     onChange: (value: string, id: string) => void
+    isRequired: boolean
     id: string
 }
 
-const MultipleChoice: React.FC<Props> = ({ id, onChange, optionlist }) => {
+const MultipleChoice: React.FC<Props> = ({
+    questionTitle,
+    id,
+    onChange,
+    optionlist,
+}) => {
     const handleValueChange = (event: { target: { value: any } }): void => {
         onChange(event.target.value, id)
     }
     return (
         <div>
+            <Typography>{questionTitle}</Typography>
             <List>
                 {optionlist.map((option) => (
                     <ListItem className="p-0" key={option.id}>

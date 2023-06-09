@@ -9,12 +9,15 @@ import React from 'react'
 import { type Ioption } from '../../../interface'
 
 interface CheckboxesProps {
+    questionTitle: string
+    isRequired: boolean
     optionlist: Ioption[]
     onChange: (selectedOptions: string[], id: string) => void
     id: string
 }
 
 const Checkboxes: React.FC<CheckboxesProps> = ({
+    questionTitle,
     optionlist,
     onChange,
     id,
@@ -40,6 +43,7 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
 
     return (
         <div>
+            <Typography>{questionTitle}</Typography>
             <List>
                 {optionlist.map((option) => (
                     <ListItem className="p-0" key={option.id}>

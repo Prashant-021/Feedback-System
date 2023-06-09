@@ -9,11 +9,25 @@ import Dropdown from './FormComponents/Dropdown'
 import MultipleChoice from './FormComponents/MultipleChoice'
 import Paragraph from './FormComponents/Paragraph'
 import ShortAnswer from './FormComponents/ShortAnswer'
+import FormService from '../../FirebaseFiles/handle/requestFunctions'
 
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
     const Viewforms = useSelector((state: RootState) => state.form.form)
+    FormService.getForm(formId)
+        .then((categoryDoc) => {
+            if (categoryDoc !== null) {
+                const categoryData = categoryDoc.data()
+                console.log('Category data:', categoryData)
+                // Process the category data as needed
+            } else {
+                console.log('Category not found')
+            }
+        })
+        .catch((error) => {
+            console.error('Error fetching category:', error)
+        })
     const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
     const inputValueRef = useRef<Record<string, any>>({})
 
@@ -56,8 +70,10 @@ const Viewform: React.FC = () => {
             case 'multipleChoice':
                 return (
                     <MultipleChoice
+                        questionTitle={questionTitle}
                         key={uniqueid}
                         onChange={updateOption}
+                        isRequired={isRequired}
                         id={uniqueid}
                         optionlist={questionOptions as Ioption[]}
                     />
@@ -65,8 +81,10 @@ const Viewform: React.FC = () => {
             case 'checkboxes':
                 return (
                     <Checkboxes
+                        questionTitle={questionTitle}
                         optionlist={questionOptions as Ioption[]}
                         onChange={updateOption}
+                        isRequired={isRequired}
                         key={uniqueid}
                         id={uniqueid}
                     />
@@ -74,8 +92,10 @@ const Viewform: React.FC = () => {
             case 'dropdown':
                 return (
                     <Dropdown
+                        questionTitle={questionTitle}
                         optionlist={questionOptions as Ioption[]}
                         id={uniqueid}
+                        isrequired={isRequired}
                         key={uniqueid}
                         onChange={updateOption}
                     />
