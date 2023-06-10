@@ -26,6 +26,7 @@ import { getDate } from '../../../utils'
 import DialogInfo from './dialogInfo/DialogInfo'
 import FormService from '../../../FirebaseFiles/handle/requestFunctions'
 import { useEffect, useState } from 'react'
+import { nanoid } from '@reduxjs/toolkit'
 
 const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
 const date = new Date()
@@ -36,14 +37,14 @@ const FormList: React.FC = () => {
         setOpen(!open)
     }
     // const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
-    const [TABLE_ROWS, setTableRows] = useState([] as IFormTemplate[])
+    const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
 
     useEffect(() => {
         FormService.getAllForms()
             .then((querySnapshot) => {
                 const data: IFormTemplate[] = []
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data())
+                    console.log(doc.data(), doc.id)
                     data.push(doc.data() as IFormTemplate)
                 })
                 setTableRows(data)
@@ -172,7 +173,7 @@ const FormList: React.FC = () => {
                                         : 'p-4 border-b border-blue-gray-50'
 
                                     return (
-                                        <tr key={id}>
+                                        <tr key={nanoid()}>
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
                                                     <div className="flex flex-col">

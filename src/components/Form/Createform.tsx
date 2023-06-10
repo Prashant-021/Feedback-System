@@ -1,20 +1,28 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button } from '@material-tailwind/react'
+import { Button, Spinner } from '@material-tailwind/react'
 import Question from './Question'
-import { TrashIcon, ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
+import {
+    ArrowUturnLeftIcon,
+    PlusIcon,
+    TrashIcon,
+} from '@heroicons/react/24/solid'
 import { Link, useLocation } from 'react-router-dom'
 import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import {
+    type IFormHeader,
     type ComponentData,
     type IFormTemplate,
     type IQuestion,
 } from '../../interface'
+import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
 
 const Createform: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
     const formId = path[path.length - 1]
+
+    const [isLoading, setIsLoading] = useState(true)
     const bottomRef = useRef<HTMLDivElement>(null)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
@@ -30,8 +38,6 @@ const Createform: React.FC = () => {
             },
         ],
     })
-    console.log(formTemplate)
-
     const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
         formTemplate != null
             ? formTemplate.questions.map((question) => ({
@@ -40,15 +46,19 @@ const Createform: React.FC = () => {
               }))
             : []
     )
-
+    console.log(formTemplate)
     useEffect((): void => {
         FormService.getForm(formId)
             .then((categoryDoc) => {
                 if (categoryDoc !== null) {
                     const categoryData = categoryDoc.data()
-                    console.log('Category data:', categoryData)
-                    // Process the category data as needed
-                    setFormTemplate(categoryData as IFormTemplate)
+                    setFormTemplate((prevFormTemplate) => ({
+                        ...prevFormTemplate,
+                        title: categoryData?.title,
+                        description: categoryData?.description,
+                        categoryName: categoryData?.categoryName,
+                        questions: categoryData?.questions,
+                    }))
                 } else {
                     console.log('Category not found')
                 }
@@ -56,29 +66,35 @@ const Createform: React.FC = () => {
             .catch((error) => {
                 console.error('Error fetching category:', error)
             })
-    }, [])
-    const [formHeader, setFormHeader] = useState<{
-        title: string
-        description: string
-        categoryName: string
-    }>()
-
-    useEffect(() => {
-        if (formTemplate != null) {
-            setFormHeader({
-                title: formTemplate.title,
-                description: formTemplate.description,
-                categoryName: formTemplate.categoryName,
+            .finally(() => {
+                setIsLoading(false)
             })
-            setCreatedComponents(
-                formTemplate.questions.map((question) => ({
-                    id: nanoid(),
-                    contentValue: question,
-                }))
-            )
-            setFormTemplate(formTemplate)
-        }
-    }, [formTemplate, formId])
+    }, [])
+    const handleHeaderValueChange = (value: IFormHeader): void => {
+        setFormTemplate((prevFormTemplate) => ({
+            ...prevFormTemplate,
+            title: value.title,
+            description: value.description,
+            categoryName: value.categoryName,
+        }))
+    }
+
+    // useEffect(() => {
+    //     if (formTemplate != null) {
+    //         setFormHeader({
+    //             title: formTemplate.title,
+    //             description: formTemplate.description,
+    //             categoryName: formTemplate.categoryName,
+    //         })
+    //         setCreatedComponents(
+    //             formTemplate.questions.map((question) => ({
+    //                 id: nanoid(),
+    //                 contentValue: question,
+    //             }))
+    //         )
+    //         setFormTemplate(formTemplate)
+    //     }
+    // }, [formTemplate, formId])
 
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
@@ -121,28 +137,45 @@ const Createform: React.FC = () => {
         }
         setCreatedComponents(updatedComponents)
     }
-    const getQuestions = (): IQuestion[] => {
-        return createdComponents.map((component) => {
-            return component.contentValue
-        })
-    }
+    // const getQuestions = (): IQuestion[] => {
+    //     return createdComponents.map((component) => {
+    //         return component.contentValue
+    //     })
+    // }
     const handleSave = (): void => {
-        const updatedFormTemplate: IFormTemplate = {
-            id: formId,
-            title: formHeader?.title ?? '',
-            description: formHeader?.description ?? '',
-            categoryName: formHeader?.categoryName ?? '',
-            questions: getQuestions(),
-        }
-        setFormTemplate(updatedFormTemplate)
-        console.log(formId)
-        FormService.updateform(formId, updatedFormTemplate)
+        FormService.updateform(formId, formTemplate)
             .then(() => {
                 console.log('Form updated')
             })
             .catch((err) => {
                 console.log(err)
             })
+    }
+    // const handleSave = (): void => {
+    //     const updatedFormTemplate: IFormTemplate = {
+    //         id: formId,
+    //         title: formHeader?.title ?? '',
+    //         description: formHeader?.description ?? '',
+    //         categoryName: formHeader?.categoryName ?? '',
+    //         questions: getQuestions(),
+    //     }
+    //     setFormTemplate(updatedFormTemplate)
+    //     console.log(formId)
+    //     FormService.updateform(formId, updatedFormTemplate)
+    //         .then(() => {
+    //             console.log('Form updated')
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //         })
+    // }
+    if (isLoading) {
+        return (
+            <div className="w-screen flex justify-center items-center">
+                Loading...
+                <Spinner className="h-12 w-12" />
+            </div>
+        )
     }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
@@ -160,6 +193,14 @@ const Createform: React.FC = () => {
                 id="questionList"
                 className="w-[90%] md:w-[70%] flex lg:flex flex-grow flex-col h-[60vh] overflow-y-scroll  no-scrollbar  gap-4 relative"
             >
+                <FormHeader
+                    headerInfo={handleHeaderValueChange}
+                    savedData={{
+                        title: formTemplate.title,
+                        description: formTemplate.description,
+                        categoryName: formTemplate.categoryName,
+                    }}
+                />
                 {createdComponents.map((component, index) => {
                     return (
                         <div
@@ -194,20 +235,7 @@ const Createform: React.FC = () => {
                     className=" flex items-center p-3 bg-white text-black"
                     onClick={handleClick}
                 >
-                    <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        strokeWidth={1.5}
-                        stroke="currentColor"
-                        className="w-6 h-6"
-                    >
-                        <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            d="M12 9v6m3-3H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                        />
-                    </svg>
+                    <PlusIcon className="h-5 w-5 " />
                     Add Question
                 </Button>
             </div>
