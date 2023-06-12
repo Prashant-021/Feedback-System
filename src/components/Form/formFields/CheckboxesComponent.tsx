@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Button, Checkbox, Input } from '@material-tailwind/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { type Ioption } from '../../../interface'
@@ -13,37 +13,30 @@ const CheckboxesComponent: React.FC<Props> = ({
     onOptionChange,
     optionsValue,
 }) => {
-    const [createdOption, setCreatedOption] = useState<Ioption[]>(
-        optionsValue.map((option) => ({ ...option }))
-    )
-
     const addOption = (): void => {
         const newOption: Ioption = {
             id: nanoid(),
             optionValue: '',
         }
-        setCreatedOption([...createdOption, newOption])
-        onOptionChange([...createdOption, newOption])
+        onOptionChange([...optionsValue, newOption])
     }
 
     const handleDelete = (index: number): void => {
-        const updatedOptions = [...createdOption]
+        const updatedOptions = [...optionsValue]
         updatedOptions.splice(index, 1)
-        setCreatedOption(updatedOptions)
         onOptionChange(updatedOptions)
     }
 
     const handleOptionValueChange = (index: number, value: string): void => {
-        const updatedOptions = [...createdOption]
+        const updatedOptions = [...optionsValue]
         updatedOptions[index].optionValue = value
-        setCreatedOption(updatedOptions)
         onOptionChange(updatedOptions)
     }
 
     return (
         <div>
             <div className="option flex w-[80%] flex-col items-start">
-                {createdOption.map((component, index) => (
+                {optionsValue.map((component, index) => (
                     <div key={component.id} className="flex">
                         <Checkbox id="html" name="type" disabled />
                         <Input

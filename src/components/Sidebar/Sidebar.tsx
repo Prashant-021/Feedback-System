@@ -3,7 +3,6 @@ import {
     PresentationChartBarIcon,
     DocumentPlusIcon,
     PowerIcon,
-    PlusCircleIcon,
 } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 
@@ -25,16 +24,6 @@ const Sidebar: React.FC = () => {
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p> Dashboard</p>
-                </ListItem>
-                <ListItem
-                    onClick={() => {
-                        Navigate('/categories')
-                    }}
-                >
-                    <ListItemPrefix>
-                        <PlusCircleIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    <p> Add Category</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {

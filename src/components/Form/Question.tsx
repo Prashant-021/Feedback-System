@@ -30,6 +30,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
     const renderComponent = (): JSX.Element | null => {
         switch (question.type) {
             case 'shortAnswer':
+                value.options = []
                 return <ShortAnswerComponent />
             case 'paragraph':
                 value.options = []

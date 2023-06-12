@@ -49,10 +49,12 @@ const Createform: React.FC = () => {
     useEffect((): void => {
         FormService.getForm(formId)
             .then((formDoc) => {
+                console.log(formDoc)
                 if (formDoc !== null) {
                     const categoryData = formDoc.data()
                     setFormTemplate((prevFormTemplate) => ({
                         ...prevFormTemplate,
+                        id: formDoc.id,
                         title: categoryData?.title,
                         description: categoryData?.description,
                         categoryName: categoryData?.categoryName,
@@ -134,23 +136,24 @@ const Createform: React.FC = () => {
             required: value.required,
         }
         setCreatedComponents(updatedComponents)
-        // setFormTemplate((prevFormTemplate) => ({
-        //     ...prevFormTemplate,
-        //     questions: getQuestions(),
-        // }))
     }
     const handleSave = (): void => {
-        setFormTemplate((prevFormTemplate) => ({
-            ...prevFormTemplate,
-            questions: getQuestions(),
-        }))
-        FormService.updateform(formId, formTemplate)
-            .then(() => {
-                console.log('Form updated')
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+        setFormTemplate((prevFormTemplate) => {
+            const updatedTemplate = {
+                ...prevFormTemplate,
+                questions: getQuestions(),
+            }
+
+            FormService.updateform(formId, updatedTemplate)
+                .then(() => {
+                    console.log('Form updated')
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+
+            return updatedTemplate
+        })
     }
 
     if (isLoading) {

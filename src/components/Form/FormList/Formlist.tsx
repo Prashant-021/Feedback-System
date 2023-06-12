@@ -19,6 +19,7 @@ import {
     IconButton,
     Dialog,
     DialogFooter,
+    Spinner,
 } from '@material-tailwind/react'
 import { type IFormTemplate } from '../../../interface'
 import { useNavigate } from 'react-router-dom'
@@ -38,6 +39,7 @@ const FormList: React.FC = () => {
     }
     const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         FormService.getAllForms()
@@ -53,6 +55,9 @@ const FormList: React.FC = () => {
             })
             .catch((error) => {
                 console.error('Error fetching forms:', error)
+            })
+            .finally(() => {
+                setIsLoading(false)
             })
     }, [refresh])
 
@@ -83,6 +88,9 @@ const FormList: React.FC = () => {
                 console.log(err)
                 return err
             })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }
     const handleDelete = (id: string): void => {
         FormService.deleteform(id)
@@ -93,6 +101,17 @@ const FormList: React.FC = () => {
             .catch(() => {
                 console.log('There was error deleting form')
             })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+    if (isLoading) {
+        return (
+            <div className="w-screen flex justify-center items-center">
+                Loading...
+                <Spinner className="h-12 w-12" />
+            </div>
+        )
     }
     return (
         <div className="flex-grow w-full flex items-center justify-center">

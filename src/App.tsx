@@ -11,7 +11,6 @@ import Header from './components/Header/Header'
 import Profile from './components/Profile/Profile'
 import Sidebar from './components/Sidebar/Sidebar'
 import DefaultSpeedDial from './components/Sidebar/Speeddial'
-import CategoriesList from './components/Category/CategoriesList'
 import Viewform from './components/Form/Viewform'
 
 const App: React.FC = () => {
@@ -39,7 +38,6 @@ const App: React.FC = () => {
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/categories" element={<CategoriesList />} />
                     <Route path="/forms" element={<FormList />} />
                     <Route
                         path="/forms/createform/:id"

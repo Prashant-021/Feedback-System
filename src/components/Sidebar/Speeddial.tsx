@@ -10,7 +10,6 @@ import {
     PresentationChartBarIcon,
     UserCircleIcon,
     DocumentPlusIcon,
-    PlusCircleIcon,
 } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 
@@ -31,14 +30,6 @@ const DefaultSpeedDial: React.FC = () => {
                             className="h-5 w-5"
                             onClick={() => {
                                 Navigate('/dashboard')
-                            }}
-                        />
-                    </SpeedDialAction>
-                    <SpeedDialAction>
-                        <PlusCircleIcon
-                            className="h-5 w-5"
-                            onClick={() => {
-                                Navigate('/categories')
                             }}
                         />
                     </SpeedDialAction>

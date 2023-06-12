@@ -15,7 +15,6 @@ const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
     const [form, setForm] = useState<IFormTemplate>()
-    // const Viewforms = useSelector((state: RootState) => state.form.form)
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
             .then((categoryDoc) => {
@@ -23,7 +22,6 @@ const Viewform: React.FC = () => {
                     const categoryData = categoryDoc.data()
                     console.log('Category data:', categoryData)
                     setForm(categoryData as IFormTemplate)
-                    // Process the category data as needed
                 } else {
                     console.log('Category not found')
                 }
@@ -33,7 +31,6 @@ const Viewform: React.FC = () => {
             })
     }, [])
 
-    // const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
     const inputValueRef = useRef<Record<string, any>>({})
 
     console.log(form?.questions)

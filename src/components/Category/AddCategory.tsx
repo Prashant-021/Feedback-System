@@ -17,7 +17,7 @@ import { nanoid } from '@reduxjs/toolkit'
 interface Props {
     open: boolean
     handleOpen: () => void
-    editCategory: ICategory | null
+    editCategory?: ICategory
 }
 
 const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
@@ -60,18 +60,18 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                     (c) => c.title === categoryName
                 )
 
-                if (isEdit) {
-                    dispatch(
-                        updateCategory({
-                            id: categoryId,
-                            title: categoryName,
-                            description: categoryDescription,
-                            createdDate: getDate(date),
-                        })
-                    )
+                if (categoryExist !== undefined) {
+                    alert('Category Already exists')
                 } else {
-                    if (categoryExist !== undefined) {
-                        alert('Category Already exists')
+                    if (isEdit) {
+                        dispatch(
+                            updateCategory({
+                                id: categoryId,
+                                title: categoryName,
+                                description: categoryDescription,
+                                createdDate: getDate(date),
+                            })
+                        )
                     } else {
                         dispatch(
                             addCategory({
@@ -92,7 +92,9 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
     return (
         <Fragment>
             <Dialog open={open} handler={handleOpen}>
-                <DialogHeader>Add Category</DialogHeader>
+                <DialogHeader>
+                    {isEdit ? 'Update' : 'Add'} Category
+                </DialogHeader>
                 <DialogBody className="flex justify-center " divider>
                     <div className="flex flex-col gap-4">
                         <Input
@@ -128,7 +130,7 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                         color="green"
                         onClick={handleSave}
                     >
-                        <span>Add</span>
+                        <span>{isEdit ? 'Update' : 'Add'}</span>
                     </Button>
                 </DialogFooter>
             </Dialog>

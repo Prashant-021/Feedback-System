@@ -1,28 +1,73 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
+    Button,
     Card,
     CardBody,
-    CardHeader,
+    CardFooter,
+    IconButton,
     Typography,
 } from '@material-tailwind/react'
+import { type ICategory } from '../../interface'
+import {
+    PencilIcon,
+    // DocumentPlusIcon,
+    // LinkIcon,
+    TrashIcon,
+} from '@heroicons/react/24/solid'
+import { deleteCategory } from '../redux/slice/slice'
+import { useDispatch } from 'react-redux'
+import AddCategory from '../Category/AddCategory'
 
-const CategoryInfo: React.FC = () => {
+interface Props {
+    categoryValue: ICategory
+}
+
+const CategoryInfo: React.FC<Props> = (categoryValue) => {
+    const [open, setOpen] = useState(false)
+
+    const handleOpen = (): void => {
+        setOpen(!open)
+    }
+    const dispatch = useDispatch()
     return (
-        <div className="h-44 mt-12 flex justify-center">
-            <Card className="w-56 hover:bg-blue-300">
-                <CardHeader color="blue-gray" className="relative h-43">
-                    <img
-                        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80"
-                        alt="img-blur-shadow"
-                    />
-                </CardHeader>
-                <CardBody>
-                    <Typography variant="h5" color="blue-gray" className="">
-                        Shoes
-                    </Typography>
-                </CardBody>
-            </Card>
-        </div>
+        <Card className="mt-6 w-64">
+            <CardBody>
+                <Typography variant="h5" color="blue-gray" className="mb-2">
+                    {categoryValue.categoryValue.title}
+                </Typography>
+                <Typography>
+                    {categoryValue.categoryValue.description}
+                </Typography>
+            </CardBody>
+            <CardFooter className="pt-0 flex justify-evenly">
+                <Button>View</Button>
+                <IconButton
+                    variant="outlined"
+                    color="blue-gray"
+                    onClick={() => {
+                        setOpen(!open)
+                    }}
+                >
+                    <PencilIcon className="h-4 w-4" />
+                </IconButton>
+                <AddCategory
+                    open={open}
+                    handleOpen={handleOpen}
+                    editCategory={categoryValue.categoryValue}
+                />
+                <IconButton
+                    variant="outlined"
+                    color="red"
+                    onClick={() =>
+                        dispatch(
+                            deleteCategory(categoryValue.categoryValue.title)
+                        )
+                    }
+                >
+                    <TrashIcon className="h-4 w-4" />
+                </IconButton>
+            </CardFooter>
+        </Card>
     )
 }
 
