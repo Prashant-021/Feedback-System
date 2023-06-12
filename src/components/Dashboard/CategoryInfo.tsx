@@ -30,7 +30,7 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
     }
     const dispatch = useDispatch()
     return (
-        <Card className="mt-6 w-64">
+        <Card className="mt-6 w-60">
             <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
                     {categoryValue.categoryValue.title}

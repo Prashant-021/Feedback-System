@@ -33,7 +33,7 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p> Forms</p>
+                    <p>Create Forms</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {

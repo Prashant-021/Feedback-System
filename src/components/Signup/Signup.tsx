@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { addUser } from '../redux/slice/slice'
 import { Input } from '@material-tailwind/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import { successNotify } from '../../utils'
 
 const initialValues: IUser = {
     profilepicture: null,
@@ -15,7 +16,6 @@ const initialValues: IUser = {
     password: '',
     confirmPassword: '',
 }
-
 const Signup: React.FC = () => {
     const users = useSelector((state: RootState) => state.user?.userList)
 
@@ -46,6 +46,7 @@ const Signup: React.FC = () => {
             if (userExists == null) {
                 dispatch(addUser(values))
                 sessionStorage.setItem('currentUser', values.email)
+                successNotify(`Welcome !!! ${values.name}`)
                 Navigate('/dashboard')
             } else {
                 alert('User Already Exists')
@@ -76,18 +77,13 @@ const Signup: React.FC = () => {
         <div className="flex w-full">
             <div className="w-1/2 bg-[#005ae6]  hidden md:flex">
                 <div className="w-full px-4 py-7">
-                    <p className="text-4xl text-center font-bold text-white me-3">
-                        SignUp
-                    </p>
                     <div className="w-full flex justify-center">
                         <img src="/img/Signup.svg" width={'70%'} alt="" />
                     </div>
                 </div>
             </div>
             <div className="w-full md:w-1/2 bg-white p-5 flex flex-col justify-center items-center">
-                <p className="text-4xl text-center font-bold md:hidden me-3">
-                    SignUp
-                </p>
+                <p className="text-4xl text-center font-bold my-3">Register</p>
                 <form action="" onSubmit={handleSubmit}>
                     <div className="inputGroup pb-4 pt-4">
                         <Input

@@ -6,6 +6,7 @@ import { type currentUser, type RootState } from '../../interface'
 import { useSelector } from 'react-redux'
 import { Button, Input, Typography } from '@material-tailwind/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
+import { successNotify } from '../../utils'
 
 const initialValues: currentUser = {
     Email: '',
@@ -39,6 +40,7 @@ const Login: React.FC = () => {
             if (currentUser != null) {
                 if (currentUser.password === values.password) {
                     Navigate('/dashboard')
+                    successNotify('Welcome Back!!')
                     sessionStorage.setItem('currentUser', values.Email)
                 } else {
                     setFieldError('password', 'Wrong Password')
@@ -52,7 +54,6 @@ const Login: React.FC = () => {
         <div className="flex h-screen">
             <div className="w-1/2 bg-[#005ae6]   hidden md:flex">
                 <div className=" px-4 py-7 overflow-hidden">
-                    <p className="text-4xl font-bold text-white ms-3">Login</p>
                     <div className="w-11/12">
                         <img
                             src="/img/Login/login.jpg"
@@ -64,9 +65,10 @@ const Login: React.FC = () => {
                 </div>
             </div>
             <div className="w-screen md:w-1/2 bg-white p-5 flex flex-col justify-center items-center">
-                <div className="w-full flex justify-center">
+                <div className="w-full flex flex-col items-center">
+                    <p className="text-4xl font-bold mb-4">Login</p>
                     <img
-                        className=" md:hidden rounded-full h-32 w-32"
+                        className="rounded-full h-32 w-32"
                         src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png"
                         alt="user avatar"
                     />
@@ -147,11 +149,11 @@ const Login: React.FC = () => {
                             Login
                         </Button>
                     </div>
-                    <div className="infoSec py-2 text-center">
+                    <div className="infoSec py-3 text-center">
                         <p>
-                            Don&#x3f;t have an account&#x3f;{' '}
+                            Don&apos;t have an account&#x3f;{' '}
                             <Link className="text-blue-500" to={'/signup'}>
-                                Sign Up
+                                Register
                             </Link>
                         </p>
                     </div>

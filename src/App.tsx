@@ -12,6 +12,8 @@ import Profile from './components/Profile/Profile'
 import Sidebar from './components/Sidebar/Sidebar'
 import DefaultSpeedDial from './components/Sidebar/Speeddial'
 import Viewform from './components/Form/Viewform'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 const App: React.FC = () => {
     const title = useLocation()
@@ -25,6 +27,7 @@ const App: React.FC = () => {
     }
     return (
         <div className="bg-[#e7f2fe] min-h-screen flex flex-col">
+            <ToastContainer />
             {hideHeader ? null : <Header />}
             <div className="flex flex-grow">
                 {hideHeader ? null : (
