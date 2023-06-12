@@ -1,9 +1,9 @@
 import { Button, Typography } from '@material-tailwind/react'
 import { nanoid } from '@reduxjs/toolkit'
-import { useRef } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
+// import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router-dom'
-import { type Ioption, type RootState } from '../../interface'
+import { type IFormTemplate, type Ioption } from '../../interface'
 import Checkboxes from './FormComponents/Checkboxes'
 import Dropdown from './FormComponents/Dropdown'
 import MultipleChoice from './FormComponents/MultipleChoice'
@@ -14,21 +14,26 @@ import FormService from '../../FirebaseFiles/handle/requestFunctions'
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
-    const Viewforms = useSelector((state: RootState) => state.form.form)
-    FormService.getForm(formId)
-        .then((categoryDoc) => {
-            if (categoryDoc !== null) {
-                const categoryData = categoryDoc.data()
-                console.log('Category data:', categoryData)
-                // Process the category data as needed
-            } else {
-                console.log('Category not found')
-            }
-        })
-        .catch((error) => {
-            console.error('Error fetching category:', error)
-        })
-    const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
+    const [form, setForm] = useState<IFormTemplate>()
+    // const Viewforms = useSelector((state: RootState) => state.form.form)
+    useEffect(() => {
+        FormService.getForm(formId[formId.length - 1])
+            .then((categoryDoc) => {
+                if (categoryDoc !== null) {
+                    const categoryData = categoryDoc.data()
+                    console.log('Category data:', categoryData)
+                    setForm(categoryData as IFormTemplate)
+                    // Process the category data as needed
+                } else {
+                    console.log('Category not found')
+                }
+            })
+            .catch((error) => {
+                console.error('Error fetching category:', error)
+            })
+    }, [])
+
+    // const form = Viewforms.find((f) => f.id === formId[formId.length - 1])
     const inputValueRef = useRef<Record<string, any>>({})
 
     console.log(form?.questions)

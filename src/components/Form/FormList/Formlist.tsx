@@ -36,7 +36,7 @@ const FormList: React.FC = () => {
     const handleOpen = (): void => {
         setOpen(!open)
     }
-    // const TABLE_ROWS = useSelector((state: RootState) => state.form.form)
+    const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
 
     useEffect(() => {
@@ -47,12 +47,14 @@ const FormList: React.FC = () => {
                     console.log(doc.data(), doc.id)
                     data.push(doc.data() as IFormTemplate)
                 })
-                setTableRows(data)
+                if (JSON.stringify(data) !== JSON.stringify(TABLE_ROWS)) {
+                    setTableRows(data)
+                }
             })
             .catch((error) => {
                 console.error('Error fetching forms:', error)
             })
-    }, [])
+    }, [refresh])
 
     // const dispatch = useDispatch()
     const FormTemplate: IFormTemplate = {
@@ -75,10 +77,21 @@ const FormList: React.FC = () => {
             .then((response) => {
                 console.log('Form Created')
                 Navigate(`/forms/createform/${response.id}`)
+                setRefresh((prevState) => !prevState)
             })
             .catch((err) => {
                 console.log(err)
                 return err
+            })
+    }
+    const handleDelete = (id: string): void => {
+        FormService.deleteform(id)
+            .then(() => {
+                console.log('Form deleted')
+                setRefresh((prevState) => !prevState)
+            })
+            .catch(() => {
+                console.log('There was error deleting form')
             })
     }
     return (
@@ -258,11 +271,9 @@ const FormList: React.FC = () => {
                                                     <IconButton
                                                         variant="text"
                                                         color="red"
-                                                        // onClick={() =>
-                                                        //     dispatch(
-                                                        //         deleteForm(id)
-                                                        //     )
-                                                        // }
+                                                        onClick={() => {
+                                                            handleDelete(id)
+                                                        }}
                                                     >
                                                         <TrashIcon className="h-4 w-4" />
                                                     </IconButton>

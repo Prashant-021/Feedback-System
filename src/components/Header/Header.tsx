@@ -25,7 +25,7 @@ const Header: React.FC = () => {
     }
 
     return (
-        <nav className="bg-white  h-22 w-full border-gray-200 dark:bg-gray-900">
+        <nav className="bg-white  h-22 w-full border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
             <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-4 py-2">
                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white capitalize">
                     {Heading[Heading.length - 1]}
@@ -54,27 +54,6 @@ const Header: React.FC = () => {
                                 }}
                             >
                                 Profile
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => {
-                                    handleSubmit('categories')
-                                }}
-                            >
-                                Add Category
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => {
-                                    handleSubmit('createform')
-                                }}
-                            >
-                                Createform
-                            </MenuItem>
-                            <MenuItem
-                                onClick={() => {
-                                    handleSubmit('dashboard')
-                                }}
-                            >
-                                Dashboard
                             </MenuItem>
                             <MenuItem
                                 className="text-red-500"

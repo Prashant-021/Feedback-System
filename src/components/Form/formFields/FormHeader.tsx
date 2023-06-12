@@ -39,7 +39,7 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
                 className="placeholder-black text-xl text-black"
                 variant="static"
                 label=""
-                placeholder="Category Title"
+                placeholder="Form Title"
                 value={title}
                 onChange={(e) => {
                     setTitle(e.target.value)
@@ -49,7 +49,7 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
                 className="placeholder-black text-black"
                 variant="static"
                 label=""
-                placeholder="Category Description"
+                placeholder="Form Description"
                 value={description}
                 onChange={(e) => {
                     setDescription(e.target.value)

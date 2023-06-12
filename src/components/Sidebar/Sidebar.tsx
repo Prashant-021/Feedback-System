@@ -1,9 +1,7 @@
 import { List, ListItem, ListItemPrefix } from '@material-tailwind/react'
 import {
     PresentationChartBarIcon,
-    UserCircleIcon,
     DocumentPlusIcon,
-    Cog6ToothIcon,
     PowerIcon,
     PlusCircleIcon,
 } from '@heroicons/react/24/solid'
@@ -48,23 +46,6 @@ const Sidebar: React.FC = () => {
                     </ListItemPrefix>
                     <p> Forms</p>
                 </ListItem>
-                <ListItem
-                    onClick={() => {
-                        Navigate('/profile')
-                    }}
-                >
-                    <ListItemPrefix>
-                        <UserCircleIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    <p> Profile</p>
-                </ListItem>
-                <ListItem>
-                    <ListItemPrefix>
-                        <Cog6ToothIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    <p> Settings</p>
-                </ListItem>
-
                 <ListItem
                     onClick={() => {
                         handleSubmit()

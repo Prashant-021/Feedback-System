@@ -24,6 +24,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
             ...prevQuestion,
             options: value,
         }))
+        console.log(question)
     }
 
     const renderComponent = (): JSX.Element | null => {
@@ -31,6 +32,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
             case 'shortAnswer':
                 return <ShortAnswerComponent />
             case 'paragraph':
+                value.options = []
                 return <ParagraphComponent />
             case 'multipleChoice':
                 return (

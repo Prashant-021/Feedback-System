@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button, Input } from '@material-tailwind/react'
 import { XMarkIcon } from '@heroicons/react/24/solid'
 import { nanoid } from '@reduxjs/toolkit'
@@ -8,6 +8,7 @@ interface Props {
     onOptionChange: (value: Ioption[]) => void
     optionsValue: Ioption[]
 }
+
 const DropdownComponent: React.FC<Props> = ({
     onOptionChange,
     optionsValue,
@@ -15,30 +16,28 @@ const DropdownComponent: React.FC<Props> = ({
     const [createdOption, setCreatedOption] = useState<Ioption[]>(
         optionsValue.map((option) => ({ ...option }))
     )
+
     const addOption = (): void => {
         const newOption: Ioption = {
             id: nanoid(),
             optionValue: '',
         }
         setCreatedOption([...createdOption, newOption])
-    }
-    const handleChange = (): void => {
-        onOptionChange(createdOption)
+        onOptionChange([...createdOption, newOption])
     }
 
     const handleDelete = (index: number): void => {
         const updatedOptions = [...createdOption]
         updatedOptions.splice(index, 1)
         setCreatedOption(updatedOptions)
+        onOptionChange(updatedOptions)
     }
-    useEffect(() => {
-        handleChange()
-    }, [createdOption])
 
     const handleOptionValueChange = (index: number, value: string): void => {
         const updatedOptions = [...createdOption]
         updatedOptions[index].optionValue = value
         setCreatedOption(updatedOptions)
+        onOptionChange(updatedOptions)
     }
 
     return (
@@ -60,7 +59,7 @@ const DropdownComponent: React.FC<Props> = ({
                         />
                         <Button
                             variant="text"
-                            className=" text-red-500 p-2 rounded-md float-right"
+                            className="text-red-500 p-2 rounded-md float-right"
                             onClick={() => {
                                 handleDelete(index)
                             }}

@@ -19,11 +19,11 @@ const CategoriesList: React.FC = () => {
 
     const handleOpen = (): void => {
         setOpen(!open)
+        setSelectedCategory(null)
     }
-
     const handleEdit = (category: ICategory): void => {
         setSelectedCategory(category)
-        handleOpen()
+        setOpen(!open)
     }
     return (
         <>

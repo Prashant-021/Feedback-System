@@ -1,9 +1,5 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import {
-    type IUser,
-    type ICategory,
-    // type IFormTemplate,
-} from '../../../interface'
+import { type IUser, type ICategory } from '../../../interface'
 
 interface UserState {
     userList: IUser[]
@@ -12,10 +8,6 @@ interface CategoryState {
     category: ICategory[]
 }
 
-// interface FormState {
-//     form: IFormTemplate[]
-// }
-
 const userInitialState: UserState = {
     userList: JSON.parse(localStorage.getItem('userList') ?? '[]'),
 }
@@ -23,10 +15,6 @@ const userInitialState: UserState = {
 const categoryInitialState: CategoryState = {
     category: JSON.parse(localStorage.getItem('Category') ?? '[]'),
 }
-
-// const formInitialState: FormState = {
-//     form: JSON.parse(localStorage.getItem('Forms') ?? '[]'),
-// }
 
 const userSlice = createSlice({
     name: 'user',

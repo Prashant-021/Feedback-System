@@ -46,12 +46,11 @@ const Createform: React.FC = () => {
               }))
             : []
     )
-    console.log(formTemplate)
     useEffect((): void => {
         FormService.getForm(formId)
-            .then((categoryDoc) => {
-                if (categoryDoc !== null) {
-                    const categoryData = categoryDoc.data()
+            .then((formDoc) => {
+                if (formDoc !== null) {
+                    const categoryData = formDoc.data()
                     setFormTemplate((prevFormTemplate) => ({
                         ...prevFormTemplate,
                         title: categoryData?.title,
@@ -60,11 +59,11 @@ const Createform: React.FC = () => {
                         questions: categoryData?.questions,
                     }))
                 } else {
-                    console.log('Category not found')
+                    console.log('Form not found')
                 }
             })
             .catch((error) => {
-                console.error('Error fetching category:', error)
+                console.error('Error fetching Form:', error)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -79,22 +78,17 @@ const Createform: React.FC = () => {
         }))
     }
 
-    // useEffect(() => {
-    //     if (formTemplate != null) {
-    //         setFormHeader({
-    //             title: formTemplate.title,
-    //             description: formTemplate.description,
-    //             categoryName: formTemplate.categoryName,
-    //         })
-    //         setCreatedComponents(
-    //             formTemplate.questions.map((question) => ({
-    //                 id: nanoid(),
-    //                 contentValue: question,
-    //             }))
-    //         )
-    //         setFormTemplate(formTemplate)
-    //     }
-    // }, [formTemplate, formId])
+    useEffect(() => {
+        if (formTemplate != null) {
+            setCreatedComponents(
+                formTemplate.questions.map((question) => ({
+                    id: nanoid(),
+                    contentValue: question,
+                }))
+            )
+            setFormTemplate(formTemplate)
+        }
+    }, [formTemplate, formId])
 
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
@@ -126,7 +120,11 @@ const Createform: React.FC = () => {
         updatedComponents.splice(index, 1)
         setCreatedComponents(updatedComponents)
     }
-
+    const getQuestions = (): IQuestion[] => {
+        return createdComponents.map((component) => {
+            return component.contentValue
+        })
+    }
     const handleQuestionChange = (index: number, value: IQuestion): void => {
         const updatedComponents = [...createdComponents]
         updatedComponents[index].contentValue = {
@@ -136,13 +134,16 @@ const Createform: React.FC = () => {
             required: value.required,
         }
         setCreatedComponents(updatedComponents)
+        // setFormTemplate((prevFormTemplate) => ({
+        //     ...prevFormTemplate,
+        //     questions: getQuestions(),
+        // }))
     }
-    // const getQuestions = (): IQuestion[] => {
-    //     return createdComponents.map((component) => {
-    //         return component.contentValue
-    //     })
-    // }
     const handleSave = (): void => {
+        setFormTemplate((prevFormTemplate) => ({
+            ...prevFormTemplate,
+            questions: getQuestions(),
+        }))
         FormService.updateform(formId, formTemplate)
             .then(() => {
                 console.log('Form updated')
@@ -151,24 +152,7 @@ const Createform: React.FC = () => {
                 console.log(err)
             })
     }
-    // const handleSave = (): void => {
-    //     const updatedFormTemplate: IFormTemplate = {
-    //         id: formId,
-    //         title: formHeader?.title ?? '',
-    //         description: formHeader?.description ?? '',
-    //         categoryName: formHeader?.categoryName ?? '',
-    //         questions: getQuestions(),
-    //     }
-    //     setFormTemplate(updatedFormTemplate)
-    //     console.log(formId)
-    //     FormService.updateform(formId, updatedFormTemplate)
-    //         .then(() => {
-    //             console.log('Form updated')
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //         })
-    // }
+
     if (isLoading) {
         return (
             <div className="w-screen flex justify-center items-center">
