@@ -2,13 +2,12 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from '@heroicons/react/24/outline'
-import { DocumentPlusIcon, EyeIcon } from '@heroicons/react/24/solid'
+import { EyeIcon } from '@heroicons/react/24/solid'
 import {
     Card,
     CardHeader,
     Input,
     Typography,
-    Button,
     CardBody,
     Tooltip,
     IconButton,
@@ -109,43 +108,7 @@ const FormResponses: React.FC = () => {
                     shadow={false}
                     className="rounded-none"
                 >
-                    <div className="mb-8 flex items-center justify-between gap-8">
-                        <div>
-                            <Typography variant="h5" color="blue-gray">
-                                Forms list
-                            </Typography>
-                            <Typography
-                                color="gray"
-                                className="mt-1 font-normal"
-                            >
-                                See information about all Forms
-                            </Typography>
-                        </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Button
-                                variant="outlined"
-                                color="blue-gray"
-                                size="sm"
-                            >
-                                view all
-                            </Button>
-                            <Button
-                                className="flex items-center gap-3"
-                                color="blue"
-                                size="sm"
-                                // onClick={() => {
-                                //     createForm()
-                                // }}
-                            >
-                                <DocumentPlusIcon
-                                    strokeWidth={2}
-                                    className="h-4 w-4"
-                                />{' '}
-                                Add Form
-                            </Button>
-                        </div>
-                    </div>
-                    <div className="flex flex-col items-center justify-end gap-4 md:flex-row">
+                    <div className="flex flex-col items-center justify-end gap-4 mt-3 md:flex-row">
                         <div className="w-full md:w-72">
                             <Input
                                 label="Search"
