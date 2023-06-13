@@ -2,7 +2,7 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from '@heroicons/react/24/outline'
-import { DocumentPlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/solid'
+import { DocumentPlusIcon, EyeIcon } from '@heroicons/react/24/solid'
 import {
     Card,
     CardHeader,
@@ -12,13 +12,13 @@ import {
     CardBody,
     Tooltip,
     IconButton,
-    Spinner,
 } from '@material-tailwind/react'
 import { type IFormTemplate } from '../../interface'
 // import { useNavigate } from 'react-router-dom'
 import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
+import Loader from '../Loader/Loader'
 
 interface IFormResponse extends IFormTemplate {
     Email: string
@@ -99,12 +99,7 @@ const FormResponses: React.FC = () => {
     //         })
     // }
     if (isLoading) {
-        return (
-            <div className="w-screen flex justify-center items-center">
-                Loading...
-                <Spinner className="h-12 w-12" />
-            </div>
-        )
+        return <Loader />
     }
     return (
         <div className="flex-grow w-full flex items-center justify-center">
@@ -246,7 +241,7 @@ const FormResponses: React.FC = () => {
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip> */}
-                                                <Tooltip content="Generate Link">
+                                                <Tooltip content="View Response">
                                                     <IconButton
                                                         variant="text"
                                                         color="blue"
@@ -279,7 +274,7 @@ const FormResponses: React.FC = () => {
                                                         </Button>
                                                     </DialogFooter>
                                                 </Dialog> */}
-                                                <Tooltip content="Delete">
+                                                {/* <Tooltip content="Delete">
                                                     <IconButton
                                                         variant="text"
                                                         color="red"
@@ -289,7 +284,7 @@ const FormResponses: React.FC = () => {
                                                     >
                                                         <TrashIcon className="h-4 w-4" />
                                                     </IconButton>
-                                                </Tooltip>
+                                                </Tooltip> */}
                                             </td>
                                         </tr>
                                     )

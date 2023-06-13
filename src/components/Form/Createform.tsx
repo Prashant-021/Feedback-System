@@ -70,6 +70,7 @@ const Createform: React.FC = () => {
             })
             .finally(() => {
                 setIsLoading(false)
+                handleSave()
             })
     }, [])
     const handleHeaderValueChange = (value: IFormHeader): void => {
@@ -148,7 +149,6 @@ const Createform: React.FC = () => {
             FormService.updateform(formId, updatedTemplate)
                 .then(() => {
                     successNotify('Form Updated Successfully!!')
-                    console.log('Form updated')
                 })
                 .catch((err) => {
                     console.log(err)

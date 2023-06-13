@@ -174,12 +174,12 @@ const FormList: React.FC = () => {
                 </CardHeader>
                 <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
                     <table className=" w-full min-w-max table-auto text-left">
-                        <thead>
+                        <thead className=" bg-white">
                             <tr className="sticky top-0">
                                 {TABLE_HEAD.map((head, index) => (
                                     <th
                                         key={head}
-                                        className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                        className="cursor-pointer sticky top-0 border-blue-gray-100 bg-blue-gray-50 p-4 transition-colors hover:bg-blue-gray-100"
                                     >
                                         <Typography
                                             variant="small"
@@ -187,8 +187,7 @@ const FormList: React.FC = () => {
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
                                         >
                                             {head}{' '}
-                                            {index !==
-                                                TABLE_HEAD.length - 1 && (
+                                            {index !== TABLE_HEAD.length && (
                                                 <ChevronUpDownIcon
                                                     strokeWidth={2}
                                                     className="h-4 w-4"
@@ -202,8 +201,7 @@ const FormList: React.FC = () => {
                         <tbody className="">
                             {TABLE_ROWS.map(
                                 ({ title, categoryName, id }, index) => {
-                                    const isLast =
-                                        index === TABLE_ROWS.length - 1
+                                    const isLast = index === TABLE_ROWS.length
                                     const classes = isLast
                                         ? 'p-4'
                                         : 'p-4 border-b border-blue-gray-50'
@@ -268,34 +266,17 @@ const FormList: React.FC = () => {
                                                         <LinkIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip>
-                                                {/* <Dialog
-                                                    open={open}
-                                                    handler={() => {
-                                                        setOpen(!open)
-                                                    }}
-                                                >
-                                                    <DialogInfo
-                                                        formLink={link}
-                                                    />
-                                                    <DialogFooter>
-                                                        <Button
-                                                            variant="text"
-                                                            color="red"
-                                                            onClick={() => {
-                                                                setOpen(!open)
-                                                            }}
-                                                            className="mr-1"
-                                                        >
-                                                            <span>Cancel</span>
-                                                        </Button>
-                                                    </DialogFooter>
-                                                </Dialog> */}
                                                 <Tooltip content="Delete">
                                                     <IconButton
                                                         variant="text"
                                                         color="red"
                                                         onClick={() => {
-                                                            handleDelete(id)
+                                                            const response =
+                                                                confirm(
+                                                                    'Are you sure want to delete ?'
+                                                                )
+                                                            if (response)
+                                                                handleDelete(id)
                                                         }}
                                                     >
                                                         <TrashIcon className="h-4 w-4" />
