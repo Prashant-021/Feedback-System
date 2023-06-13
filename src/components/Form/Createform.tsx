@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Spinner } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 import Question from './Question'
 import {
     ArrowUturnLeftIcon,
@@ -16,6 +16,8 @@ import {
 } from '../../interface'
 import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
+import { successNotify } from '../../utils'
+import Loader from '../Loader/Loader'
 
 const Createform: React.FC = () => {
     const location = useLocation()
@@ -49,7 +51,6 @@ const Createform: React.FC = () => {
     useEffect((): void => {
         FormService.getForm(formId)
             .then((formDoc) => {
-                console.log(formDoc)
                 if (formDoc !== null) {
                     const categoryData = formDoc.data()
                     setFormTemplate((prevFormTemplate) => ({
@@ -146,6 +147,7 @@ const Createform: React.FC = () => {
 
             FormService.updateform(formId, updatedTemplate)
                 .then(() => {
+                    successNotify('Form Updated Successfully!!')
                     console.log('Form updated')
                 })
                 .catch((err) => {
@@ -157,12 +159,7 @@ const Createform: React.FC = () => {
     }
 
     if (isLoading) {
-        return (
-            <div className="w-screen flex justify-center items-center">
-                Loading...
-                <Spinner className="h-12 w-12" />
-            </div>
-        )
+        return <Loader />
     }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">

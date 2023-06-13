@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { addCategory, updateCategory } from '../redux/slice/slice'
 import type { ICategory, RootState } from '../../interface'
-import { getDate } from '../../utils'
+import { errorNotify, getDate } from '../../utils'
 import { nanoid } from '@reduxjs/toolkit'
 
 interface Props {
@@ -59,19 +59,18 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                 const categoryExist = storedCategory.find(
                     (c) => c.title === categoryName
                 )
-
-                if (categoryExist !== undefined) {
-                    alert('Category Already exists')
+                if (isEdit) {
+                    dispatch(
+                        updateCategory({
+                            id: categoryId,
+                            title: categoryName,
+                            description: categoryDescription,
+                            createdDate: getDate(date),
+                        })
+                    )
                 } else {
-                    if (isEdit) {
-                        dispatch(
-                            updateCategory({
-                                id: categoryId,
-                                title: categoryName,
-                                description: categoryDescription,
-                                createdDate: getDate(date),
-                            })
-                        )
+                    if (categoryExist !== undefined) {
+                        errorNotify('Category Already exists')
                     } else {
                         dispatch(
                             addCategory({
@@ -83,9 +82,9 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                         )
                     }
                 }
-                clearInputs()
-                handleOpen()
             }
+            clearInputs()
+            handleOpen()
         }
     }
 

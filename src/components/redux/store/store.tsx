@@ -5,7 +5,6 @@ const store = configureStore({
     reducer: {
         user: userReducer,
         category: categoryReducer,
-        // form: formReducer,
     },
 })
 

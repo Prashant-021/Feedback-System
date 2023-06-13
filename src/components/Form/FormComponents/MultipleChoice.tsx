@@ -5,6 +5,7 @@ import {
     ListItem,
     ListItemPrefix,
     Typography,
+    Button,
 } from '@material-tailwind/react'
 import { type Ioption } from '../../../interface'
 import React from 'react'
@@ -22,13 +23,19 @@ const MultipleChoice: React.FC<Props> = ({
     id,
     onChange,
     optionlist,
+    isRequired,
 }) => {
-    const handleValueChange = (event: { target: { value: any } }): void => {
+    const handleValueChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
         onChange(event.target.value, id)
     }
     return (
         <div>
-            <Typography>{questionTitle}</Typography>
+            <Typography>
+                {questionTitle}{' '}
+                {isRequired && <span className="text-red-500">*</span>}
+            </Typography>
             <List>
                 {optionlist.map((option) => (
                     <ListItem className="p-0" key={option.id}>
@@ -59,6 +66,10 @@ const MultipleChoice: React.FC<Props> = ({
                     </ListItem>
                 ))}
             </List>
+            <Button variant="text" className="float-right mt-4">
+                {' '}
+                clear selection
+            </Button>
         </div>
     )
 }

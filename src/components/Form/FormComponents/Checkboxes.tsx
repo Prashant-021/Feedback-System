@@ -1,4 +1,5 @@
 import {
+    Button,
     Checkbox,
     List,
     ListItem,
@@ -77,6 +78,10 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
                     </ListItem>
                 ))}
             </List>
+            <Button variant="text" className="float-right mt-4">
+                {' '}
+                clear selection
+            </Button>
         </div>
     )
 }

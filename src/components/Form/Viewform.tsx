@@ -1,7 +1,6 @@
-import { Button, Typography } from '@material-tailwind/react'
+import { Button, Input, Typography } from '@material-tailwind/react'
 import { nanoid } from '@reduxjs/toolkit'
-import { useEffect, useRef, useState } from 'react'
-// import { useSelector } from 'react-redux'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { type IFormTemplate, type Ioption } from '../../interface'
 import Checkboxes from './FormComponents/Checkboxes'
@@ -10,18 +9,21 @@ import MultipleChoice from './FormComponents/MultipleChoice'
 import Paragraph from './FormComponents/Paragraph'
 import ShortAnswer from './FormComponents/ShortAnswer'
 import FormService from '../../FirebaseFiles/handle/requestFunctions'
+import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
+import Loader from '../Loader/Loader'
+import { errorNotify, successNotify } from '../../utils'
 
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
+    const [isLoading, setIsLoading] = useState(true)
     const [form, setForm] = useState<IFormTemplate>()
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
-            .then((categoryDoc) => {
-                if (categoryDoc !== null) {
-                    const categoryData = categoryDoc.data()
-                    console.log('Category data:', categoryData)
-                    setForm(categoryData as IFormTemplate)
+            .then((formDoc) => {
+                if (formDoc !== null) {
+                    const formData = formDoc.data()
+                    setForm(formData as IFormTemplate)
                 } else {
                     console.log('Category not found')
                 }
@@ -29,17 +31,33 @@ const Viewform: React.FC = () => {
             .catch((error) => {
                 console.error('Error fetching category:', error)
             })
+            .finally(() => {
+                setIsLoading(false)
+            })
     }, [])
+    console.log(form)
+    const inputValueRef = useRef<Record<string, string | string[]>>({
+        formTitle: form?.title ?? '',
+        formCategory: form?.categoryName ?? '',
+    })
 
-    const inputValueRef = useRef<Record<string, any>>({})
-
-    console.log(form?.questions)
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
-        console.log(inputValueRef.current)
+        console.log({ ...form, ...inputValueRef.current })
+        FormResponseService.addResponse({
+            ...form,
+            ...inputValueRef.current,
+        })
+            .then(() => {
+                successNotify('Form submitted successfully')
+            })
+            .catch(() => {
+                errorNotify('Form Submission Failed')
+            })
     }
     const updateOption = (value: string | string[], id: string): void => {
-        inputValueRef.current[id] = value
+        console.log(value)
+        inputValueRef.current[`${form?.title as string}--${id}`] = value
     }
     const renderQuestionType = (
         questionTitle: string,
@@ -97,7 +115,7 @@ const Viewform: React.FC = () => {
                         questionTitle={questionTitle}
                         optionlist={questionOptions as Ioption[]}
                         id={uniqueid}
-                        isrequired={isRequired}
+                        isRequired={isRequired}
                         key={uniqueid}
                         onChange={updateOption}
                     />
@@ -106,32 +124,40 @@ const Viewform: React.FC = () => {
                 return null
         }
     }
-
     const clearValues = (): void => {
         inputValueRef.current = {}
     }
-
+    if (isLoading) {
+        return <Loader />
+    }
     return (
         <div className="flex items-center flex-col w-full my-20 gap-4">
             <div className="formHeader rounded-lg shadow-xl bg-white py-12 border-blue-600 border-t-8  px-6 md:p-11 h-fit w-[90%] md:w-8/12">
                 <Typography variant="h3" color="blue-gray" className="mb-2">
-                    Form: {form?.title}
+                    {form?.title ?? ''}
                 </Typography>
-                <Typography>Form Description: {form?.description}</Typography>
-                <div className="emailSection py-3 border-gray-300 border-t-2">
-                    <label htmlFor="email">Email: </label>
-                    <input
-                        type="email"
-                        className="bg-gray-100 outline-0"
-                        placeholder="Enter Email"
-                    />
-                </div>
-                <Typography>Category: {form?.categoryName}</Typography>
+                <Typography valiant="h4">{form?.description ?? ''}</Typography>
+                <Typography valiant="h4">{form?.categoryName ?? ''}</Typography>
             </div>
             <form
                 onSubmit={handleSubmit}
                 className="formQuestions gap-4 grid w-[90%] md:w-8/12 mt-7"
             >
+                <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit">
+                    <Input
+                        type="email"
+                        variant="static"
+                        className="bg-gray-100 outline-0"
+                        placeholder="Enter Email"
+                        label="Submit Form as"
+                        onChange={(event) => {
+                            inputValueRef.current = {
+                                Email: event.target.value,
+                            }
+                        }}
+                        required
+                    />
+                </div>
                 {form?.questions.map((question) => (
                     <div
                         key={nanoid()}

@@ -2,12 +2,7 @@ import {
     MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from '@heroicons/react/24/outline'
-import {
-    PencilIcon,
-    DocumentPlusIcon,
-    LinkIcon,
-    TrashIcon,
-} from '@heroicons/react/24/solid'
+import { DocumentPlusIcon, EyeIcon, TrashIcon } from '@heroicons/react/24/solid'
 import {
     Card,
     CardHeader,
@@ -17,30 +12,35 @@ import {
     CardBody,
     Tooltip,
     IconButton,
+    Spinner,
 } from '@material-tailwind/react'
-import { type IFormTemplate } from '../../../interface'
-import { useNavigate } from 'react-router-dom'
-import { errorNotify, getDate, successNotify } from '../../../utils'
-// import DialogInfo from './dialogInfo/DialogInfo'
-import FormService from '../../../FirebaseFiles/handle/requestFunctions'
+import { type IFormTemplate } from '../../interface'
+// import { useNavigate } from 'react-router-dom'
+import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
-import Loader from '../../Loader/Loader'
 
-const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
-const date = new Date()
-const FormList: React.FC = () => {
+interface IFormResponse extends IFormTemplate {
+    Email: string
+}
+
+const TABLE_HEAD = ['Title', 'Category', 'Email', 'Actions']
+const FormResponses: React.FC = () => {
     // const [open, setOpen] = useState<boolean>(false)
-    const [refresh, setRefresh] = useState(false)
-    const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
+    // const handleOpen = (): void => {
+    //     setOpen(!open)
+    // }
+    // const [refresh, setRefresh] = useState(false)
+    const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
-        FormService.getAllForms()
+        FormResponseService.getAllResponse()
             .then((querySnapshot) => {
-                const data: IFormTemplate[] = []
+                const data: IFormResponse[] = []
                 querySnapshot.forEach((doc) => {
-                    data.push(doc.data() as IFormTemplate)
+                    console.log(doc.data(), doc.id)
+                    data.push(doc.data() as IFormResponse)
                 })
                 if (JSON.stringify(data) !== JSON.stringify(TABLE_ROWS)) {
                     setTableRows(data)
@@ -52,73 +52,62 @@ const FormList: React.FC = () => {
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [refresh])
+    }, [])
 
-    const FormTemplate: IFormTemplate = {
-        id: '',
-        title: '',
-        description: '',
-        categoryName: '',
-        questions: [
-            {
-                questionTitle: '',
-                type: '',
-                required: false,
-                options: [],
-            },
-        ],
-    }
-    const Navigate = useNavigate()
-    const createForm = (): void => {
-        FormService.addNewForm(FormTemplate)
-            .then((response) => {
-                console.log('Form Created')
-                successNotify('Form Created Successfully!!')
-                Navigate(`/forms/createform/${response.id}`)
-                setRefresh((prevState) => !prevState)
-            })
-            .catch((err) => {
-                console.log(err)
-                return err
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
-    }
-    const handleDelete = (id: string): void => {
-        FormService.deleteform(id)
-            .then(() => {
-                successNotify('Form Deleted Successfully!!')
-                console.log('Form deleted')
-                setRefresh((prevState) => !prevState)
-            })
-            .catch(() => {
-                console.log('There was error deleting form')
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
-    }
-
-    const generateLink = (id: string): void => {
-        const link = `${window.location.href}/viewform/${encodeURIComponent(
-            id
-        )}`
-        navigator.clipboard
-            .writeText(link)
-            .then(() => {
-                successNotify('Form link copied to clipboard')
-            })
-            .catch(() => {
-                errorNotify('Failed to copy form link')
-            })
-        console.log(link)
-    }
+    // const dispatch = useDispatch()
+    // const FormTemplate: IFormTemplate = {
+    //     id: '',
+    //     title: '',
+    //     description: '',
+    //     categoryName: '',
+    //     questions: [
+    //         {
+    //             questionTitle: '',
+    //             type: '',
+    //             required: false,
+    //             options: [],
+    //         },
+    //     ],
+    // }
+    // const Navigate = useNavigate()
+    // const createForm = (): void => {
+    //     FormResponseService.addNewForm(FormTemplate)
+    //         .then((response) => {
+    //             console.log('Form Created')
+    //             Navigate(`/forms/createform/${response.id}`)
+    //             setRefresh((prevState) => !prevState)
+    //         })
+    //         .catch((err) => {
+    //             console.log(err)
+    //             return err
+    //         })
+    //         .finally(() => {
+    //             setIsLoading(false)
+    //         })
+    // }
+    // const handleDelete = (id: string): void => {
+    //     FormService.deleteform(id)
+    //         .then(() => {
+    //             console.log('Form deleted')
+    //             setRefresh((prevState) => !prevState)
+    //         })
+    //         .catch(() => {
+    //             console.log('There was error deleting form')
+    //         })
+    //         .finally(() => {
+    //             setIsLoading(false)
+    //         })
+    // }
     if (isLoading) {
-        return <Loader />
+        return (
+            <div className="w-screen flex justify-center items-center">
+                Loading...
+                <Spinner className="h-12 w-12" />
+            </div>
+        )
     }
     return (
-        <div className="w-full flex items-center justify-center">
+        <div className="flex-grow w-full flex items-center justify-center">
             <Card className=" w-full sm:w-[60%]">
                 <CardHeader
                     floated={false}
@@ -149,9 +138,9 @@ const FormList: React.FC = () => {
                                 className="flex items-center gap-3"
                                 color="blue"
                                 size="sm"
-                                onClick={() => {
-                                    createForm()
-                                }}
+                                // onClick={() => {
+                                //     createForm()
+                                // }}
                             >
                                 <DocumentPlusIcon
                                     strokeWidth={2}
@@ -201,7 +190,7 @@ const FormList: React.FC = () => {
                         </thead>
                         <tbody className="">
                             {TABLE_ROWS.map(
-                                ({ title, categoryName, id }, index) => {
+                                ({ title, categoryName, id, Email }, index) => {
                                     const isLast =
                                         index === TABLE_ROWS.length - 1
                                     const classes = isLast
@@ -240,11 +229,11 @@ const FormList: React.FC = () => {
                                                     color="blue-gray"
                                                     className="font-normal"
                                                 >
-                                                    {getDate(date)}
+                                                    {Email}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
-                                                <Tooltip content="Edit Form">
+                                                {/* <Tooltip content="Edit Form">
                                                     <IconButton
                                                         variant="text"
                                                         color="blue-gray"
@@ -256,23 +245,25 @@ const FormList: React.FC = () => {
                                                     >
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>
-                                                </Tooltip>
+                                                </Tooltip> */}
                                                 <Tooltip content="Generate Link">
                                                     <IconButton
                                                         variant="text"
                                                         color="blue"
-                                                        onClick={() => {
-                                                            generateLink(id)
-                                                        }}
+                                                        // onClick={() => {
+                                                        //     link = `https://dainty-bienenstitch-3297a3.netlify.app/viewform/${encodeURIComponent(
+                                                        //         id
+                                                        //     )}`
+                                                        //     console.log(link)
+                                                        //     handleOpen()
+                                                        // }}
                                                     >
-                                                        <LinkIcon className="h-4 w-4" />
+                                                        <EyeIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip>
                                                 {/* <Dialog
                                                     open={open}
-                                                    handler={() => {
-                                                        setOpen(!open)
-                                                    }}
+                                                    handler={handleOpen}
                                                 >
                                                     <DialogInfo
                                                         formLink={link}
@@ -281,9 +272,7 @@ const FormList: React.FC = () => {
                                                         <Button
                                                             variant="text"
                                                             color="red"
-                                                            onClick={() => {
-                                                                setOpen(!open)
-                                                            }}
+                                                            onClick={handleOpen}
                                                             className="mr-1"
                                                         >
                                                             <span>Cancel</span>
@@ -294,9 +283,9 @@ const FormList: React.FC = () => {
                                                     <IconButton
                                                         variant="text"
                                                         color="red"
-                                                        onClick={() => {
-                                                            handleDelete(id)
-                                                        }}
+                                                        // onClick={() => {
+                                                        //     handleDelete(id)
+                                                        // }}
                                                     >
                                                         <TrashIcon className="h-4 w-4" />
                                                     </IconButton>
@@ -314,4 +303,4 @@ const FormList: React.FC = () => {
     )
 }
 
-export default FormList
+export default FormResponses

@@ -1,5 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { type IUser, type ICategory } from '../../../interface'
+import { errorNotify, successNotify } from '../../../utils'
 
 interface UserState {
     userList: IUser[]
@@ -38,6 +39,7 @@ const categorySlice = createSlice({
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
             localStorage.setItem('Category', JSON.stringify(state.category))
+            successNotify('Category Added successfully')
         },
         deleteCategory: (state, action: PayloadAction<string>) => {
             const titleToDelete = action.payload
@@ -46,6 +48,7 @@ const categorySlice = createSlice({
             )
             state.category = updatedCategory
             localStorage.setItem('Category', JSON.stringify(state.category))
+            successNotify('Category Deleted successfully')
         },
         updateCategory: (state, action: PayloadAction<ICategory>) => {
             const updatedCategory = state.category.map((category) => {
@@ -59,8 +62,18 @@ const categorySlice = createSlice({
                 return category
             })
 
-            state.category = updatedCategory
-            localStorage.setItem('Category', JSON.stringify(state.category))
+            const categoryExists = state.category.some(
+                (category) => category.title === action.payload.title
+            )
+
+            if (!categoryExists) {
+                state.category = updatedCategory
+                localStorage.setItem('Category', JSON.stringify(state.category))
+                successNotify('Category updated successfully')
+            } else {
+                console.log('error')
+                errorNotify('Category already exists')
+            }
         },
     },
 })

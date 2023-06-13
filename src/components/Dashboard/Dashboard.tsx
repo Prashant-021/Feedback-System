@@ -36,7 +36,7 @@ const Dashboard: React.FC = () => {
     return (
         <>
             {user != null ? (
-                <div className="w-full justify-center sm:justify-start m-8 flex flex-wrap h-fit gap-14">
+                <div className="w-full m-8 grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] h-fit ">
                     <Card className="mt-6 w-60">
                         <Button
                             className="justify-center flex"

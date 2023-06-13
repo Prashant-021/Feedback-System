@@ -14,6 +14,7 @@ import DefaultSpeedDial from './components/Sidebar/Speeddial'
 import Viewform from './components/Form/Viewform'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
+import Formresponses from './components/FormResponses/Formresponses'
 
 const App: React.FC = () => {
     const title = useLocation()
@@ -26,10 +27,10 @@ const App: React.FC = () => {
         hideHeader = true
     }
     return (
-        <div className="bg-[#e7f2fe] min-h-screen flex flex-col">
-            <ToastContainer />
+        <div className="bg-[#e7f2fe] min-h-screen relative flex flex-col">
+            <ToastContainer className="z-[100]" />
             {hideHeader ? null : <Header />}
-            <div className="flex flex-grow">
+            <div className="flex flex-grow ">
                 {hideHeader ? null : (
                     <>
                         <Sidebar />
@@ -46,12 +47,12 @@ const App: React.FC = () => {
                         path="/forms/createform/:id"
                         element={<Createform />}
                     />
-                    <Route path="/viewform/:id" element={<Viewform />} />
+                    <Route path="/forms/viewform/:id" element={<Viewform />} />
+                    <Route path="/formResponse" element={<Formresponses />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>
             </div>
-            {/* {hideHeader ? <></> : <Footer />} */}
         </div>
     )
 }

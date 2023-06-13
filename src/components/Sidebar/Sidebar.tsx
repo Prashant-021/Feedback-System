@@ -1,9 +1,18 @@
-import { List, ListItem, ListItemPrefix } from '@material-tailwind/react'
+import {
+    Button,
+    List,
+    ListItem,
+    ListItemPrefix,
+} from '@material-tailwind/react'
 import {
     PresentationChartBarIcon,
     DocumentPlusIcon,
+    DocumentIcon,
     PowerIcon,
+    Bars4Icon,
+    ArrowLeftIcon,
 } from '@heroicons/react/24/solid'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Sidebar: React.FC = () => {
@@ -12,8 +21,28 @@ const Sidebar: React.FC = () => {
         Navigate('/login')
         sessionStorage.clear()
     }
+    const [sideBarToggle, setSidebarToggle] = useState(false)
     return (
-        <div className=" w-[3.5rem] hover:w-[20rem] transition-width duration-300 overflow-hidden hidden sm:block  bg-white">
+        <div
+            className={`transition-width duration-300 overflow-hidden hidden sm:block ${
+                sideBarToggle ? 'w-[20rem]' : 'w-[3.5rem]'
+            }  bg-white`}
+        >
+            {/* <List className="group "> */}
+            <Button
+                variant="text"
+                className="float-right p-3"
+                onClick={() => {
+                    setSidebarToggle(!sideBarToggle)
+                }}
+            >
+                {sideBarToggle ? (
+                    <ArrowLeftIcon className="h-5 w-5 text-black" />
+                ) : (
+                    <Bars4Icon className="h-5 w-5 text-black" />
+                )}
+            </Button>
+            {/* </List> */}
             <List className="group">
                 <ListItem
                     onClick={() => {
@@ -23,7 +52,7 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p> Dashboard</p>
+                    <p> Category</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {
@@ -34,6 +63,16 @@ const Sidebar: React.FC = () => {
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p>Create Forms</p>
+                </ListItem>
+                <ListItem
+                    onClick={() => {
+                        Navigate('/formResponse')
+                    }}
+                >
+                    <ListItemPrefix>
+                        <DocumentIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p>Forms Responses</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {

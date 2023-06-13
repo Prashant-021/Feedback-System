@@ -24,7 +24,6 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
             ...prevQuestion,
             options: value,
         }))
-        console.log(question)
     }
 
     const renderComponent = (): JSX.Element | null => {

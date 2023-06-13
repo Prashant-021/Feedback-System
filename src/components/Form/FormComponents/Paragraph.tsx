@@ -1,4 +1,4 @@
-import { Input } from '@material-tailwind/react'
+import { Button, Input } from '@material-tailwind/react'
 import React from 'react'
 
 interface Props {
@@ -18,12 +18,18 @@ const Paragraph: React.FC<Props> = ({
         onChange(event.target.value, id)
     }
     return (
-        <Input
-            label={questionTitle}
-            variant="static"
-            required={isRequired}
-            onChange={handleChange}
-        />
+        <>
+            <Input
+                label={questionTitle}
+                variant="static"
+                required={isRequired}
+                onChange={handleChange}
+            />
+            <Button variant="text" className="float-right mt-4">
+                {' '}
+                clear selection
+            </Button>
+        </>
     )
 }
 

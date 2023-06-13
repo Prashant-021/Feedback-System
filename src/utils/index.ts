@@ -17,3 +17,5 @@ export const successNotify = (message: string): Id =>
         progress: undefined,
         theme: 'light',
     })
+
+export const errorNotify = (message: string): Id => toast.error(message, {})
