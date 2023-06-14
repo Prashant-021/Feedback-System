@@ -40,10 +40,12 @@ export interface Ioption {
     optionValue: string
 }
 export interface IQuestion {
+    id: string
     questionTitle: string
     type: string
     options: Ioption[]
     required: boolean
+    answerValue: string | string[]
 }
 export interface IFormTemplate {
     id: string

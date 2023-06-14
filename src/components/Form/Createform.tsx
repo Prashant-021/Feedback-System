@@ -33,10 +33,12 @@ const Createform: React.FC = () => {
         categoryName: '',
         questions: [
             {
+                id: '',
                 questionTitle: '',
                 type: '',
                 required: false,
                 options: [],
+                answerValue: '',
             },
         ],
     })
@@ -70,7 +72,6 @@ const Createform: React.FC = () => {
             })
             .finally(() => {
                 setIsLoading(false)
-                handleSave()
             })
     }, [])
     const handleHeaderValueChange = (value: IFormHeader): void => {
@@ -81,7 +82,6 @@ const Createform: React.FC = () => {
             categoryName: value.categoryName,
         }))
     }
-
     useEffect(() => {
         if (formTemplate != null) {
             setCreatedComponents(
@@ -102,10 +102,12 @@ const Createform: React.FC = () => {
         const newComponent: ComponentData = {
             id: nanoid(),
             contentValue: {
+                id: nanoid(),
                 questionTitle: '',
                 type: '',
                 required: false,
                 options: [],
+                answerValue: '',
             },
         }
         setCreatedComponents((prevComponents) => [
@@ -132,10 +134,12 @@ const Createform: React.FC = () => {
     const handleQuestionChange = (index: number, value: IQuestion): void => {
         const updatedComponents = [...createdComponents]
         updatedComponents[index].contentValue = {
+            id: value.id,
             questionTitle: value.questionTitle,
             type: value.type,
             options: value.options,
             required: value.required,
+            answerValue: '',
         }
         setCreatedComponents(updatedComponents)
     }

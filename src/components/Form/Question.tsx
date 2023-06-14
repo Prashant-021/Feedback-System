@@ -6,6 +6,7 @@ import CheckboxesComponent from './formFields/CheckboxesComponent'
 import DropdownComponent from './formFields/DropdownComponent'
 import MultipleChoiceComponent from './formFields/MultipleChoiceComponent'
 import ParagraphComponent from './formFields/ParagraphComponent'
+import RatingComponent from './formFields/RatingComponent'
 import ShortAnswerComponent from './formFields/ShortAnswerComponent'
 
 interface Props {
@@ -61,6 +62,8 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                         optionsValue={value.options ?? []}
                     />
                 )
+            case 'rating':
+                return <RatingComponent />
             default:
                 return null
         }
@@ -97,6 +100,7 @@ const Question: React.FC<Props> = ({ onChange, value }) => {
                     <Option value="multipleChoice">Multiple Choice</Option>
                     <Option value="checkboxes">Checkboxes</Option>
                     <Option value="dropdown">Dropdown</Option>
+                    <Option value="rating">Rating</Option>
                 </Select>
             </div>
             <div className="mt-5">{renderComponent()}</div>

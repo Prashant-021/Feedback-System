@@ -61,10 +61,12 @@ const FormList: React.FC = () => {
         categoryName: '',
         questions: [
             {
+                id: '',
                 questionTitle: '',
                 type: '',
                 required: false,
                 options: [],
+                answerValue: '',
             },
         ],
     }

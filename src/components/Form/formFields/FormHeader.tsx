@@ -2,7 +2,6 @@ import { Input, Option, Select } from '@material-tailwind/react'
 import React, { type FC, useState, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { type IFormHeader, type RootState } from '../../../interface'
-import debounce from 'lodash/debounce'
 
 interface Props {
     headerInfo: (formHead: IFormHeader) => void
@@ -20,17 +19,8 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
     const categories = useSelector(
         (state: RootState) => state.category.category
     )
-
-    const debouncedHeaderInfo = debounce(() => {
-        headerInfo({ title, description, categoryName: categoryType })
-    }, 800) // Adjust the debounce delay as per your requirement (in milliseconds)
-
     useEffect(() => {
-        debouncedHeaderInfo()
-
-        return () => {
-            debouncedHeaderInfo.cancel() // Cancel the debounced function on component unmount
-        }
+        headerInfo({ title, description, categoryName: categoryType })
     }, [title, description, categoryType])
 
     return (

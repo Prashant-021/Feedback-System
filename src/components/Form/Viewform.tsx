@@ -12,6 +12,7 @@ import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import Loader from '../Loader/Loader'
 import { errorNotify, successNotify } from '../../utils'
+import RatingBar from './FormComponents/RatingBar'
 
 const Viewform: React.FC = () => {
     const location = useLocation()
@@ -35,19 +36,11 @@ const Viewform: React.FC = () => {
                 setIsLoading(false)
             })
     }, [])
-    console.log(form)
-    const inputValueRef = useRef<Record<string, string | string[]>>({
-        formTitle: form?.title ?? '',
-        formCategory: form?.categoryName ?? '',
-    })
+    const inputValueRef = useRef<Record<string, string>>()
 
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
-        console.log({ ...form, ...inputValueRef.current })
-        FormResponseService.addResponse({
-            ...form,
-            ...inputValueRef.current,
-        })
+        FormResponseService.addResponse({ ...form, ...inputValueRef.current })
             .then(() => {
                 successNotify('Form submitted successfully')
             })
@@ -56,14 +49,17 @@ const Viewform: React.FC = () => {
             })
     }
     const updateOption = (value: string | string[], id: string): void => {
-        console.log(value)
-        inputValueRef.current[`${form?.title as string}--${id}`] = value
+        const que = form?.questions.find((question) => question.id === id)
+        if (que != null) {
+            que.answerValue = value
+        }
     }
     const renderQuestionType = (
         questionTitle: string,
         questionType: string,
         questionOptions: Ioption[] | undefined,
-        isRequired: boolean
+        isRequired: boolean,
+        id: string
     ): JSX.Element | null => {
         const uniqueid: string = nanoid()
         switch (questionType) {
@@ -74,7 +70,7 @@ const Viewform: React.FC = () => {
                         onChange={updateOption}
                         isRequired={isRequired}
                         key={uniqueid}
-                        id={uniqueid}
+                        id={id}
                     />
                 )
             case 'paragraph':
@@ -84,7 +80,7 @@ const Viewform: React.FC = () => {
                         onChange={updateOption}
                         isRequired={isRequired}
                         key={uniqueid}
-                        id={uniqueid}
+                        id={id}
                     />
                 )
             case 'multipleChoice':
@@ -94,7 +90,7 @@ const Viewform: React.FC = () => {
                         key={uniqueid}
                         onChange={updateOption}
                         isRequired={isRequired}
-                        id={uniqueid}
+                        id={id}
                         optionlist={questionOptions as Ioption[]}
                     />
                 )
@@ -106,7 +102,7 @@ const Viewform: React.FC = () => {
                         onChange={updateOption}
                         isRequired={isRequired}
                         key={uniqueid}
-                        id={uniqueid}
+                        id={id}
                     />
                 )
             case 'dropdown':
@@ -114,10 +110,20 @@ const Viewform: React.FC = () => {
                     <Dropdown
                         questionTitle={questionTitle}
                         optionlist={questionOptions as Ioption[]}
-                        id={uniqueid}
+                        id={id}
                         isRequired={isRequired}
                         key={uniqueid}
                         onChange={updateOption}
+                    />
+                )
+            case 'rating':
+                return (
+                    <RatingBar
+                        questionTitle={questionTitle}
+                        onChange={updateOption}
+                        isRequired={isRequired}
+                        key={uniqueid}
+                        id={id}
                     />
                 )
             default:
@@ -155,7 +161,6 @@ const Viewform: React.FC = () => {
                                 Email: event.target.value,
                             }
                         }}
-                        required
                     />
                 </div>
                 {form?.questions.map((question) => (
@@ -168,7 +173,8 @@ const Viewform: React.FC = () => {
                                 question.questionTitle,
                                 question.type,
                                 question.options,
-                                question.required
+                                question.required,
+                                question.id
                             )}
                         </div>
                     </div>

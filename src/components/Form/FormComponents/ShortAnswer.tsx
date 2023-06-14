@@ -16,7 +16,7 @@ const ShortAnswer: React.FC<Props> = ({
 }) => {
     const handleChange = (event: any): void => {
         event.target.value === ''
-            ? onChange('Not Atttempted', id)
+            ? onChange('Not Attempted', id)
             : onChange(event.target.value, id)
     }
 
