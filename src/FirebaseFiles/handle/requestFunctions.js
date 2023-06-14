@@ -7,6 +7,8 @@ import {
     deleteDoc,
     getDocs,
     getDoc,
+    where,
+    query,
 } from 'firebase/firestore'
 
 const formCollectionRef = collection(firestore, 'Form')
@@ -25,8 +27,16 @@ class FormService {
         return deleteDoc(formDoc)
     }
 
-    getAllForms = () => {
-        return getDocs(formCollectionRef)
+    getAllForms = (categoryType) => {
+        if (categoryType) {
+            const categoryQuery = query(
+                formCollectionRef,
+                where('categoryName', '==', categoryType)
+            )
+            return getDocs(categoryQuery)
+        } else {
+            return getDocs(formCollectionRef)
+        }
     }
 
     getForm = (id) => {

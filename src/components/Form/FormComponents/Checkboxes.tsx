@@ -6,7 +6,7 @@ import {
     ListItemPrefix,
     Typography,
 } from '@material-tailwind/react'
-import React from 'react'
+import React, { useRef } from 'react'
 import { type Ioption } from '../../../interface'
 
 interface CheckboxesProps {
@@ -24,6 +24,7 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
     id,
 }) => {
     const [selectedOptions, setSelectedOptions] = React.useState<string[]>([])
+    const inputRef = useRef<HTMLInputElement>(null)
 
     const handleCheckboxChange = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -38,9 +39,16 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
         }
     }
 
+    const handleClearSelection = (): void => {
+        setSelectedOptions([])
+        if (inputRef.current != null) {
+            inputRef.current.value = ''
+        }
+    }
+
     React.useEffect(() => {
         onChange(selectedOptions, id)
-    }, [selectedOptions, onChange])
+    }, [selectedOptions, onChange, id])
 
     return (
         <div>
@@ -78,10 +86,22 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
                     </ListItem>
                 ))}
             </List>
-            <Button variant="text" className="float-right mt-4">
-                {' '}
-                clear selection
+            {/* {selectedOptions.length > 0 && ( */}
+            <Button
+                variant="text"
+                className="float-right mt-4"
+                onClick={handleClearSelection}
+            >
+                Clear selection
             </Button>
+            {/* )}   */}
+            {/* <input
+                ref={inputRef}
+                type="text"
+                value={selectedOptions.join(', ')}
+                readOnly
+                className="border border-gray-300 rounded-md px-3 py-2 mt-2"
+            /> */}
         </div>
     )
 }

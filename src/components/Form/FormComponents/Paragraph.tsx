@@ -1,5 +1,5 @@
 import { Button, Input } from '@material-tailwind/react'
-import React from 'react'
+import React, { useState } from 'react'
 
 interface Props {
     questionTitle: string
@@ -14,9 +14,19 @@ const Paragraph: React.FC<Props> = ({
     isRequired,
     id,
 }) => {
+    const [inputValue, setInputValue] = useState('')
+
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        onChange(event.target.value, id)
+        setInputValue(event.target.value)
+        if (event.target.value === '') onChange('Not Attempted', id)
+        else onChange(event.target.value, id)
     }
+
+    const handleClearSelection = (): void => {
+        setInputValue('')
+        onChange('Not Attempted', id)
+    }
+
     return (
         <>
             <Input
@@ -24,10 +34,14 @@ const Paragraph: React.FC<Props> = ({
                 variant="static"
                 required={isRequired}
                 onChange={handleChange}
+                value={inputValue}
             />
-            <Button variant="text" className="float-right mt-4">
-                {' '}
-                clear selection
+            <Button
+                variant="text"
+                className="float-right mt-4"
+                onClick={handleClearSelection}
+            >
+                Clear Selection
             </Button>
         </>
     )

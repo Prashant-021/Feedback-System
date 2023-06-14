@@ -15,6 +15,7 @@ import Viewform from './components/Form/Viewform'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Formresponses from './components/FormResponses/Formresponses'
+import ViewFormResponse from './components/FormResponses/ViewFormResponse'
 
 const App: React.FC = () => {
     const title = useLocation()
@@ -49,6 +50,7 @@ const App: React.FC = () => {
                     />
                     <Route path="/forms/viewform/:id" element={<Viewform />} />
                     <Route path="/formResponse" element={<Formresponses />} />
+                    <Route path="/:category" element={<ViewFormResponse />} />
                     <Route path="/profile" element={<Profile />} />
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>

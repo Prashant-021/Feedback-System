@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Select, Option, Typography, Button } from '@material-tailwind/react'
 import { type Ioption } from '../../../interface'
 
@@ -17,8 +17,26 @@ const Dropdown: React.FC<DropdownProps> = ({
     onChange,
     id,
 }) => {
+    const [selectedOption, setSelectedOption] = useState<string>('')
+    console.log(selectedOption)
+    const [inputValue, setInputValue] = useState<string>('')
+
     const handleSelectChange = (value: string | undefined): void => {
-        if (value != null) onChange(value, id)
+        if (value != null) {
+            setSelectedOption(value)
+            onChange(value, id)
+        }
+    }
+
+    const handleClearSelection = (): void => {
+        setSelectedOption('')
+        setInputValue('')
+    }
+
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setInputValue(event.target.value)
     }
 
     return (
@@ -36,10 +54,18 @@ const Dropdown: React.FC<DropdownProps> = ({
                     ))}
                 </Select>
             </div>
-            <Button variant="text" className="float-right mt-4">
-                {' '}
+            <Button
+                variant="text"
+                className="float-right mt-4"
+                onClick={handleClearSelection}
+            >
                 clear selection
             </Button>
+            <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+            />
         </>
     )
 }

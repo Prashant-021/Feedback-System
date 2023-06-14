@@ -7,6 +7,7 @@ interface Props {
     isRequired: boolean
     id: string
 }
+
 const RatingBar: React.FC<Props> = ({
     questionTitle,
     id,
@@ -14,6 +15,12 @@ const RatingBar: React.FC<Props> = ({
     isRequired,
 }) => {
     const [rated, setRated] = React.useState(0)
+
+    const handleClearSelection = (): void => {
+        setRated(0)
+        onChange('', id)
+    }
+
     return (
         <>
             <Typography>
@@ -22,7 +29,7 @@ const RatingBar: React.FC<Props> = ({
             </Typography>
             <div className="flex items-center gap-2 mt-2">
                 <Rating
-                    value={0}
+                    value={rated}
                     onChange={(value) => {
                         setRated(value)
                         onChange(String(value), id)
@@ -32,9 +39,12 @@ const RatingBar: React.FC<Props> = ({
                     {rated}.0 Rated
                 </Typography>
             </div>
-            <Button variant="text" className="float-right">
-                {' '}
-                clear selection
+            <Button
+                variant="text"
+                className="float-right"
+                onClick={handleClearSelection}
+            >
+                Clear selection
             </Button>
         </>
     )

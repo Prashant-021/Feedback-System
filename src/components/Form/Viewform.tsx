@@ -36,11 +36,14 @@ const Viewform: React.FC = () => {
                 setIsLoading(false)
             })
     }, [])
-    const inputValueRef = useRef<Record<string, string>>()
+    const inputValueRef = useRef<Record<string, string>>({
+        id: nanoid(),
+    })
 
+    console.log(inputValueRef.current)
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
-        FormResponseService.addResponse({ ...form, ...inputValueRef.current })
+        FormResponseService.addResponse({ ...inputValueRef.current, ...form })
             .then(() => {
                 successNotify('Form submitted successfully')
             })
@@ -143,7 +146,9 @@ const Viewform: React.FC = () => {
                     {form?.title ?? ''}
                 </Typography>
                 <Typography valiant="h4">{form?.description ?? ''}</Typography>
-                <Typography valiant="h4">{form?.categoryName ?? ''}</Typography>
+                <Typography valiant="h4">
+                    Category: {form?.categoryName ?? ''}
+                </Typography>
             </div>
             <form
                 onSubmit={handleSubmit}

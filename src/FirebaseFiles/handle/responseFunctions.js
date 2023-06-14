@@ -1,5 +1,5 @@
 import { firestore } from '../FirebaseSetup'
-import { collection, addDoc, getDocs } from 'firebase/firestore'
+import { collection, addDoc, getDocs, query, where } from 'firebase/firestore'
 
 const formCollectionRef = collection(firestore, 'FormResponse')
 class FormResponseService {
@@ -7,8 +7,16 @@ class FormResponseService {
         return addDoc(formCollectionRef, newform)
     }
 
-    getAllResponse = () => {
-        return getDocs(formCollectionRef)
+    getAllResponse = (categoryType) => {
+        if (categoryType) {
+            const categoryQuery = query(
+                formCollectionRef,
+                where('categoryName', '==', categoryType)
+            )
+            return getDocs(categoryQuery)
+        } else {
+            return getDocs(formCollectionRef)
+        }
     }
 }
 

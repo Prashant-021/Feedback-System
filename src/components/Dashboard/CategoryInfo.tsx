@@ -31,6 +31,7 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
         setOpen(!open)
     }
     const Navigate = useNavigate()
+    // const Navigate = useNavigate()
     const dispatch = useDispatch()
     return (
         <Card className="mt-6 w-60">
@@ -45,8 +46,13 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
             <CardFooter className="pt-0 flex justify-evenly">
                 <Tooltip content="View Responses">
                     <Button
+                        color="blue"
                         onClick={() => {
-                            Navigate('/formResponse')
+                            Navigate('/formresponse', {
+                                state: {
+                                    category: categoryValue.categoryValue.title,
+                                },
+                            })
                         }}
                     >
                         View

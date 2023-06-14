@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import {
     Radio,
     List,
@@ -8,7 +7,7 @@ import {
     Button,
 } from '@material-tailwind/react'
 import { type Ioption } from '../../../interface'
-import React from 'react'
+import React, { useState } from 'react'
 
 interface Props {
     optionlist: Ioption[]
@@ -25,11 +24,27 @@ const MultipleChoice: React.FC<Props> = ({
     optionlist,
     isRequired,
 }) => {
+    const [selectedOption, setSelectedOption] = useState<string>('')
+    const [inputValue, setInputValue] = useState<string>('')
+
     const handleValueChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
+        setSelectedOption(event.target.value)
         onChange(event.target.value, id)
     }
+
+    const handleClearSelection = (): void => {
+        setSelectedOption('')
+        setInputValue('')
+    }
+
+    const handleInputChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ): void => {
+        setInputValue(event.target.value)
+    }
+
     return (
         <div>
             <Typography>
@@ -53,6 +68,9 @@ const MultipleChoice: React.FC<Props> = ({
                                         className: 'p-0',
                                     }}
                                     value={option.optionValue}
+                                    checked={
+                                        selectedOption === option.optionValue
+                                    }
                                     onChange={handleValueChange}
                                 />
                             </ListItemPrefix>
@@ -66,10 +84,18 @@ const MultipleChoice: React.FC<Props> = ({
                     </ListItem>
                 ))}
             </List>
-            <Button variant="text" className="float-right mt-4">
-                {' '}
+            <Button
+                variant="text"
+                className="float-right mt-4"
+                onClick={handleClearSelection}
+            >
                 clear selection
             </Button>
+            <input
+                type="text"
+                value={inputValue}
+                onChange={handleInputChange}
+            />
         </div>
     )
 }

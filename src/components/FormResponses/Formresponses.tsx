@@ -15,11 +15,12 @@ import {
 } from '@material-tailwind/react'
 import { type RootState, type IFormTemplate } from '../../interface'
 // import { useNavigate } from 'react-router-dom'
-import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
+import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import React, { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
 import Loader from '../Loader/Loader'
 import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 interface IFormResponse extends IFormTemplate {
     Email: string
@@ -27,6 +28,8 @@ interface IFormResponse extends IFormTemplate {
 
 const TABLE_HEAD = ['Category', 'Forms', 'Actions']
 const FormResponses: React.FC = () => {
+    const location = useLocation()
+    const { category } = location.state
     // const [open, setOpen] = useState<boolean>(false)
     // const handleOpen = (): void => {
     //     setOpen(!open)
@@ -34,18 +37,16 @@ const FormResponses: React.FC = () => {
     // const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const Navigate = useNavigate()
     const categories = useSelector(
         (state: RootState) => state.category.category
     )
-    console.log(categories)
-    const [categoryType, setCategoryType] = useState<string>()
-
+    const [categoryType, setCategoryType] = useState<string>(category)
     useEffect(() => {
-        FormResponseService.getAllResponse()
+        FormService.getAllForms(categoryType)
             .then((querySnapshot) => {
                 const data: IFormResponse[] = []
                 querySnapshot.forEach((doc) => {
-                    console.log(doc.data(), doc.id)
                     data.push(doc.data() as IFormResponse)
                 })
                 if (JSON.stringify(data) !== JSON.stringify(TABLE_ROWS)) {
@@ -58,7 +59,7 @@ const FormResponses: React.FC = () => {
             .finally(() => {
                 setIsLoading(false)
             })
-    }, [])
+    }, [categoryType])
 
     // const dispatch = useDispatch()
     // const FormTemplate: IFormTemplate = {
@@ -119,7 +120,6 @@ const FormResponses: React.FC = () => {
                     }}
                 >
                     {categories.map((category) => {
-                        console.log(category.title)
                         return (
                             <Option key={category.id} value={category.title}>
                                 {category.title}
@@ -211,17 +211,15 @@ const FormResponses: React.FC = () => {
                                                         <PencilIcon className="h-4 w-4" />
                                                     </IconButton>
                                                 </Tooltip> */}
-                                                    <Tooltip content="View Response">
+                                                    <Tooltip content="View Responses">
                                                         <IconButton
                                                             variant="text"
                                                             color="blue"
-                                                            // onClick={() => {
-                                                            //     link = `https://dainty-bienenstitch-3297a3.netlify.app/viewform/${encodeURIComponent(
-                                                            //         id
-                                                            //     )}`
-                                                            //     console.log(link)
-                                                            //     handleOpen()
-                                                            // }}
+                                                            onClick={(): void => {
+                                                                Navigate(
+                                                                    `/${categoryName}`
+                                                                )
+                                                            }}
                                                         >
                                                             <EyeIcon className="h-4 w-4" />
                                                         </IconButton>

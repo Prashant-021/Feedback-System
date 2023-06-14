@@ -7,7 +7,6 @@ import {
 import {
     PresentationChartBarIcon,
     DocumentPlusIcon,
-    DocumentIcon,
     PowerIcon,
     Bars4Icon,
     ArrowLeftIcon,
@@ -63,16 +62,6 @@ const Sidebar: React.FC = () => {
                         <DocumentPlusIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p>Create Forms</p>
-                </ListItem>
-                <ListItem
-                    onClick={() => {
-                        Navigate('/formResponse')
-                    }}
-                >
-                    <ListItemPrefix>
-                        <DocumentIcon className="h-5 w-5" />
-                    </ListItemPrefix>
-                    <p>Forms Responses</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {
