@@ -11,7 +11,8 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { addCategory, updateCategory } from '../redux/slice/slice'
 import type { ICategory, RootState } from '../../interface'
-import { errorNotify, getDate } from '../../utils'
+import { errorNotify, getDate, successNotify } from '../../utils'
+import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
 import { nanoid } from '@reduxjs/toolkit'
 
 interface Props {
@@ -80,6 +81,18 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                                 createdDate: getDate(date),
                             })
                         )
+                        CategoryService.addCategory({
+                            id: nanoid(),
+                            title: categoryName,
+                            description: categoryDescription,
+                            createdDate: getDate(date),
+                        })
+                            .then(() => {
+                                successNotify('Category added successfully')
+                            })
+                            .catch((err) => {
+                                errorNotify(err)
+                            })
                     }
                 }
             }

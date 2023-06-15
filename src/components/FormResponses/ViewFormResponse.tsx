@@ -11,7 +11,7 @@ interface IFormResponse extends IFormTemplate {
     Email: string
 }
 
-const TABLE_HEAD = ['Email', 'Category', 'Action']
+const TABLE_HEAD = ['Email', 'View Response']
 const ViewFormResponse: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
@@ -43,6 +43,10 @@ const ViewFormResponse: React.FC = () => {
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%]">
+                <Typography variant="h2" className="mb-3 ">
+                    {/* Category:{' '} */}
+                    <span className="text-blue-800">{categoryType}</span>
+                </Typography>
                 <Button
                     className="float-left items-center gap-3"
                     color="blue"
@@ -65,12 +69,12 @@ const ViewFormResponse: React.FC = () => {
                                 {TABLE_HEAD.map((head) => (
                                     <th
                                         key={head}
-                                        className="border-b border-blue-gray-100 bg-blue-gray-50 p-4"
+                                        className="border-b border-blue-400 bg-blue-500 p-4 "
                                     >
                                         <Typography
                                             variant="small"
-                                            color="blue-gray"
-                                            className="font-normal leading-none opacity-70"
+                                            color="white"
+                                            className="font-normal leading-none"
                                         >
                                             {head}
                                         </Typography>
@@ -79,7 +83,7 @@ const ViewFormResponse: React.FC = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {TABLE_ROWS.map(({ Email, categoryName }) => (
+                            {TABLE_ROWS.map(({ Email }, index) => (
                                 <tr
                                     key={nanoid()}
                                     className="even:bg-blue-gray-50/50"
@@ -94,24 +98,31 @@ const ViewFormResponse: React.FC = () => {
                                         </Typography>
                                     </td>
                                     <td className="p-4">
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
+                                        <Button
+                                            size="sm"
+                                            variant="text"
+                                            onClick={() => {
+                                                Navigate(
+                                                    '/formResponse/individualform',
+                                                    {
+                                                        state: {
+                                                            category:
+                                                                TABLE_ROWS[
+                                                                    index
+                                                                ],
+                                                        },
+                                                    }
+                                                )
+                                            }}
                                         >
-                                            {categoryName}
-                                        </Typography>
-                                    </td>
-                                    <td className="p-4">
-                                        <Typography
-                                            as="a"
-                                            href="#"
-                                            variant="small"
-                                            color="blue"
-                                            className="font-medium"
-                                        >
-                                            Edit
-                                        </Typography>
+                                            <Typography
+                                                variant="small"
+                                                color="blue"
+                                                className="font-medium"
+                                            >
+                                                View
+                                            </Typography>
+                                        </Button>
                                     </td>
                                 </tr>
                             ))}

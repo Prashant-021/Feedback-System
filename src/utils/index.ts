@@ -1,9 +1,9 @@
 import { type Id, toast } from 'react-toastify'
 
 export const getDate = (dateTime: Date): string => {
-    return `${dateTime.getDate()}-${
+    return `${dateTime.getDate()}/${
         dateTime.getMonth() + 1
-    }-${dateTime.getFullYear()}`
+    }/${dateTime.getFullYear()}`
 }
 
 export const successNotify = (message: string): Id =>

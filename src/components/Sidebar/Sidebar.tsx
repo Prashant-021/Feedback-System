@@ -1,5 +1,5 @@
 import {
-    Button,
+    // Button,
     List,
     ListItem,
     ListItemPrefix,
@@ -8,10 +8,10 @@ import {
     PresentationChartBarIcon,
     DocumentPlusIcon,
     PowerIcon,
-    Bars4Icon,
-    ArrowLeftIcon,
+    // Bars4Icon,
+    // ArrowLeftIcon,
 } from '@heroicons/react/24/solid'
-import { useState } from 'react'
+// import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
 const Sidebar: React.FC = () => {
@@ -20,15 +20,13 @@ const Sidebar: React.FC = () => {
         Navigate('/login')
         sessionStorage.clear()
     }
-    const [sideBarToggle, setSidebarToggle] = useState(false)
+    // const [sideBarToggle, setSidebarToggle] = useState(false)
     return (
         <div
-            className={`transition-width duration-300 overflow-hidden hidden sm:block ${
-                sideBarToggle ? 'w-[20rem]' : 'w-[3.5rem]'
-            }  bg-white`}
+            className={`transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[20rem] bg-white`}
         >
             {/* <List className="group "> */}
-            <Button
+            {/* <Button
                 variant="text"
                 className="float-right p-3"
                 onClick={() => {
@@ -40,7 +38,7 @@ const Sidebar: React.FC = () => {
                 ) : (
                     <Bars4Icon className="h-5 w-5 text-black" />
                 )}
-            </Button>
+            </Button> */}
             {/* </List> */}
             <List className="group">
                 <ListItem

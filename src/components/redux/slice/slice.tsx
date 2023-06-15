@@ -38,8 +38,8 @@ const categorySlice = createSlice({
             const newCategory = action.payload
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
-            localStorage.setItem('Category', JSON.stringify(state.category))
-            successNotify('Category Added successfully')
+            // localStorage.setItem('Category', JSON.stringify(state.category))
+            // successNotify('Category Added successfully')
         },
         deleteCategory: (state, action: PayloadAction<string>) => {
             const titleToDelete = action.payload
@@ -47,8 +47,6 @@ const categorySlice = createSlice({
                 (category) => category.title !== titleToDelete
             )
             state.category = updatedCategory
-            localStorage.setItem('Category', JSON.stringify(state.category))
-            successNotify('Category Deleted successfully')
         },
         updateCategory: (state, action: PayloadAction<ICategory>) => {
             const updatedCategory = state.category.map((category) => {

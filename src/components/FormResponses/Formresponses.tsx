@@ -1,11 +1,7 @@
-import {
-    MagnifyingGlassIcon,
-    ChevronUpDownIcon,
-} from '@heroicons/react/24/outline'
+import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
 import { EyeIcon } from '@heroicons/react/24/solid'
 import {
     Card,
-    Input,
     Typography,
     Option,
     CardBody,
@@ -30,11 +26,6 @@ const TABLE_HEAD = ['Category', 'Forms', 'Actions']
 const FormResponses: React.FC = () => {
     const location = useLocation()
     const { category } = location.state
-    // const [open, setOpen] = useState<boolean>(false)
-    // const handleOpen = (): void => {
-    //     setOpen(!open)
-    // }
-    // const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
     const Navigate = useNavigate()
@@ -60,80 +51,34 @@ const FormResponses: React.FC = () => {
                 setIsLoading(false)
             })
     }, [categoryType])
-
-    // const dispatch = useDispatch()
-    // const FormTemplate: IFormTemplate = {
-    //     id: '',
-    //     title: '',
-    //     description: '',
-    //     categoryName: '',
-    //     questions: [
-    //         {
-    //             questionTitle: '',
-    //             type: '',
-    //             required: false,
-    //             options: [],
-    //         },
-    //     ],
-    // }
-    // const Navigate = useNavigate()
-    // const createForm = (): void => {
-    //     FormResponseService.addNewForm(FormTemplate)
-    //         .then((response) => {
-    //             console.log('Form Created')
-    //             Navigate(`/forms/createform/${response.id}`)
-    //             setRefresh((prevState) => !prevState)
-    //         })
-    //         .catch((err) => {
-    //             console.log(err)
-    //             return err
-    //         })
-    //         .finally(() => {
-    //             setIsLoading(false)
-    //         })
-    // }
-    // const handleDelete = (id: string): void => {
-    //     FormService.deleteform(id)
-    //         .then(() => {
-    //             console.log('Form deleted')
-    //             setRefresh((prevState) => !prevState)
-    //         })
-    //         .catch(() => {
-    //             console.log('There was error deleting form')
-    //         })
-    //         .finally(() => {
-    //             setIsLoading(false)
-    //         })
-    // }
     if (isLoading) {
         return <Loader />
     }
     return (
-        <div className="flex-grow w-full flex-col flex items-center justify-center">
-            {/* <div className="div"> */}
-            <div className="flex my-4 bg-white p-4 rounded-md gap-24 w-full md:w-[60%]">
-                <Select
-                    label="Select Category"
-                    value={categoryType}
-                    onChange={(event) => {
-                        setCategoryType(event as string)
-                    }}
-                >
-                    {categories.map((category) => {
-                        return (
-                            <Option key={category.id} value={category.title}>
-                                {category.title}
-                            </Option>
-                        )
-                    })}
-                </Select>
-                <Input
-                    label="Search"
-                    icon={<MagnifyingGlassIcon className="h-5 w-5" />}
-                />
-            </div>
-            {/* </div> */}
-            <div className="w-full md:w-[60%]">
+        <div className="flex-grow w-full flex-col flex items-center ">
+            <Card className="flex my-4 bg-white p-4 justify-end rounded-md gap-24">
+                <div className="w-72">
+                    <Select
+                        label="Select Category"
+                        value={categoryType}
+                        onChange={(event) => {
+                            setCategoryType(event as string)
+                        }}
+                    >
+                        {categories.map((category) => {
+                            return (
+                                <Option
+                                    key={category.id}
+                                    value={category.title}
+                                >
+                                    {category.title}
+                                </Option>
+                            )
+                        })}
+                    </Select>
+                </div>
+            </Card>
+            <div className="w-[90%]">
                 <Card className=" w-full">
                     <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
                         <table className=" w-full min-w-max table-auto text-left">
@@ -217,7 +162,7 @@ const FormResponses: React.FC = () => {
                                                             color="blue"
                                                             onClick={(): void => {
                                                                 Navigate(
-                                                                    `/${categoryName}`
+                                                                    `/formresponse/${categoryName}`
                                                                 )
                                                             }}
                                                         >

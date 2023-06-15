@@ -15,33 +15,49 @@ import {
     // LinkIcon,
     TrashIcon,
 } from '@heroicons/react/24/solid'
-import { deleteCategory } from '../redux/slice/slice'
-import { useDispatch } from 'react-redux'
+// import { deleteCategory } from '../redux/slice/slice'
+// import { useDispatch } from 'react-redux'
 import AddCategory from '../Category/AddCategory'
 import { useNavigate } from 'react-router-dom'
+import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
+import { successNotify } from '../../utils'
+// import { errorNotify, successNotify } from '../../utils'
+// import { errorNotify, successNotify } from '../../utils'
 
 interface Props {
     categoryValue: ICategory
 }
 
-const CategoryInfo: React.FC<Props> = (categoryValue) => {
+const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
     const [open, setOpen] = useState(false)
 
     const handleOpen = (): void => {
         setOpen(!open)
     }
+    const handleDelete = (id: string): void => {
+        CategoryService.deleteCategory(id)
+            .then(() => {
+                successNotify('Form Deleted Successfully!!')
+                console.log('Form deleted')
+                // setRefresh((prevState) => !prevState)
+            })
+            .catch(() => {
+                console.log('There was error deleting form')
+            })
+        // .finally(() => {
+        //     setIsLoading(false)
+        // })
+    }
     const Navigate = useNavigate()
     // const Navigate = useNavigate()
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     return (
-        <Card className="mt-6 w-60">
+        <Card className="mt-6 w-60 scale-95 hover:scale-100 transition-scale duration-300">
             <CardBody>
                 <Typography variant="h5" color="blue-gray" className="mb-2">
-                    {categoryValue.categoryValue.title}
+                    {categoryValue.title}
                 </Typography>
-                <Typography>
-                    {categoryValue.categoryValue.description}
-                </Typography>
+                <Typography>{categoryValue.description}</Typography>
             </CardBody>
             <CardFooter className="pt-0 flex justify-evenly">
                 <Tooltip content="View Responses">
@@ -50,7 +66,7 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
                         onClick={() => {
                             Navigate('/formresponse', {
                                 state: {
-                                    category: categoryValue.categoryValue.title,
+                                    category: categoryValue.title,
                                 },
                             })
                         }}
@@ -72,7 +88,7 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
                 <AddCategory
                     open={open}
                     handleOpen={handleOpen}
-                    editCategory={categoryValue.categoryValue}
+                    editCategory={categoryValue}
                 />
                 <Tooltip content="Delete Category">
                     <IconButton
@@ -82,12 +98,11 @@ const CategoryInfo: React.FC<Props> = (categoryValue) => {
                             const response = confirm(
                                 'Are you sure want to delete ?'
                             )
-                            if (response)
-                                dispatch(
-                                    deleteCategory(
-                                        categoryValue.categoryValue.title
-                                    )
-                                )
+                            if (response) {
+                                // dispatch(deleteCategory(categoryValue.title))
+                                console.log(categoryValue.id)
+                                handleDelete(categoryValue.id)
+                            }
                         }}
                     >
                         <TrashIcon className="h-4 w-4" />
