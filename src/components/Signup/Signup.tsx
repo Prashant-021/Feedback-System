@@ -101,7 +101,7 @@ const Signup: React.FC = () => {
                         className="mb-4 grid h-28 place-items-center"
                     >
                         <Typography variant="h3" color="white">
-                            Sign In
+                            Register
                         </Typography>
                     </CardHeader>
                     <form action="" onSubmit={handleSubmit}>

@@ -56,38 +56,9 @@ const FormList: React.FC = () => {
             })
     }, [refresh])
 
-    const FormTemplate: IFormTemplate = {
-        id: '',
-        title: '',
-        description: '',
-        categoryName: '',
-        questions: [
-            {
-                id: '',
-                questionTitle: '',
-                type: '',
-                required: false,
-                options: [],
-                answerValue: '',
-            },
-        ],
-    }
     const Navigate = useNavigate()
     const createForm = (): void => {
-        FormService.addNewForm(FormTemplate)
-            .then((response) => {
-                console.log('Form Created')
-                successNotify('Form Created Successfully!!')
-                Navigate(`/forms/createform/${response.id}`)
-                setRefresh((prevState) => !prevState)
-            })
-            .catch((err) => {
-                console.log(err)
-                return err
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
+        Navigate(`/forms/createform/${nanoid()}`)
     }
     const handleDelete = (id: string): void => {
         FormService.deleteform(id)

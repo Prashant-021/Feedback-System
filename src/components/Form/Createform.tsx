@@ -16,17 +16,17 @@ import {
 } from '../../interface'
 import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
-import { successNotify } from '../../utils'
-import Loader from '../Loader/Loader'
+import { errorNotify, successNotify } from '../../utils'
+// import { successNotify } from '../../utils'
+// import Loader from '../Loader/Loader'
 
 const Createform: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
     const formId = path[path.length - 1]
 
-    const [isLoading, setIsLoading] = useState(true)
+    // const [isLoading, setIsLoading] = useState(true)
     const bottomRef = useRef<HTMLDivElement>(null)
-    const [saved, setSaved] = useState(true)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
         title: '',
@@ -51,30 +51,30 @@ const Createform: React.FC = () => {
               }))
             : []
     )
-    useEffect((): void => {
-        FormService.getForm(formId)
-            .then((formDoc) => {
-                if (formDoc !== null) {
-                    const categoryData = formDoc.data()
-                    setFormTemplate((prevFormTemplate) => ({
-                        ...prevFormTemplate,
-                        id: formDoc.id,
-                        title: categoryData?.title,
-                        description: categoryData?.description,
-                        categoryName: categoryData?.categoryName,
-                        questions: categoryData?.questions,
-                    }))
-                } else {
-                    console.log('Form not found')
-                }
-            })
-            .catch((error) => {
-                console.error('Error fetching Form:', error)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
-    }, [])
+    // useEffect((): void => {
+    //     FormService.getForm(formId)
+    //         .then((formDoc) => {
+    //             if (formDoc !== null) {
+    //                 const categoryData = formDoc.data()
+    //                 setFormTemplate((prevFormTemplate) => ({
+    //                     ...prevFormTemplate,
+    //                     id: formDoc.id,
+    //                     title: categoryData?.title,
+    //                     description: categoryData?.description,
+    //                     categoryName: categoryData?.categoryName,
+    //                     questions: categoryData?.questions,
+    //                 }))
+    //             } else {
+    //                 console.log('Form not found')
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error fetching Form:', error)
+    //         })
+    //         .finally(() => {
+    //             setIsLoading(false)
+    //         })
+    // }, [])
     const handleHeaderValueChange = (value: IFormHeader): void => {
         setFormTemplate((prevFormTemplate) => ({
             ...prevFormTemplate,
@@ -134,6 +134,7 @@ const Createform: React.FC = () => {
     }
     const handleQuestionChange = (index: number, value: IQuestion): void => {
         const updatedComponents = [...createdComponents]
+        console.log('Hello')
         updatedComponents[index].contentValue = {
             id: value.id,
             questionTitle: value.questionTitle,
@@ -143,42 +144,48 @@ const Createform: React.FC = () => {
             answerValue: '',
         }
         setCreatedComponents(updatedComponents)
+        console.log(getQuestions())
+        // setFormTemplate((prevState) => {
+        //     const updatedTemplate: IFormTemplate = {
+        //         ...prevState,
+        //         questions: getQuestions(),
+        //     }
+        //     return updatedTemplate
+        // })
     }
     const handleSave = (): void => {
-        setSaved(false)
-        setFormTemplate((prevFormTemplate) => {
-            const updatedTemplate = {
-                ...prevFormTemplate,
-                questions: getQuestions(),
-            }
+        // FormService.updateform(formId, updatedTemplate)
+        //     .then(() => {
+        //         successNotify('Form Updated Successfully!!')
+        //     })
+        //     .catch((err) => {
+        //         console.log(err)
+        //     })
 
-            FormService.updateform(formId, updatedTemplate)
-                .then(() => {
-                    successNotify('Form Updated Successfully!!')
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
-
-            return updatedTemplate
-        })
+        // return updatedTemplate
+        // })
+        console.log(formTemplate)
+        FormService.addNewForm(formTemplate)
+            .then(() => {
+                successNotify('Form Added successfully')
+            })
+            .catch(() => {
+                errorNotify('Error while Adding Form')
+            })
     }
 
-    if (isLoading) {
-        return <Loader />
-    }
+    // if (isLoading) {
+    //     return <Loader />
+    // }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
                 <Tooltip content="Save the form">
-                    <Button
-                        className="float-left items-center gap-3"
-                        disabled={saved}
-                    >
-                        <Link to={'/forms'}>
+                    <Link to={'/forms'}>
+                        <Button className="float-left items-center gap-3">
                             <ArrowUturnLeftIcon className="h-5 w-5" />
-                        </Link>
-                    </Button>
+                        </Button>
+                    </Link>
                 </Tooltip>
                 <Button className="float-right" onClick={handleSave}>
                     Save
@@ -196,14 +203,14 @@ const Createform: React.FC = () => {
                         categoryName: formTemplate.categoryName,
                     }}
                 />
-                {createdComponents.map((component, index) => {
+                {formTemplate.questions.map((component, index) => {
                     return (
                         <div
                             key={component.id}
                             className=" rounded-lg shadow-xl border-l-8 border-transparent focus-within:border-blue-500 bg-white p-2 md:p-11 h-fit"
                         >
                             <Question
-                                value={component.contentValue}
+                                value={component}
                                 onChange={(value) => {
                                     handleQuestionChange(index, value)
                                 }}

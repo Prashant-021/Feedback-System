@@ -20,7 +20,6 @@ const Sidebar: React.FC = () => {
         Navigate('/login')
         sessionStorage.clear()
     }
-    // const [sideBarToggle, setSidebarToggle] = useState(false)
     return (
         <div
             className={` transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[20rem] bg-white group`}
@@ -44,7 +43,7 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <DocumentIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p className="hidden group-hover:block">view Forms</p>
+                    <p className="hidden group-hover:block">View Forms</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {
