@@ -69,6 +69,18 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                             createdDate: getDate(date),
                         })
                     )
+                    CategoryService.updateCategory(categoryId, {
+                        id: categoryId,
+                        title: categoryName,
+                        description: categoryDescription,
+                        createdDate: getDate(date),
+                    })
+                        .then(() => {
+                            successNotify('Category updated successfully')
+                        })
+                        .catch((err) => {
+                            console.log('Error updating category', err)
+                        })
                 } else {
                     if (categoryExist !== undefined) {
                         errorNotify('Category Already exists')

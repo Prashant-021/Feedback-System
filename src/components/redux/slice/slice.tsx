@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
 import { type IUser, type ICategory } from '../../../interface'
-import { errorNotify, successNotify } from '../../../utils'
+import { errorNotify } from '../../../utils'
 
 interface UserState {
     userList: IUser[]
@@ -66,8 +66,8 @@ const categorySlice = createSlice({
 
             if (!categoryExists) {
                 state.category = updatedCategory
-                localStorage.setItem('Category', JSON.stringify(state.category))
-                successNotify('Category updated successfully')
+                // localStorage.setItem('Category', JSON.stringify(state.category))
+                // successNotify('Category updated successfully')
             } else {
                 console.log('error')
                 errorNotify('Category already exists')

@@ -18,9 +18,6 @@ const Dashboard: React.FC = () => {
     const user = users.find((user) => user.email === loggedInUser)
     const Navigate = useNavigate()
     const [open, setOpen] = useState(false)
-    const [selectedCategory, setSelectedCategory] = useState<ICategory | null>(
-        null
-    )
     const [categoryList, setCategoryList] = useState<ICategory[]>()
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
@@ -42,7 +39,6 @@ const Dashboard: React.FC = () => {
             })
     }, [])
 
-    console.log(selectedCategory)
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
@@ -51,7 +47,6 @@ const Dashboard: React.FC = () => {
 
     const handleOpen = (): void => {
         setOpen(!open)
-        setSelectedCategory(null)
     }
     if (isLoading) {
         return <Loader />

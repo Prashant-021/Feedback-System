@@ -2,15 +2,15 @@ import { firestore } from '../FirebaseSetup'
 import {
     collection,
     addDoc,
-    doc,
+    // doc,
     updateDoc,
     deleteDoc,
     getDocs,
     // query,
     // where,
     // getDoc,
-    // where,
-    // query,
+    where,
+    query,
     // getDoc,
 } from 'firebase/firestore'
 
@@ -20,20 +20,35 @@ class CategoryService {
         return addDoc(categoryCollectionRef, newCategory)
     }
 
-    updateCategory(id, updatedCategory) {
-        const categoryDoc = doc(firestore, 'Category', id)
-        return updateDoc(categoryDoc, updatedCategory)
+    async updateCategory(categoryId, updatedField) {
+        const categoryQuery = query(
+            categoryCollectionRef,
+            where('id', '==', categoryId)
+        )
+        return getDocs(categoryQuery)
+            .then((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                    updateDoc(doc.ref, updatedField)
+                })
+            })
+            .catch((error) => {
+                console.error('Error updating category:', error)
+            })
     }
 
-    deleteCategory(id) {
-        // console.log(id)
-        // const formDoc = query(
-        //     categoryCollectionRef,
-        //     where('title', '===', title)
-        // )
-        const formDoc = doc(firestore, 'Category', id)
-        return deleteDoc(formDoc)
-        // return deleteDoc(categoryCollectionRef, data)
+    async deleteCategory(categoryId) {
+        const categoryQuery = query(
+            categoryCollectionRef,
+            where('id', '==', categoryId)
+        )
+        try {
+            const querySnapshot = await getDocs(categoryQuery)
+            querySnapshot.forEach((doc) => {
+                deleteDoc(doc.ref)
+            })
+        } catch (error) {
+            console.error('Error Updating category:', error)
+        }
     }
 
     getAllCategory() {

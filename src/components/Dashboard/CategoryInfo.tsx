@@ -20,7 +20,8 @@ import {
 import AddCategory from '../Category/AddCategory'
 import { useNavigate } from 'react-router-dom'
 import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
-import { successNotify } from '../../utils'
+import { errorNotify, successNotify } from '../../utils'
+// import { successNotify } from '../../utils'
 // import { errorNotify, successNotify } from '../../utils'
 // import { errorNotify, successNotify } from '../../utils'
 
@@ -34,23 +35,16 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
     const handleOpen = (): void => {
         setOpen(!open)
     }
-    const handleDelete = (id: string): void => {
-        CategoryService.deleteCategory(id)
+    const handleDelete = (categoryId: string): void => {
+        CategoryService.deleteCategory(categoryId)
             .then(() => {
-                successNotify('Form Deleted Successfully!!')
-                console.log('Form deleted')
-                // setRefresh((prevState) => !prevState)
+                successNotify('Category deleted successfully')
             })
             .catch(() => {
-                console.log('There was error deleting form')
+                errorNotify(`Error deleting category`)
             })
-        // .finally(() => {
-        //     setIsLoading(false)
-        // })
     }
     const Navigate = useNavigate()
-    // const Navigate = useNavigate()
-    // const dispatch = useDispatch()
     return (
         <Card className="mt-6 w-60 scale-95 hover:scale-100 transition-scale duration-300">
             <CardBody>
