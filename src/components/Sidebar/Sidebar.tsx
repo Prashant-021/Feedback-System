@@ -6,7 +6,7 @@ import {
 } from '@material-tailwind/react'
 import {
     PresentationChartBarIcon,
-    DocumentPlusIcon,
+    DocumentIcon,
     PowerIcon,
     // Bars4Icon,
     // ArrowLeftIcon,
@@ -23,24 +23,9 @@ const Sidebar: React.FC = () => {
     // const [sideBarToggle, setSidebarToggle] = useState(false)
     return (
         <div
-            className={`transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[20rem] bg-white`}
+            className={` transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[20rem] bg-white group`}
         >
-            {/* <List className="group "> */}
-            {/* <Button
-                variant="text"
-                className="float-right p-3"
-                onClick={() => {
-                    setSidebarToggle(!sideBarToggle)
-                }}
-            >
-                {sideBarToggle ? (
-                    <ArrowLeftIcon className="h-5 w-5 text-black" />
-                ) : (
-                    <Bars4Icon className="h-5 w-5 text-black" />
-                )}
-            </Button> */}
-            {/* </List> */}
-            <List className="group">
+            <List className="group fixed">
                 <ListItem
                     onClick={() => {
                         Navigate('/dashboard')
@@ -49,7 +34,7 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p> Category</p>
+                    <p className="hidden group-hover:block"> Category</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {
@@ -57,9 +42,9 @@ const Sidebar: React.FC = () => {
                     }}
                 >
                     <ListItemPrefix>
-                        <DocumentPlusIcon className="h-5 w-5" />
+                        <DocumentIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p>Create Forms</p>
+                    <p className="hidden group-hover:block">view Forms</p>
                 </ListItem>
                 <ListItem
                     onClick={() => {
@@ -69,7 +54,7 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <PowerIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p> Log Out</p>
+                    <p className="hidden group-hover:block">Log Out</p>
                 </ListItem>
             </List>
         </div>

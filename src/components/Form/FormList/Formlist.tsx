@@ -34,8 +34,10 @@ const FormList: React.FC = () => {
     const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
     const [isLoading, setIsLoading] = useState(true)
+    const [searchCategory, setSearchCategory] = useState('')
 
     useEffect(() => {
+        setIsLoading(true)
         FormService.getAllForms()
             .then((querySnapshot) => {
                 const data: IFormTemplate[] = []
@@ -120,24 +122,30 @@ const FormList: React.FC = () => {
         return <Loader />
     }
     return (
-        <div className="w-full flex items-center justify-center">
-            <Card className=" w-full sm:w-[60%]">
+        <div className="w-full p-10">
+            <div className="bg-white rounded-lg p-5 mb-2">
+                <Typography variant="h3" color="blue-gray">
+                    Forms list
+                </Typography>
+            </div>
+            <Card className=" w-full">
                 <CardHeader
                     floated={false}
                     shadow={false}
                     className="rounded-none"
                 >
                     <div className="mb-8 flex items-center justify-between gap-8">
-                        <div>
-                            <Typography variant="h5" color="blue-gray">
-                                Forms list
-                            </Typography>
-                            <Typography
-                                color="gray"
-                                className="mt-1 font-normal"
-                            >
-                                See information about all Forms
-                            </Typography>
+                        <div className="w-full md:w-72 mt-2">
+                            <Input
+                                label="Search"
+                                icon={
+                                    <MagnifyingGlassIcon className="h-5 w-5" />
+                                }
+                                value={searchCategory}
+                                onChange={(event) => {
+                                    setSearchCategory(event.target.value)
+                                }}
+                            />
                         </div>
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                             <Button
@@ -162,16 +170,8 @@ const FormList: React.FC = () => {
                                 Add Form
                             </Button>
                         </div>
-                    </div>
-                    <div className="flex flex-col items-center justify-end gap-4 md:flex-row">
-                        <div className="w-full md:w-72">
-                            <Input
-                                label="Search"
-                                icon={
-                                    <MagnifyingGlassIcon className="h-5 w-5" />
-                                }
-                            />
-                        </div>
+                        {/* </div>
+                    <div className="flex flex-col items-center justify-end gap-4 md:flex-row"> */}
                     </div>
                 </CardHeader>
                 <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
@@ -181,12 +181,12 @@ const FormList: React.FC = () => {
                                 {TABLE_HEAD.map((head, index) => (
                                     <th
                                         key={head}
-                                        className="cursor-pointer sticky top-0 border-blue-gray-100 bg-blue-gray-50 p-4 transition-colors hover:bg-blue-gray-100"
+                                        className="cursor-pointer sticky top-0  border-blue-400 bg-blue-500 p-4"
                                     >
                                         <Typography
                                             variant="small"
-                                            color="blue-gray"
-                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                            color="white"
+                                            className="flex items-center justify-between gap-2 font-bold leading-none"
                                         >
                                             {head}{' '}
                                             {index !== TABLE_HEAD.length && (

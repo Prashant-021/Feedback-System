@@ -16,20 +16,23 @@ import {
     TrashIcon,
 } from '@heroicons/react/24/solid'
 // import { deleteCategory } from '../redux/slice/slice'
-// import { useDispatch } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import AddCategory from '../Category/AddCategory'
 import { useNavigate } from 'react-router-dom'
 import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
 import { errorNotify, successNotify } from '../../utils'
+import { deleteCategory } from '../redux/slice/slice'
 // import { successNotify } from '../../utils'
 // import { errorNotify, successNotify } from '../../utils'
 // import { errorNotify, successNotify } from '../../utils'
 
 interface Props {
     categoryValue: ICategory
+    updateList: () => void
 }
 
-const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
+const CategoryInfo: React.FC<Props> = ({ categoryValue, updateList }) => {
+    const dispatch = useDispatch()
     const [open, setOpen] = useState(false)
 
     const handleOpen = (): void => {
@@ -39,6 +42,7 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
         CategoryService.deleteCategory(categoryId)
             .then(() => {
                 successNotify('Category deleted successfully')
+                updateList()
             })
             .catch(() => {
                 errorNotify(`Error deleting category`)
@@ -83,6 +87,7 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
                     open={open}
                     handleOpen={handleOpen}
                     editCategory={categoryValue}
+                    updateList={updateList}
                 />
                 <Tooltip content="Delete Category">
                     <IconButton
@@ -93,7 +98,7 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue }) => {
                                 'Are you sure want to delete ?'
                             )
                             if (response) {
-                                // dispatch(deleteCategory(categoryValue.title))
+                                dispatch(deleteCategory(categoryValue.id))
                                 console.log(categoryValue.id)
                                 handleDelete(categoryValue.id)
                             }

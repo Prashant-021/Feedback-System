@@ -18,10 +18,16 @@ import { nanoid } from '@reduxjs/toolkit'
 interface Props {
     open: boolean
     handleOpen: () => void
+    updateList: () => void
     editCategory?: ICategory
 }
 
-const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
+const AddCategory: React.FC<Props> = ({
+    open,
+    handleOpen,
+    editCategory,
+    updateList,
+}) => {
     const date = new Date()
     const [categoryId, setCategoryId] = useState<string>('')
     const [categoryName, setCategoryName] = useState('')
@@ -77,6 +83,7 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                     })
                         .then(() => {
                             successNotify('Category updated successfully')
+                            updateList()
                         })
                         .catch((err) => {
                             console.log('Error updating category', err)
@@ -101,6 +108,7 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
                         })
                             .then(() => {
                                 successNotify('Category added successfully')
+                                updateList()
                             })
                             .catch((err) => {
                                 errorNotify(err)
@@ -112,7 +120,6 @@ const AddCategory: React.FC<Props> = ({ open, handleOpen, editCategory }) => {
             handleOpen()
         }
     }
-
     return (
         <Fragment>
             <Dialog open={open} handler={handleOpen}>

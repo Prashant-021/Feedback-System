@@ -1,8 +1,21 @@
+import CategoryService from '../../../FirebaseFiles/handle/categoryFunctions'
+
 import { Input, Option, Select } from '@material-tailwind/react'
 import React, { type FC, useState, useEffect } from 'react'
-import { useSelector } from 'react-redux'
-import { type IFormHeader, type RootState } from '../../../interface'
-
+import { type ICategory, type IFormHeader } from '../../../interface'
+import { errorNotify } from '../../../utils'
+const categories: ICategory[] = []
+await CategoryService.getAllCategory()
+    .then((querySnapshot) => {
+        // const data: ICategory[] = []
+        querySnapshot.forEach((doc) => {
+            categories.push(doc.data() as ICategory)
+        })
+    })
+    .catch((err) => {
+        errorNotify(err)
+    })
+console.log(categories)
 interface Props {
     headerInfo: (formHead: IFormHeader) => void
     savedData: IFormHeader
@@ -16,9 +29,7 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
     const [categoryType, setCategoryType] = useState<string>(
         savedData.categoryName
     )
-    const categories = useSelector(
-        (state: RootState) => state.category.category
-    )
+
     useEffect(() => {
         headerInfo({ title, description, categoryName: categoryType })
     }, [title, description, categoryType])

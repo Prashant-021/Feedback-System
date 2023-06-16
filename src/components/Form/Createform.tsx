@@ -26,6 +26,7 @@ const Createform: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(true)
     const bottomRef = useRef<HTMLDivElement>(null)
+    const [saved, setSaved] = useState(false)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
         title: '',
@@ -144,6 +145,7 @@ const Createform: React.FC = () => {
         setCreatedComponents(updatedComponents)
     }
     const handleSave = (): void => {
+        setSaved(true)
         setFormTemplate((prevFormTemplate) => {
             const updatedTemplate = {
                 ...prevFormTemplate,
@@ -168,11 +170,14 @@ const Createform: React.FC = () => {
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
-                <Link to={'/forms'}>
-                    <Button className="float-left items-center gap-3">
+                <Button
+                    className="float-left items-center gap-3"
+                    disabled={saved}
+                >
+                    <Link to={'/forms'}>
                         <ArrowUturnLeftIcon className="h-5 w-5" />
-                    </Button>
-                </Link>
+                    </Link>
+                </Button>
                 <Button className="float-right" onClick={handleSave}>
                     Save
                 </Button>

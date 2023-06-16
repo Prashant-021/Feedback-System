@@ -56,43 +56,43 @@ const FormResponses: React.FC = () => {
     }
     return (
         <div className="flex-grow w-full flex-col flex items-center ">
-            <Card className="flex my-4 bg-white p-4 justify-end rounded-md gap-24">
-                <div className="w-72">
-                    <Select
-                        label="Select Category"
-                        value={categoryType}
-                        onChange={(event) => {
-                            setCategoryType(event as string)
-                        }}
-                    >
-                        {categories.map((category) => {
-                            return (
-                                <Option
-                                    key={category.id}
-                                    value={category.title}
-                                >
-                                    {category.title}
-                                </Option>
-                            )
-                        })}
-                    </Select>
-                </div>
-            </Card>
             <div className="w-[90%]">
-                <Card className=" w-full">
-                    <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
+                <Card className="flex my-4 bg-white w-fit p-4 justify-end rounded-md gap-24">
+                    <div className="w-72">
+                        <Select
+                            label="Select Category"
+                            value={categoryType}
+                            onChange={(event) => {
+                                setCategoryType(event as string)
+                            }}
+                        >
+                            {categories.map((category) => {
+                                return (
+                                    <Option
+                                        key={category.id}
+                                        value={category.title}
+                                    >
+                                        {category.title}
+                                    </Option>
+                                )
+                            })}
+                        </Select>
+                    </div>
+                </Card>
+                <Card className="overflow-hidden w-full">
+                    <CardBody className="p-0 overflow-scroll px-0 h-[30rem]">
                         <table className=" w-full min-w-max table-auto text-left">
                             <thead>
-                                <tr className="sticky top-0">
+                                <tr className="sticky top-0 ">
                                     {TABLE_HEAD.map((head, index) => (
                                         <th
                                             key={head}
-                                            className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                            className="cursor-pointer border-y  border-blue-400 bg-blue-500 p-4"
                                         >
                                             <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="flex items-center justify-between gap-2 font-normal leading-none opacity-70"
+                                                variant="medium"
+                                                color="white"
+                                                className="flex items-center justify-between gap-2 font-bold leading-none "
                                             >
                                                 {head}{' '}
                                                 {index !==
@@ -143,19 +143,6 @@ const FormResponses: React.FC = () => {
                                                     </div>
                                                 </td>
                                                 <td className={classes}>
-                                                    {/* <Tooltip content="Edit Form">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="blue-gray"
-                                                        onClick={() => {
-                                                            Navigate(
-                                                                `/forms/createform/${id}`
-                                                            )
-                                                        }}
-                                                    >
-                                                        <PencilIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip> */}
                                                     <Tooltip content="View Responses">
                                                         <IconButton
                                                             variant="text"
@@ -169,35 +156,6 @@ const FormResponses: React.FC = () => {
                                                             <EyeIcon className="h-4 w-4" />
                                                         </IconButton>
                                                     </Tooltip>
-                                                    {/* <Dialog
-                                                    open={open}
-                                                    handler={handleOpen}
-                                                >
-                                                    <DialogInfo
-                                                        formLink={link}
-                                                    />
-                                                    <DialogFooter>
-                                                        <Button
-                                                            variant="text"
-                                                            color="red"
-                                                            onClick={handleOpen}
-                                                            className="mr-1"
-                                                        >
-                                                            <span>Cancel</span>
-                                                        </Button>
-                                                    </DialogFooter>
-                                                </Dialog> */}
-                                                    {/* <Tooltip content="Delete">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="red"
-                                                        // onClick={() => {
-                                                        //     handleDelete(id)
-                                                        // }}
-                                                    >
-                                                        <TrashIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip> */}
                                                 </td>
                                             </tr>
                                         )

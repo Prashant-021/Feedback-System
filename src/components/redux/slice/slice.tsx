@@ -14,7 +14,7 @@ const userInitialState: UserState = {
 }
 
 const categoryInitialState: CategoryState = {
-    category: JSON.parse(localStorage.getItem('Category') ?? '[]'),
+    category: [],
 }
 
 const userSlice = createSlice({
@@ -38,15 +38,12 @@ const categorySlice = createSlice({
             const newCategory = action.payload
             const updatedCategory = [...state.category, newCategory]
             state.category = updatedCategory
-            // localStorage.setItem('Category', JSON.stringify(state.category))
-            // successNotify('Category Added successfully')
         },
         deleteCategory: (state, action: PayloadAction<string>) => {
-            const titleToDelete = action.payload
-            const updatedCategory = state.category.filter(
-                (category) => category.title !== titleToDelete
+            const idToDelete = action.payload
+            state.category = state.category.filter(
+                (category) => category.id !== idToDelete
             )
-            state.category = updatedCategory
         },
         updateCategory: (state, action: PayloadAction<ICategory>) => {
             const updatedCategory = state.category.map((category) => {
@@ -66,53 +63,24 @@ const categorySlice = createSlice({
 
             if (!categoryExists) {
                 state.category = updatedCategory
-                // localStorage.setItem('Category', JSON.stringify(state.category))
-                // successNotify('Category updated successfully')
             } else {
                 console.log('error')
                 errorNotify('Category already exists')
             }
         },
+        setInitialCategory: (state, action: PayloadAction<ICategory[]>) => {
+            state.category = action.payload
+        },
     },
 })
 
-// const formSlice = createSlice({
-//     name: 'form',
-//     initialState: formInitialState,
-//     reducers: {
-//         addForm: (state, action: PayloadAction<IFormTemplate>) => {
-//             const formIndex = state.form.findIndex(
-//                 (form) => form.id === action.payload.id
-//             )
-//             if (formIndex === -1) {
-//                 const newForm = action.payload
-//                 state.form = [...state.form, newForm]
-//             } else {
-//                 state.form = state.form.map((form, index) => {
-//                     if (index === formIndex) {
-//                         return action.payload
-//                     }
-//                     return form
-//                 })
-//             }
-//             localStorage.setItem('Forms', JSON.stringify(state.form))
-//         },
-//         deleteForm: (state, action: PayloadAction<string>) => {
-//             const idToDelete = action.payload
-//             const updatedForm = state.form.filter(
-//                 (form) => form.id !== idToDelete
-//             )
-//             state.form = updatedForm
-//             localStorage.setItem('Forms', JSON.stringify(state.form))
-//         },
-//     },
-// })
-
 export const { addUser } = userSlice.actions
-export const { addCategory, deleteCategory, updateCategory } =
-    categorySlice.actions
-// export const { addForm, deleteForm } = formSlice.actions
+export const {
+    addCategory,
+    deleteCategory,
+    updateCategory,
+    setInitialCategory,
+} = categorySlice.actions
 
 export const userReducer = userSlice.reducer
 export const categoryReducer = categorySlice.reducer
-// export const formReducer = formSlice.reducer
