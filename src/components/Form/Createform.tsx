@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button } from '@material-tailwind/react'
+import { Button, Tooltip } from '@material-tailwind/react'
 import Question from './Question'
 import {
     ArrowUturnLeftIcon,
@@ -26,7 +26,7 @@ const Createform: React.FC = () => {
 
     const [isLoading, setIsLoading] = useState(true)
     const bottomRef = useRef<HTMLDivElement>(null)
-    const [saved, setSaved] = useState(false)
+    const [saved, setSaved] = useState(true)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
         title: '',
@@ -145,7 +145,7 @@ const Createform: React.FC = () => {
         setCreatedComponents(updatedComponents)
     }
     const handleSave = (): void => {
-        setSaved(true)
+        setSaved(false)
         setFormTemplate((prevFormTemplate) => {
             const updatedTemplate = {
                 ...prevFormTemplate,
@@ -170,14 +170,16 @@ const Createform: React.FC = () => {
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
-                <Button
-                    className="float-left items-center gap-3"
-                    disabled={saved}
-                >
-                    <Link to={'/forms'}>
-                        <ArrowUturnLeftIcon className="h-5 w-5" />
-                    </Link>
-                </Button>
+                <Tooltip content="Save the form">
+                    <Button
+                        className="float-left items-center gap-3"
+                        disabled={saved}
+                    >
+                        <Link to={'/forms'}>
+                            <ArrowUturnLeftIcon className="h-5 w-5" />
+                        </Link>
+                    </Button>
+                </Tooltip>
                 <Button className="float-right" onClick={handleSave}>
                     Save
                 </Button>
