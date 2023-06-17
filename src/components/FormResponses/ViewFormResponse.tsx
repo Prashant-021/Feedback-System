@@ -37,7 +37,6 @@ const ViewFormResponse: React.FC = () => {
                 setIsLoading(false)
             })
     }, [categoryType])
-    console.log(categoryType)
     if (isLoading) {
         return <Loader />
     }

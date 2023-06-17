@@ -115,6 +115,7 @@ const Login: React.FC = () => {
                                         value={values.password}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
+                                        autoComplete=""
                                     />
                                     <label
                                         className="absolute right-3 top-[0.6rem] hidden group-hover:block"

@@ -43,7 +43,7 @@ class FormService {
     }
 
     getAllForms = (categoryType) => {
-        if (categoryType) {
+        if (categoryType && categoryType !== 'All') {
             const categoryQuery = query(
                 formCollectionRef,
                 where('categoryName', '==', categoryType)

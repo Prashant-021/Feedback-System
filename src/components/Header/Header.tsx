@@ -23,7 +23,7 @@ const Header: React.FC = () => {
     }
 
     return (
-        <nav className="bg-white  h-22 w-full border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
+        <nav className="bg-white drop-shadow-md  h-22 w-full border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
             <div className=" flex flex-wrap items-center justify-between mx-auto px-4 py-2">
                 <span className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white capitalize">
                     FeedBack System

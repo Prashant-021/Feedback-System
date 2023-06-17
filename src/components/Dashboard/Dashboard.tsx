@@ -22,10 +22,6 @@ const Dashboard: React.FC = () => {
     const [open, setOpen] = useState(false)
     const [categoryList, setCategoryList] = useState<ICategory[]>()
     const [isLoading, setIsLoading] = useState(true)
-    const categories = useSelector(
-        (state: RootState) => state.category.category
-    )
-    console.log(categories)
     const [state, increment] = useReducer((state: number) => state + 0.0001, 0)
     useEffect(() => {
         setIsLoading(true)
@@ -66,7 +62,7 @@ const Dashboard: React.FC = () => {
                         <Card className="mt-6 w-60 scale-95 hover:scale-100 transition-scale duration-300">
                             <Button
                                 variant="text"
-                                className="justify-center flex "
+                                className="justify-center flex hover:bg-blue-400"
                                 onClick={handleOpen}
                             >
                                 <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />

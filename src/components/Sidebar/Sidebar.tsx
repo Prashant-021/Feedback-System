@@ -10,6 +10,7 @@ import {
     PowerIcon,
     // Bars4Icon,
     // ArrowLeftIcon,
+    HandThumbUpIcon,
 } from '@heroicons/react/24/solid'
 // import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -22,11 +23,11 @@ const Sidebar: React.FC = () => {
     }
     return (
         <div
-            className={`fixed min-h-screen z-20 transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[15rem] bg-white  group`}
+            className={`fixed drop-shadow-lg min-h-screen z-20 transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[15rem] bg-white  group`}
         >
             <List className=" top-14 max-w-fit">
                 <ListItem
-                    // className=" text-white "
+                    className="active:bg-blue-400"
                     onClick={() => {
                         Navigate('/dashboard')
                     }}
@@ -34,10 +35,9 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p>Category</p>
+                    <p className="hidden group-hover:block">Category</p>
                 </ListItem>
                 <ListItem
-                    // className=" text-white "
                     onClick={() => {
                         Navigate('/forms')
                     }}
@@ -48,7 +48,20 @@ const Sidebar: React.FC = () => {
                     <p className="hidden group-hover:block">View Forms</p>
                 </ListItem>
                 <ListItem
-                    // className="text-white "
+                    onClick={() => {
+                        Navigate('/formresponse', {
+                            state: {
+                                category: 'All',
+                            },
+                        })
+                    }}
+                >
+                    <ListItemPrefix>
+                        <HandThumbUpIcon className="h-5 w-5" />
+                    </ListItemPrefix>
+                    <p className="hidden group-hover:block">View Responses</p>
+                </ListItem>
+                <ListItem
                     onClick={() => {
                         handleSubmit()
                     }}
