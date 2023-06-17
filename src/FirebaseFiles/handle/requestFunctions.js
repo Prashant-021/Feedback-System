@@ -6,7 +6,7 @@ import {
     updateDoc,
     deleteDoc,
     getDocs,
-    getDoc,
+    // getDoc,
     where,
     query,
 } from 'firebase/firestore'
@@ -17,14 +17,29 @@ class FormService {
         return addDoc(formCollectionRef, newform)
     }
 
-    updateform = (id, updatedform) => {
-        const formDoc = doc(firestore, 'Form', id)
-        return updateDoc(formDoc, updatedform)
+    updateForm = async (fieldId, updatedForm) => {
+        const formsCollectionRef = collection(firestore, 'Form')
+        const queryForm = query(formsCollectionRef, where('id', '==', fieldId))
+        return getDocs(queryForm).then((querySnapshot) => {
+            const formDoc = querySnapshot.docs[0]
+            if (formDoc) {
+                const formRef = doc(firestore, 'Form', formDoc.id)
+                return updateDoc(formRef, updatedForm)
+            }
+            throw new Error('Form not found')
+        })
     }
 
-    deleteform = (id) => {
-        const formDoc = doc(firestore, 'Form', id)
-        return deleteDoc(formDoc)
+    deleteForm = async (fieldId) => {
+        const queryForm = query(formCollectionRef, where('id', '==', fieldId))
+        return getDocs(queryForm).then((querySnapshot) => {
+            const formDoc = querySnapshot.docs[0]
+            if (formDoc) {
+                const formRef = doc(firestore, 'Form', formDoc.id)
+                return deleteDoc(formRef)
+            }
+            throw new Error('Form not found')
+        })
     }
 
     getAllForms = (categoryType) => {
@@ -39,9 +54,17 @@ class FormService {
         }
     }
 
-    getForm = (id) => {
-        const formDoc = doc(firestore, 'Form', id)
-        return getDoc(formDoc)
+    getForm = async (id) => {
+        const queryForm = query(formCollectionRef, where('id', '==', id))
+        const querySnapshot = await getDocs(queryForm)
+
+        if (querySnapshot.empty) {
+            throw new Error('Form not found')
+        }
+
+        const formDoc = querySnapshot.docs[0]
+        const formData = formDoc.data()
+        return formData
     }
 }
 

@@ -14,7 +14,7 @@ import DefaultSpeedDial from './components/Sidebar/Speeddial'
 import Viewform from './components/Form/Viewform'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
-import Formresponses from './components/FormResponses/Formresponses'
+import CategoryWiseForm from './components/FormResponses/CategoryWiseForm'
 import ViewFormResponse from './components/FormResponses/ViewFormResponse'
 import IndividualResponse from './components/FormResponses/IndividualResponse'
 import ErrorBoundary from './components/404/ErrorBoundary'
@@ -33,45 +33,47 @@ const App: React.FC = () => {
         <div className="bg-[#e7f2fe] min-h-screen relative flex flex-col">
             <ToastContainer className="z-[100]" />
             {hideHeader ? null : <Header />}
-            <ErrorBoundary>
-                <div className="flex flex-grow ">
-                    {hideHeader ? null : (
-                        <>
-                            <Sidebar />
-                            <DefaultSpeedDial />
-                        </>
-                    )}
-                    <Routes>
-                        <Route path="/" element={<Dashboard />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/dashboard" element={<Dashboard />} />
-                        <Route path="/forms" element={<FormList />} />
-                        <Route
-                            path="/forms/createform/:id"
-                            element={<Createform />}
-                        />
-                        <Route
-                            path="/forms/viewform/:id"
-                            element={<Viewform />}
-                        />
-                        <Route
-                            path="/formresponse"
-                            element={<Formresponses />}
-                        />
-                        <Route
-                            path="/formresponse/individualform"
-                            element={<IndividualResponse />}
-                        />
-                        <Route
-                            path="/formresponse/:category"
-                            element={<ViewFormResponse />}
-                        />
-                        <Route path="/profile" element={<Profile />} />
-                        {/* <Route path="*" element={<PageNotFound />} /> */}
-                    </Routes>
-                </div>
-            </ErrorBoundary>
+            <div className="flex flex-grow ">
+                {hideHeader ? null : (
+                    <>
+                        <Sidebar />
+                        <DefaultSpeedDial />
+                    </>
+                )}
+                <ErrorBoundary>
+                    <div className="w-[98%] sm:ms-16 flex">
+                        <Routes>
+                            <Route path="/login" element={<Login />} />
+                            <Route path="/" element={<Dashboard />} />
+                            <Route path="/signup" element={<Signup />} />
+                            <Route path="/dashboard" element={<Dashboard />} />
+                            <Route path="/forms" element={<FormList />} />
+                            <Route
+                                path="/forms/createform/:id"
+                                element={<Createform />}
+                            />
+                            <Route
+                                path="/forms/viewform/:id"
+                                element={<Viewform />}
+                            />
+                            <Route
+                                path="/formresponse"
+                                element={<CategoryWiseForm />}
+                            />
+                            <Route
+                                path="/formresponse/individualform"
+                                element={<IndividualResponse />}
+                            />
+                            <Route
+                                path="/formresponse/:category"
+                                element={<ViewFormResponse />}
+                            />
+                            <Route path="/profile" element={<Profile />} />
+                            {/* <Route path="*" element={<PageNotFound />} /> */}
+                        </Routes>
+                    </div>
+                </ErrorBoundary>
+            </div>
         </div>
     )
 }

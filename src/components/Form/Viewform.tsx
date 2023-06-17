@@ -23,10 +23,8 @@ const Viewform: React.FC = () => {
         FormService.getForm(formId[formId.length - 1])
             .then((formDoc) => {
                 if (formDoc !== null) {
-                    const formData = formDoc.data()
+                    const formData = formDoc
                     setForm(formData as IFormTemplate)
-                } else {
-                    console.log('Category not found')
                 }
             })
             .catch((error) => {
@@ -39,8 +37,6 @@ const Viewform: React.FC = () => {
     const inputValueRef = useRef<Record<string, string>>({
         id: nanoid(),
     })
-
-    console.log(inputValueRef.current)
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
         FormResponseService.addResponse({ ...inputValueRef.current, ...form })

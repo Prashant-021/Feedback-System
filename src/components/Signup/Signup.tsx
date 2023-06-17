@@ -83,7 +83,7 @@ const Signup: React.FC = () => {
     }
     return (
         <div className="flex h-screen w-full">
-            <div className="w-[50%] bg-[#005ae6] items-center hidden md:flex">
+            <div className="w-[50%] items-center hidden md:flex">
                 <div className="w-[100%] justify-center flex">
                     <img
                         src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp"
@@ -98,15 +98,15 @@ const Signup: React.FC = () => {
                     <CardHeader
                         variant="gradient"
                         color="blue"
-                        className="mb-4 grid h-28 place-items-center"
+                        className="mb-4 grid h-20 place-items-center"
                     >
                         <Typography variant="h3" color="white">
                             Register
                         </Typography>
                     </CardHeader>
                     <form action="" onSubmit={handleSubmit}>
-                        <CardBody className="flex flex-col gap-4">
-                            <div className="inputGroup pb-4 pt-4">
+                        <CardBody className="flex flex-col gap-3">
+                            <div className="inputGroup pb-4 pt-3">
                                 <Input
                                     label="Username"
                                     name="name"

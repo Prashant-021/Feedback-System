@@ -58,10 +58,14 @@ const FormList: React.FC = () => {
 
     const Navigate = useNavigate()
     const createForm = (): void => {
-        Navigate(`/forms/createform/${nanoid()}`)
+        Navigate(`/forms/createform/${nanoid()}`, {
+            state: {
+                formStatus: 'add',
+            },
+        })
     }
     const handleDelete = (id: string): void => {
-        FormService.deleteform(id)
+        FormService.deleteForm(id)
             .then(() => {
                 successNotify('Form Deleted Successfully!!')
                 console.log('Form deleted')
@@ -93,7 +97,7 @@ const FormList: React.FC = () => {
         return <Loader />
     }
     return (
-        <div className="w-full p-10">
+        <div className="w-full p-2 sm:p-10">
             <div className="bg-white rounded-lg p-5 mb-2">
                 <Typography variant="h3" color="blue-gray">
                     Forms list
@@ -105,7 +109,7 @@ const FormList: React.FC = () => {
                     shadow={false}
                     className="rounded-none"
                 >
-                    <div className="mb-8 flex items-center justify-between gap-8">
+                    <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-8">
                         <div className="w-full md:w-72 mt-2">
                             <Input
                                 label="Search"
@@ -145,7 +149,7 @@ const FormList: React.FC = () => {
                     <div className="flex flex-col items-center justify-end gap-4 md:flex-row"> */}
                     </div>
                 </CardHeader>
-                <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[30rem]">
+                <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[47vh]">
                     <table className=" w-full min-w-max table-auto text-left">
                         <thead className=" bg-white">
                             <tr className="sticky top-0">
@@ -221,7 +225,13 @@ const FormList: React.FC = () => {
                                                         color="blue-gray"
                                                         onClick={() => {
                                                             Navigate(
-                                                                `/forms/createform/${id}`
+                                                                `/forms/createform/${id}`,
+                                                                {
+                                                                    state: {
+                                                                        formStatus:
+                                                                            'edit',
+                                                                    },
+                                                                }
                                                             )
                                                         }}
                                                     >

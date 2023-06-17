@@ -22,10 +22,11 @@ const Sidebar: React.FC = () => {
     }
     return (
         <div
-            className={` transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[20rem] bg-white group`}
+            className={`fixed min-h-screen z-20 transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[15rem] bg-white  group`}
         >
-            <List className="group fixed">
+            <List className=" top-14 max-w-fit">
                 <ListItem
+                    // className=" text-white "
                     onClick={() => {
                         Navigate('/dashboard')
                     }}
@@ -33,9 +34,10 @@ const Sidebar: React.FC = () => {
                     <ListItemPrefix>
                         <PresentationChartBarIcon className="h-5 w-5" />
                     </ListItemPrefix>
-                    <p className="hidden group-hover:block"> Category</p>
+                    <p>Category</p>
                 </ListItem>
                 <ListItem
+                    // className=" text-white "
                     onClick={() => {
                         Navigate('/forms')
                     }}
@@ -46,6 +48,7 @@ const Sidebar: React.FC = () => {
                     <p className="hidden group-hover:block">View Forms</p>
                 </ListItem>
                 <ListItem
+                    // className="text-white "
                     onClick={() => {
                         handleSubmit()
                     }}

@@ -61,15 +61,15 @@ const Dashboard: React.FC = () => {
     return (
         <>
             {user != null ? (
-                <div className="w-full m-8 flex gap-4 flex-wrap justify-start max-h-[78vh] h-fit overflow-scroll">
+                <div className="w-auto m-8 flex gap-4 flex-wrap justify-start max-h-[78vh] h-fit overflow-scroll">
                     <Tooltip content="Add Category">
                         <Card className="mt-6 w-60 scale-95 hover:scale-100 transition-scale duration-300">
                             <Button
-                                variant="filled"
+                                variant="text"
                                 className="justify-center flex "
                                 onClick={handleOpen}
                             >
-                                <PlusIcon className="h-40 w-40" />
+                                <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />
                             </Button>
                             <AddCategory
                                 open={open}

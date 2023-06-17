@@ -14,7 +14,7 @@ const Profile: React.FC = () => {
         }
     }, [Navigate])
     return user != null ? (
-        <div className="lg:flex flex-grow min-h-min w-screen ">
+        <div className="lg:flex flex-grow min-h-min w-full ">
             <div className="lg:w-1/5 py-3  bg-[#005ae6] flex items-center justify-center relative">
                 <div className="overflow-hidden flex items-center justify-center lg:absolute rounded-full  drop-shadow-2xl h-60 w-60 md:h-80 md:w-80 right-auto bottom-0 lg:bottom-auto lg:-right-40 ">
                     <img

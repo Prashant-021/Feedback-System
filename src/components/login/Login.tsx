@@ -61,7 +61,7 @@ const Login: React.FC = () => {
     })
     return (
         <div className="flex h-screen w-full">
-            <div className="w-[50%] bg-[#005ae6] items-center hidden md:flex">
+            <div className="w-[50%]  items-center hidden md:flex">
                 <div className="w-[100%] justify-center flex">
                     <img
                         src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
                     <CardHeader
                         variant="gradient"
                         color="blue"
-                        className="mb-4 grid h-28 place-items-center"
+                        className="mb-4 grid h-20 place-items-center"
                     >
                         <Typography variant="h3" color="white">
                             Log In

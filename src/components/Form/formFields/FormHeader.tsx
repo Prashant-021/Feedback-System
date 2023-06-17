@@ -15,7 +15,6 @@ await CategoryService.getAllCategory()
     .catch((err) => {
         errorNotify(err)
     })
-console.log(categories)
 interface Props {
     headerInfo: (formHead: IFormHeader) => void
     savedData: IFormHeader

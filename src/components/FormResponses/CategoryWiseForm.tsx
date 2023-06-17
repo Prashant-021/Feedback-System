@@ -22,8 +22,8 @@ interface IFormResponse extends IFormTemplate {
     Email: string
 }
 
-const TABLE_HEAD = ['Category', 'Forms', 'Actions']
-const FormResponses: React.FC = () => {
+const TABLE_HEAD = ['Category', 'Forms', 'View Responses']
+const CategoryWiseForm: React.FC = () => {
     const location = useLocation()
     const { category } = location.state
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
@@ -33,6 +33,7 @@ const FormResponses: React.FC = () => {
         (state: RootState) => state.category.category
     )
     const [categoryType, setCategoryType] = useState<string>(category)
+    console.log(categoryType)
     useEffect(() => {
         FormService.getAllForms(categoryType)
             .then((querySnapshot) => {
@@ -170,4 +171,4 @@ const FormResponses: React.FC = () => {
     )
 }
 
-export default FormResponses
+export default CategoryWiseForm

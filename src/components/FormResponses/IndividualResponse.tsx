@@ -165,9 +165,9 @@ const IndividualResponse: React.FC = () => {
                     color="blue"
                     onClick={() => {
                         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        Navigate(`/formresponse/${category?.categoryName}`, {
+                        Navigate(`/formresponse/${category}`, {
                             state: {
-                                category: category.categoryName,
+                                category,
                             },
                         })
                     }}

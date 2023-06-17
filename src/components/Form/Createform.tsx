@@ -10,31 +10,29 @@ import { Link, useLocation } from 'react-router-dom'
 import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import {
     type IFormHeader,
-    type ComponentData,
     type IFormTemplate,
     type IQuestion,
 } from '../../interface'
 import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
 import { errorNotify, successNotify } from '../../utils'
-// import { successNotify } from '../../utils'
-// import Loader from '../Loader/Loader'
-
+import Loader from '../Loader/Loader'
 const Createform: React.FC = () => {
     const location = useLocation()
+    const { formStatus } = location.state
     const path = location.pathname.split('/')
     const formId = path[path.length - 1]
 
-    // const [isLoading, setIsLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
-        title: '',
+        title: 'Untitled Form',
         description: '',
         categoryName: '',
         questions: [
             {
-                id: '',
+                id: nanoid(),
                 questionTitle: '',
                 type: '',
                 required: false,
@@ -43,38 +41,31 @@ const Createform: React.FC = () => {
             },
         ],
     })
-    const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
-        formTemplate != null
-            ? formTemplate.questions.map((question) => ({
-                  id: nanoid(),
-                  contentValue: question,
-              }))
-            : []
-    )
-    // useEffect((): void => {
-    //     FormService.getForm(formId)
-    //         .then((formDoc) => {
-    //             if (formDoc !== null) {
-    //                 const categoryData = formDoc.data()
-    //                 setFormTemplate((prevFormTemplate) => ({
-    //                     ...prevFormTemplate,
-    //                     id: formDoc.id,
-    //                     title: categoryData?.title,
-    //                     description: categoryData?.description,
-    //                     categoryName: categoryData?.categoryName,
-    //                     questions: categoryData?.questions,
-    //                 }))
-    //             } else {
-    //                 console.log('Form not found')
-    //             }
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error fetching Form:', error)
-    //         })
-    //         .finally(() => {
-    //             setIsLoading(false)
-    //         })
-    // }, [])
+    // const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
+    //     formTemplate != null
+    //         ? formTemplate.questions.map((question) => ({
+    //               id: nanoid(),
+    //               contentValue: question,
+    //           }))
+    //         : []
+    // )
+    useEffect(() => {
+        if (formStatus === 'edit') {
+            setIsLoading(true)
+            FormService.getForm(formId)
+                .then((formDoc) => {
+                    if (formDoc !== null) {
+                        setFormTemplate(formDoc as IFormTemplate)
+                    }
+                })
+                .catch(() => {
+                    errorNotify('Error')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        }
+    }, [formStatus, formId])
     const handleHeaderValueChange = (value: IFormHeader): void => {
         setFormTemplate((prevFormTemplate) => ({
             ...prevFormTemplate,
@@ -83,38 +74,42 @@ const Createform: React.FC = () => {
             categoryName: value.categoryName,
         }))
     }
-    useEffect(() => {
-        if (formTemplate != null) {
-            setCreatedComponents(
-                formTemplate.questions.map((question) => ({
-                    id: nanoid(),
-                    contentValue: question,
-                }))
-            )
-            setFormTemplate(formTemplate)
-        }
-    }, [formTemplate, formId])
+    // useEffect(() => {
+    //     if (formTemplate != null) {
+    //         setCreatedComponents(
+    //             formTemplate.questions.map((question) => ({
+    //                 id: nanoid(),
+    //                 contentValue: question,
+    //             }))
+    //         )
+    //         setFormTemplate(formTemplate)
+    //     }
+    // }, [formTemplate, formId])
 
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
     )
 
     const handleClick = (): void => {
-        const newComponent: ComponentData = {
+        const newComponent: IQuestion = {
+            // id: nanoid(),
+            // contentValue: {
             id: nanoid(),
-            contentValue: {
-                id: nanoid(),
-                questionTitle: '',
-                type: '',
-                required: false,
-                options: [],
-                answerValue: '',
-            },
+            questionTitle: '',
+            type: '',
+            required: false,
+            options: [],
+            answerValue: '',
         }
-        setCreatedComponents((prevComponents) => [
-            ...prevComponents,
-            newComponent,
-        ])
+        // setCreatedComponents((prevComponents) => [
+        //     ...prevComponents,
+        //     newComponent,
+        // ])
+        const updatedQuestionsList = [...formTemplate.questions, newComponent]
+        setFormTemplate((prevState) => ({
+            ...prevState,
+            questions: updatedQuestionsList,
+        }))
 
         timeoutRef.current = setTimeout(
             () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
@@ -123,28 +118,33 @@ const Createform: React.FC = () => {
     }
 
     const handleDelete = (index: number): void => {
-        const updatedComponents = [...createdComponents]
-        updatedComponents.splice(index, 1)
-        setCreatedComponents(updatedComponents)
-    }
-    const getQuestions = (): IQuestion[] => {
-        return createdComponents.map((component) => {
-            return component.contentValue
+        setFormTemplate((prevState) => {
+            const updatedQuestions = [...prevState.questions]
+            updatedQuestions.splice(index, 1)
+            return { ...prevState, questions: updatedQuestions }
         })
     }
+    // const getQuestions = (): IQuestion[] => {
+    //     return createdComponents.map((component) => {
+    //         return component.contentValue
+    //     })
+    // }
     const handleQuestionChange = (index: number, value: IQuestion): void => {
-        const updatedComponents = [...createdComponents]
-        console.log('Hello')
-        updatedComponents[index].contentValue = {
-            id: value.id,
-            questionTitle: value.questionTitle,
-            type: value.type,
-            options: value.options,
-            required: value.required,
-            answerValue: '',
-        }
-        setCreatedComponents(updatedComponents)
-        console.log(getQuestions())
+        // const updatedquestion = value
+        // setFormTemplate((prevState) => ({
+        //     ...prevState,
+        //     questions: { ...prevState.questions, updatedquestion },
+        // }))
+        // updatedComponents[index].contentValue = {
+        //     id: value.id,
+        //     questionTitle: value.questionTitle,
+        //     type: value.type,
+        //     options: value.options,
+        //     required: value.required,
+        //     answerValue: '',
+        // }
+        // setCreatedComponents(updatedComponents)
+        // console.log(getQuestions())
         // setFormTemplate((prevState) => {
         //     const updatedTemplate: IFormTemplate = {
         //         ...prevState,
@@ -152,7 +152,15 @@ const Createform: React.FC = () => {
         //     }
         //     return updatedTemplate
         // })
+        setFormTemplate((prevState) => {
+            const updatedQuestions = [...prevState.questions] // Create a copy of the questions array
+            updatedQuestions[index] = value // Update the question at the specified index
+            return { ...prevState, questions: updatedQuestions } // Update the formTemplate state with the updated questions array
+        })
+        // console.log(value)
+        // console.log(formTemplate.questions)
     }
+
     const handleSave = (): void => {
         // FormService.updateform(formId, updatedTemplate)
         //     .then(() => {
@@ -165,18 +173,34 @@ const Createform: React.FC = () => {
         // return updatedTemplate
         // })
         console.log(formTemplate)
-        FormService.addNewForm(formTemplate)
-            .then(() => {
-                successNotify('Form Added successfully')
-            })
-            .catch(() => {
-                errorNotify('Error while Adding Form')
-            })
+        setIsLoading(true)
+        if (formStatus === 'add') {
+            FormService.addNewForm(formTemplate)
+                .then(() => {
+                    successNotify('Form Saved successfully')
+                })
+                .catch(() => {
+                    errorNotify('Error while Adding Form')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        } else {
+            FormService.updateForm(formId, formTemplate)
+                .then(() => {
+                    successNotify('Form Saved Successfully')
+                })
+                .catch(() => {
+                    errorNotify('Error while Saving the form')
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+        }
     }
-
-    // if (isLoading) {
-    //     return <Loader />
-    // }
+    if (isLoading) {
+        return <Loader />
+    }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
