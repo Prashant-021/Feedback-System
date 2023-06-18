@@ -13,12 +13,14 @@ import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import Loader from '../Loader/Loader'
 import { errorNotify, successNotify } from '../../utils'
 import RatingBar from './FormComponents/RatingBar'
-
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
     const [isLoading, setIsLoading] = useState(true)
     const [form, setForm] = useState<IFormTemplate>()
+    const [validationErrors, setValidationErrors] = useState<
+        Record<string, string>
+    >({})
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
             .then((formDoc) => {
@@ -39,6 +41,25 @@ const Viewform: React.FC = () => {
     })
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
+        if (form?.questions == null) {
+            throw new Error(
+                'The form object does not have a questions property.'
+            )
+        }
+        const errors: Record<string, string> = {}
+        for (const question of form?.questions) {
+            if (question.required && question.answerValue.length === 0) {
+                errors[
+                    question.id
+                ] = `${question.questionTitle} field is required`
+            }
+        }
+        if (Object.keys(errors).length > 0) {
+            setValidationErrors(errors)
+            return
+        }
+        setValidationErrors({})
+
         FormResponseService.addResponse({ ...inputValueRef.current, ...form })
             .then(() => {
                 successNotify('Form submitted successfully')
@@ -47,6 +68,8 @@ const Viewform: React.FC = () => {
                 errorNotify('Form Submission Failed')
             })
     }
+    console.log(validationErrors)
+
     const updateOption = (value: string | string[], id: string): void => {
         const que = form?.questions.find((question) => question.id === id)
         if (que != null) {
@@ -131,12 +154,18 @@ const Viewform: React.FC = () => {
     }
     const clearValues = (): void => {
         inputValueRef.current = {}
+        if (form?.questions != null) {
+            for (const question of form?.questions) {
+                question.answerValue = ''
+            }
+        }
+        setValidationErrors({})
     }
     if (isLoading) {
         return <Loader />
     }
     return (
-        <div className="flex items-center flex-col w-full my-20 gap-4">
+        <div className="flex items-center flex-col w-full my-20 me-16 gap-4">
             <div className="formHeader rounded-lg shadow-xl bg-white py-12 border-blue-600 border-t-8  px-6 md:p-11 h-fit w-[90%] md:w-8/12">
                 <Typography variant="h3" color="blue-gray" className="mb-2">
                     {form?.title ?? ''}
@@ -167,7 +196,7 @@ const Viewform: React.FC = () => {
                 {form?.questions.map((question) => (
                     <div
                         key={nanoid()}
-                        className="rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit w-full"
+                        className="rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8 px-6 md:p-11 h-fit w-full"
                     >
                         <div>
                             {renderQuestionType(
@@ -178,6 +207,13 @@ const Viewform: React.FC = () => {
                                 question.id
                             )}
                         </div>
+                        <Typography
+                            variant="small"
+                            color="red"
+                            className="absolute"
+                        >
+                            {validationErrors[question.id] ?? ''}
+                        </Typography>
                     </div>
                 ))}
                 <div className="submitBtn flex justify-between">

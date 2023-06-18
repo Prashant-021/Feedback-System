@@ -20,6 +20,7 @@ interface CheckboxesProps {
 const Checkboxes: React.FC<CheckboxesProps> = ({
     questionTitle,
     optionlist,
+    isRequired,
     onChange,
     id,
 }) => {
@@ -52,7 +53,10 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
 
     return (
         <div>
-            <Typography>{questionTitle}</Typography>
+            <Typography>
+                {questionTitle}{' '}
+                {isRequired && <span className="text-red-500">*</span>}
+            </Typography>
             <List>
                 {optionlist.map((option) => (
                     <ListItem className="p-0" key={option.id}>

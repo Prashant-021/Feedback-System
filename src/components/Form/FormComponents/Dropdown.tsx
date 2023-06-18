@@ -18,7 +18,6 @@ const Dropdown: React.FC<DropdownProps> = ({
     id,
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>('')
-    console.log(selectedOption)
     const [inputValue, setInputValue] = useState<string>('')
 
     const handleSelectChange = (value: string | undefined): void => {
@@ -46,7 +45,11 @@ const Dropdown: React.FC<DropdownProps> = ({
                     {questionTitle}{' '}
                     {isRequired && <span className="text-red-500">*</span>}
                 </Typography>
-                <Select variant="static" onChange={handleSelectChange}>
+                <Select
+                    variant="static"
+                    value={selectedOption}
+                    onChange={handleSelectChange}
+                >
                     {optionlist.map((option) => (
                         <Option key={option.id} value={option.optionValue}>
                             {option.optionValue}

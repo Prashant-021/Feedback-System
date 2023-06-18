@@ -57,9 +57,9 @@ const Dashboard: React.FC = () => {
     return (
         <>
             {user != null ? (
-                <div className="w-auto m-8 flex gap-4 flex-wrap justify-start max-h-[78vh] h-fit overflow-scroll">
+                <div className="w-auto m-8 pb-3 flex gap-4 flex-wrap justify-start max-h-[78vh] h-fit overflow-scroll">
                     <Tooltip content="Add Category">
-                        <Card className="mt-6 w-60 scale-95 hover:scale-100 transition-scale duration-300">
+                        <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
                             <Button
                                 variant="text"
                                 className="justify-center flex hover:bg-blue-400"

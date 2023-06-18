@@ -1,4 +1,5 @@
 import * as yup from 'yup'
+import { type IQuestion } from '../interface'
 
 const MAX_IMAGE_SIZE = 2 * 1024 * 1024
 // const phoneRegExp = /^[6-9]\d{9}$/;
@@ -47,3 +48,19 @@ export const CategorySchema = yup.object().shape({
     title: yup.string().required('Please enter Category Title'),
     desctiption: yup.string().required('Please enter Category Description'),
 })
+
+export const generateValidationSchema = (
+    questions: IQuestion[] | undefined
+): yup.ObjectSchema<any> => {
+    const schemaObject: Record<string, yup.AnySchema> = {}
+    if (questions != null) {
+        questions.forEach((question: IQuestion) => {
+            const { id, required } = question
+            schemaObject[`question_{${id}}`] = yup
+                .string()
+                .required(required ? 'This field is required' : undefined)
+        })
+    }
+
+    return yup.object().shape(schemaObject)
+}

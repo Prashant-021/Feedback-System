@@ -1,4 +1,4 @@
-import { Button, Input } from '@material-tailwind/react'
+import { Button, Input, Typography } from '@material-tailwind/react'
 import React, { useState } from 'react'
 
 interface Props {
@@ -18,21 +18,22 @@ const Paragraph: React.FC<Props> = ({
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         setInputValue(event.target.value)
-        if (event.target.value === '') onChange('Not Attempted', id)
-        else onChange(event.target.value, id)
+        onChange(event.target.value, id)
     }
 
     const handleClearSelection = (): void => {
         setInputValue('')
-        onChange('Not Attempted', id)
+        onChange('', id)
     }
 
     return (
         <>
+            <Typography>
+                {questionTitle}{' '}
+                {isRequired && <span className="text-red-500">*</span>}
+            </Typography>
             <Input
-                label={questionTitle}
                 variant="static"
-                required={isRequired}
                 onChange={handleChange}
                 value={inputValue}
             />

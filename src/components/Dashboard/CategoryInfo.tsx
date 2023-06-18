@@ -22,6 +22,7 @@ import { useNavigate } from 'react-router-dom'
 import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
 import { errorNotify, successNotify } from '../../utils'
 import { deleteCategory } from '../redux/slice/slice'
+import { truncate } from '../../utils/'
 
 interface Props {
     categoryValue: ICategory
@@ -47,12 +48,14 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue, updateList }) => {
     }
     const Navigate = useNavigate()
     return (
-        <Card className="mt-6 w-60 hover:drop-shadow-lg scale-95 hover:scale-100 transition-scale duration-300">
-            <CardBody>
+        <Card className=" w-60 hover:drop-shadow-lg scale-95 hover:scale-100 transition-scale duration-300">
+            <CardBody className="">
                 <Typography variant="h5" color="blue-gray" className="mb-2">
                     {categoryValue.title}
                 </Typography>
-                <Typography>{categoryValue.description}</Typography>
+                <Typography>
+                    {truncate(categoryValue.description, 20)}
+                </Typography>
             </CardBody>
             <CardFooter className="pt-0 flex justify-evenly">
                 <Tooltip content="View Responses">

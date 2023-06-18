@@ -55,7 +55,6 @@ const AddCategory: React.FC<Props> = ({
         setCategoryName('')
         setCategoryDescription('')
     }
-
     const handleSave = (): void => {
         if (categoryName === '') {
             alert('Please enter a category name')
@@ -63,56 +62,60 @@ const AddCategory: React.FC<Props> = ({
             if (categoryDescription === '') {
                 alert('Please enter a category description')
             } else {
-                const categoryExist = storedCategory.find(
-                    (c) => c.title === categoryName
-                )
-                if (isEdit) {
-                    dispatch(
-                        updateCategory({
-                            id: categoryId,
-                            title: categoryName,
-                            description: categoryDescription,
-                            createdDate: getDate(date),
-                        })
-                    )
-                    CategoryService.updateCategory(categoryId, {
-                        id: categoryId,
-                        title: categoryName,
-                        description: categoryDescription,
-                        createdDate: getDate(date),
-                    })
-                        .then(() => {
-                            successNotify('Category updated successfully')
-                            updateList()
-                        })
-                        .catch((err) => {
-                            console.log('Error updating category', err)
-                        })
+                if (categoryName.length > 15) {
+                    alert('Category name Should be less than 15 Characters')
                 } else {
-                    if (categoryExist !== undefined) {
-                        errorNotify('Category Already exists')
-                    } else {
+                    const categoryExist = storedCategory.find(
+                        (c) => c.title === categoryName
+                    )
+                    if (isEdit) {
                         dispatch(
-                            addCategory({
-                                id: nanoid(),
+                            updateCategory({
+                                id: categoryId,
                                 title: categoryName,
                                 description: categoryDescription,
                                 createdDate: getDate(date),
                             })
                         )
-                        CategoryService.addCategory({
-                            id: nanoid(),
+                        CategoryService.updateCategory(categoryId, {
+                            id: categoryId,
                             title: categoryName,
                             description: categoryDescription,
                             createdDate: getDate(date),
                         })
                             .then(() => {
-                                successNotify('Category added successfully')
+                                successNotify('Category updated successfully')
                                 updateList()
                             })
                             .catch((err) => {
-                                errorNotify(err)
+                                console.log('Error updating category', err)
                             })
+                    } else {
+                        if (categoryExist !== undefined) {
+                            errorNotify('Category Already exists')
+                        } else {
+                            dispatch(
+                                addCategory({
+                                    id: nanoid(),
+                                    title: categoryName,
+                                    description: categoryDescription,
+                                    createdDate: getDate(date),
+                                })
+                            )
+                            CategoryService.addCategory({
+                                id: nanoid(),
+                                title: categoryName,
+                                description: categoryDescription,
+                                createdDate: getDate(date),
+                            })
+                                .then(() => {
+                                    successNotify('Category added successfully')
+                                    updateList()
+                                })
+                                .catch((err) => {
+                                    errorNotify(err)
+                                })
+                        }
                     }
                 }
             }

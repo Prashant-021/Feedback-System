@@ -15,7 +15,7 @@ const TABLE_HEAD = ['Email', 'View Response']
 const ViewFormResponse: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
-    const categoryType = path[path.length - 1].toLowerCase()
+    const categoryType = path[path.length - 1]
     const Navigate = useNavigate()
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)

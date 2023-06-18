@@ -19,6 +19,7 @@ import { type Ioption, type IQuestion } from '../../interface'
 const IndividualResponse: React.FC = () => {
     const location = useLocation()
     const { category } = location.state
+    const selectedCategoryName = category.categoryName
     const Navigate = useNavigate()
     const renderQuestionType = (
         answerType: string | string[],
@@ -165,9 +166,9 @@ const IndividualResponse: React.FC = () => {
                     color="blue"
                     onClick={() => {
                         // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                        Navigate(`/formresponse/${category}`, {
+                        Navigate(`/formresponse/${category.categoryName}`, {
                             state: {
-                                category,
+                                category: selectedCategoryName,
                             },
                         })
                     }}
