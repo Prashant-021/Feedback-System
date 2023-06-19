@@ -12,7 +12,7 @@ import {
 } from '@material-tailwind/react'
 import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
 import { nanoid } from '@reduxjs/toolkit'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { type Ioption, type IQuestion } from '../../interface'
 
@@ -21,6 +21,11 @@ const IndividualResponse: React.FC = () => {
     const { category } = location.state
     const selectedCategoryName = category.categoryName
     const Navigate = useNavigate()
+    useEffect(() => {
+        if (sessionStorage.length === 0) {
+            Navigate('/login')
+        }
+    }, [Navigate])
     const renderQuestionType = (
         answerType: string | string[],
         questionTitle: string,

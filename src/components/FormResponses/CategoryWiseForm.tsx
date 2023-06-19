@@ -38,6 +38,11 @@ const CategoryWiseForm: React.FC = () => {
     const [categories, setCategories] = useState<string[]>([])
     const [categoryType, setCategoryType] = useState<string>(category)
     useEffect(() => {
+        if (sessionStorage.length === 0) {
+            Navigate('/login')
+        }
+    }, [Navigate])
+    useEffect(() => {
         setIsLoading(true)
         CategoryService.getAllCategory()
             .then((querySnapshot) => {

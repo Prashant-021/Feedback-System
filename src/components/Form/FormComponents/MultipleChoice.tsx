@@ -65,7 +65,7 @@ const MultipleChoice: React.FC<Props> = ({
                                 <Radio
                                     name="vertical-list"
                                     id={`MCQ-vertical-${option.id}`}
-                                    ripple={false}
+                                    ripple={true}
                                     className="hover:before:opacity-0"
                                     containerProps={{
                                         className: 'p-0',

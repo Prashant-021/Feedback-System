@@ -23,15 +23,18 @@ const RatingBar: React.FC<Props> = ({
         setErrorMessage('')
         onChange('', id)
     }
-    useEffect((): void => {
+
+    useEffect(() => {
         setIsTouched(true)
-        if (isTouched && isRequired && rated === 0) {
-            setErrorMessage('Please rate the question.')
-        } else {
-            setErrorMessage('')
-            onChange(String(rated), id)
+        if (isTouched) {
+            if (isRequired && rated === 0) {
+                setErrorMessage('Please rate the question.')
+            } else {
+                setErrorMessage('')
+                onChange(String(rated), id)
+            }
         }
-    }, [rated])
+    }, [rated, isTouched])
 
     return (
         <>
@@ -45,7 +48,7 @@ const RatingBar: React.FC<Props> = ({
                     onChange={(value) => {
                         setRated(value)
                         setErrorMessage('')
-                        onChange(String(value), id)
+                        setIsTouched(true) // Set isTouched to true when rating changes
                     }}
                 />
                 <Typography color="blue-gray" className="font-medium">

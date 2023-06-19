@@ -6,7 +6,7 @@ import {
     PlusIcon,
     TrashIcon,
 } from '@heroicons/react/24/solid'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import {
     type IFormHeader,
@@ -22,6 +22,8 @@ const Createform: React.FC = () => {
     const { formStatus } = location.state
     const path = location.pathname.split('/')
     const formId = path[path.length - 1]
+    const [disable, setDisable] = useState<boolean>(true)
+    const Navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false)
     const bottomRef = useRef<HTMLDivElement>(null)
@@ -30,17 +32,13 @@ const Createform: React.FC = () => {
         title: 'Untitled Form',
         description: '',
         categoryName: '',
-        questions: [
-            {
-                id: nanoid(),
-                questionTitle: '',
-                type: '',
-                required: false,
-                options: [],
-                answerValue: '',
-            },
-        ],
+        questions: [],
     })
+    useEffect(() => {
+        if (sessionStorage.length === 0) {
+            Navigate('/login')
+        }
+    }, [Navigate])
     useEffect(() => {
         if (formStatus === 'edit') {
             setIsLoading(true)
@@ -89,6 +87,7 @@ const Createform: React.FC = () => {
             () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
             10
         )
+        setDisable(false)
     }
 
     const handleDelete = (index: number): void => {
@@ -146,7 +145,11 @@ const Createform: React.FC = () => {
                         </Button>
                     </Link>
                 </Tooltip>
-                <Button className="float-right" onClick={handleSave}>
+                <Button
+                    className="float-right"
+                    onClick={handleSave}
+                    disabled={disable}
+                >
                     Save
                 </Button>
             </div>

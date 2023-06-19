@@ -1,5 +1,5 @@
 import {
-    MagnifyingGlassIcon,
+    // MagnifyingGlassIcon,
     ChevronUpDownIcon,
 } from '@heroicons/react/24/outline'
 import {
@@ -10,8 +10,8 @@ import {
 } from '@heroicons/react/24/solid'
 import {
     Card,
-    CardHeader,
-    Input,
+    // CardHeader,
+    // Input,
     Typography,
     Button,
     CardBody,
@@ -34,7 +34,14 @@ const FormList: React.FC = () => {
     const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    const [searchCategory, setSearchCategory] = useState('')
+
+    const Navigate = useNavigate()
+    // const [searchCategory, setSearchCategory] = useState('')
+    useEffect(() => {
+        if (sessionStorage.length === 0) {
+            Navigate('/login')
+        }
+    }, [Navigate])
 
     useEffect(() => {
         setIsLoading(true)
@@ -55,8 +62,6 @@ const FormList: React.FC = () => {
                 setIsLoading(false)
             })
     }, [refresh])
-
-    const Navigate = useNavigate()
     const createForm = (): void => {
         Navigate(`/forms/createform/${nanoid()}`, {
             state: {
@@ -98,57 +103,25 @@ const FormList: React.FC = () => {
     }
     return (
         <div className="w-full p-2 sm:p-10">
-            <div className="bg-white rounded-lg  p-5 mb-2">
-                <Typography variant="h2" className="mb-3 ">
+            <div className="bg-white rounded-lg flex justify-between  p-5 mb-2">
+                <Typography variant="h2" className="">
                     <span className="text-blue-800">Form List</span>
                 </Typography>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
+                    <Button
+                        className="flex items-center gap-3"
+                        color="blue"
+                        size="sm"
+                        onClick={() => {
+                            createForm()
+                        }}
+                    >
+                        <DocumentPlusIcon strokeWidth={2} className="h-4 w-4" />{' '}
+                        Add Form
+                    </Button>
+                </div>
             </div>
             <Card className=" w-full">
-                <CardHeader
-                    floated={false}
-                    shadow={false}
-                    className="rounded-none"
-                >
-                    <div className="mb-8 flex flex-col md:flex-row items-center justify-between gap-8">
-                        <div className="w-full md:w-72 mt-2">
-                            <Input
-                                label="Search"
-                                icon={
-                                    <MagnifyingGlassIcon className="h-5 w-5" />
-                                }
-                                value={searchCategory}
-                                onChange={(event) => {
-                                    setSearchCategory(event.target.value)
-                                }}
-                            />
-                        </div>
-                        <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
-                            <Button
-                                variant="outlined"
-                                color="blue-gray"
-                                size="sm"
-                            >
-                                view all
-                            </Button>
-                            <Button
-                                className="flex items-center gap-3"
-                                color="blue"
-                                size="sm"
-                                onClick={() => {
-                                    createForm()
-                                }}
-                            >
-                                <DocumentPlusIcon
-                                    strokeWidth={2}
-                                    className="h-4 w-4"
-                                />{' '}
-                                Add Form
-                            </Button>
-                        </div>
-                        {/* </div>
-                    <div className="flex flex-col items-center justify-end gap-4 md:flex-row"> */}
-                    </div>
-                </CardHeader>
                 <CardBody className="p-0 mt-4 overflow-scroll  px-0 h-[47vh]">
                     <table className=" w-full min-w-max table-auto text-left">
                         <thead className=" bg-white">

@@ -20,6 +20,11 @@ const ViewFormResponse: React.FC = () => {
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
     useEffect(() => {
+        if (sessionStorage.length === 0) {
+            Navigate('/login')
+        }
+    }, [Navigate])
+    useEffect(() => {
         FormResponseService.getAllResponse(categoryType)
             .then((querySnapshot) => {
                 const data: IFormResponse[] = []
@@ -80,51 +85,57 @@ const ViewFormResponse: React.FC = () => {
                                 ))}
                             </tr>
                         </thead>
-                        <tbody>
-                            {TABLE_ROWS.map(({ Email }, index) => (
-                                <tr
-                                    key={nanoid()}
-                                    className="even:bg-blue-gray-50/50"
-                                >
-                                    <td className="p-4">
-                                        <Typography
-                                            variant="small"
-                                            color="blue-gray"
-                                            className="font-normal"
-                                        >
-                                            {Email ?? 'Not Provided'}
-                                        </Typography>
-                                    </td>
-                                    <td className="p-4">
-                                        <Button
-                                            size="sm"
-                                            variant="text"
-                                            onClick={() => {
-                                                Navigate(
-                                                    '/formResponse/individualform',
-                                                    {
-                                                        state: {
-                                                            category:
-                                                                TABLE_ROWS[
-                                                                    index
-                                                                ],
-                                                        },
-                                                    }
-                                                )
-                                            }}
-                                        >
+                        {TABLE_ROWS.length !== 0 ? (
+                            <tbody>
+                                {TABLE_ROWS.map(({ Email }, index) => (
+                                    <tr
+                                        key={nanoid()}
+                                        className="even:bg-blue-gray-50/50"
+                                    >
+                                        <td className="p-4">
                                             <Typography
                                                 variant="small"
-                                                color="blue"
-                                                className="font-medium"
+                                                color="blue-gray"
+                                                className="font-normal"
                                             >
-                                                View
+                                                {Email ?? 'Not Provided'}
                                             </Typography>
-                                        </Button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
+                                        </td>
+                                        <td className="p-4">
+                                            <Button
+                                                size="sm"
+                                                variant="text"
+                                                onClick={() => {
+                                                    Navigate(
+                                                        '/formResponse/individualform',
+                                                        {
+                                                            state: {
+                                                                category:
+                                                                    TABLE_ROWS[
+                                                                        index
+                                                                    ],
+                                                            },
+                                                        }
+                                                    )
+                                                }}
+                                            >
+                                                <Typography
+                                                    variant="small"
+                                                    color="blue"
+                                                    className="font-medium"
+                                                >
+                                                    View
+                                                </Typography>
+                                            </Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        ) : (
+                            <div className="flex justify-end h-[30rem] items-center">
+                                No Responses avaliable
+                            </div>
+                        )}
                     </table>
                 </Card>
             </div>
