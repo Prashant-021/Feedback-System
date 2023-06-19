@@ -1,12 +1,11 @@
 import {
     Button,
-    Checkbox,
     List,
     ListItem,
     ListItemPrefix,
     Typography,
 } from '@material-tailwind/react'
-import React, { useRef } from 'react'
+import React, { useEffect } from 'react'
 import { type Ioption } from '../../../interface'
 
 interface CheckboxesProps {
@@ -25,29 +24,25 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
     id,
 }) => {
     const [selectedOptions, setSelectedOptions] = React.useState<string[]>([])
-    const inputRef = useRef<HTMLInputElement>(null)
 
     const handleCheckboxChange = (
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
-        const { value, checked } = event.target
+        const { id, checked } = event.currentTarget
         if (checked) {
-            setSelectedOptions((prevOptions) => [...prevOptions, value])
+            setSelectedOptions((prevOptions) => [...prevOptions, id])
         } else {
             setSelectedOptions((prevOptions) =>
-                prevOptions.filter((option) => option !== value)
+                prevOptions.filter((optionId) => optionId !== id)
             )
         }
     }
 
     const handleClearSelection = (): void => {
         setSelectedOptions([])
-        if (inputRef.current != null) {
-            inputRef.current.value = ''
-        }
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         onChange(selectedOptions, id)
     }, [selectedOptions, onChange, id])
 
@@ -65,18 +60,12 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
                             className="px-3 py-2 flex items-center w-full cursor-pointer"
                         >
                             <ListItemPrefix className="mr-3">
-                                <Checkbox
-                                    name="vertical-list"
+                                <input
+                                    type="checkbox"
                                     id={option.id}
-                                    ripple={false}
-                                    className="hover:before:opacity-0"
-                                    containerProps={{
-                                        className: 'p-0',
-                                    }}
-                                    value={option.optionValue}
                                     onChange={handleCheckboxChange}
                                     checked={selectedOptions.includes(
-                                        option.optionValue
+                                        option.id
                                     )}
                                 />
                             </ListItemPrefix>
@@ -90,7 +79,6 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
                     </ListItem>
                 ))}
             </List>
-            {/* {selectedOptions.length > 0 && ( */}
             <Button
                 variant="text"
                 className="float-right mt-4"
@@ -98,14 +86,6 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
             >
                 Clear selection
             </Button>
-            {/* )}   */}
-            {/* <input
-                ref={inputRef}
-                type="text"
-                value={selectedOptions.join(', ')}
-                readOnly
-                className="border border-gray-300 rounded-md px-3 py-2 mt-2"
-            /> */}
         </div>
     )
 }

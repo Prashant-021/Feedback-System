@@ -1,4 +1,4 @@
-import { Button, Card, Tooltip } from '@material-tailwind/react'
+import { Button, Card, Tooltip, Typography } from '@material-tailwind/react'
 import { nanoid } from '@reduxjs/toolkit'
 import React, { useEffect, useReducer, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
@@ -57,32 +57,39 @@ const Dashboard: React.FC = () => {
     return (
         <>
             {user != null ? (
-                <div className="w-auto m-8 pb-3 flex gap-4 flex-wrap justify-start max-h-[78vh] h-fit overflow-scroll">
-                    <Tooltip content="Add Category">
-                        <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
-                            <Button
-                                variant="text"
-                                className="justify-center flex hover:bg-blue-400"
-                                onClick={handleOpen}
-                            >
-                                <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />
-                            </Button>
-                            <AddCategory
-                                open={open}
-                                handleOpen={handleOpen}
-                                updateList={increment}
-                            />
-                        </Card>
-                    </Tooltip>
-                    {categoryList?.map((category): JSX.Element => {
-                        return (
-                            <CategoryInfo
-                                key={nanoid()}
-                                categoryValue={category}
-                                updateList={increment}
-                            />
-                        )
-                    })}
+                <div className="w-full">
+                    <div className="bg-white rounded-lg p-5 mb-2 m-8">
+                        <Typography variant="h2" className="mb-3 ">
+                            <span className="text-blue-800">Category List</span>
+                        </Typography>
+                    </div>
+                    <div className=" m-8 pb-3 flex gap-4 flex-wrap justify-start h-fit">
+                        <Tooltip content="Add Category">
+                            <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
+                                <Button
+                                    variant="text"
+                                    className="justify-center flex hover:bg-blue-400"
+                                    onClick={handleOpen}
+                                >
+                                    <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />
+                                </Button>
+                                <AddCategory
+                                    open={open}
+                                    handleOpen={handleOpen}
+                                    updateList={increment}
+                                />
+                            </Card>
+                        </Tooltip>
+                        {categoryList?.map((category): JSX.Element => {
+                            return (
+                                <CategoryInfo
+                                    key={nanoid()}
+                                    categoryValue={category}
+                                    updateList={increment}
+                                />
+                            )
+                        })}
+                    </div>
                 </div>
             ) : (
                 <></>

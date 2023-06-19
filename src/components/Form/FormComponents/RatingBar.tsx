@@ -1,5 +1,5 @@
 import { Button, Rating, Typography } from '@material-tailwind/react'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 interface Props {
     questionTitle: string
@@ -14,12 +14,24 @@ const RatingBar: React.FC<Props> = ({
     onChange,
     isRequired,
 }) => {
-    const [rated, setRated] = React.useState(0)
+    const [rated, setRated] = useState<number>(0)
+    const [errorMessage, setErrorMessage] = useState<string>('')
+    const [isTouched, setIsTouched] = useState<boolean>(false)
 
     const handleClearSelection = (): void => {
         setRated(0)
+        setErrorMessage('')
         onChange('', id)
     }
+    useEffect((): void => {
+        setIsTouched(true)
+        if (isTouched && isRequired && rated === 0) {
+            setErrorMessage('Please rate the question.')
+        } else {
+            setErrorMessage('')
+            onChange(String(rated), id)
+        }
+    }, [rated])
 
     return (
         <>
@@ -32,6 +44,7 @@ const RatingBar: React.FC<Props> = ({
                     value={rated}
                     onChange={(value) => {
                         setRated(value)
+                        setErrorMessage('')
                         onChange(String(value), id)
                     }}
                 />
@@ -39,6 +52,11 @@ const RatingBar: React.FC<Props> = ({
                     {rated}.0 Rated
                 </Typography>
             </div>
+            {errorMessage.length > 0 && (
+                <Typography className="mt-2 text-red-500">
+                    {errorMessage}
+                </Typography>
+            )}
             <Button
                 variant="text"
                 className="float-right"

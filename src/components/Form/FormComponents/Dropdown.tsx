@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Select, Option, Typography, Button } from '@material-tailwind/react'
+import { Typography, Button } from '@material-tailwind/react'
 import { type Ioption } from '../../../interface'
 
 interface DropdownProps {
@@ -19,16 +19,28 @@ const Dropdown: React.FC<DropdownProps> = ({
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>('')
     const [inputValue, setInputValue] = useState<string>('')
+    const [isTouched, setIsTouched] = useState(false)
 
     const handleSelectChange = (value: string | undefined): void => {
         if (value != null) {
-            setSelectedOption(value)
-            onChange(value, id)
+            //     setSelectedOption(value)
+            //     onChange(value, id)
+            // }
+            if (value !== '') {
+                setSelectedOption(value)
+                onChange(value, id)
+                setIsTouched(false)
+            } else {
+                setSelectedOption('')
+                onChange('', id)
+                setIsTouched(true)
+            }
         }
     }
 
     const handleClearSelection = (): void => {
         setSelectedOption('')
+        setIsTouched(true)
         setInputValue('')
     }
 
@@ -45,17 +57,27 @@ const Dropdown: React.FC<DropdownProps> = ({
                     {questionTitle}{' '}
                     {isRequired && <span className="text-red-500">*</span>}
                 </Typography>
-                <Select
-                    variant="static"
+                <select
+                    // variant="static"
+                    className="py-4 bg-white border-b-2 border-gray-500 outline-none"
                     value={selectedOption}
-                    onChange={handleSelectChange}
+                    onChange={(event) => {
+                        handleSelectChange(event.target.value)
+                    }}
+                    required={isRequired}
                 >
+                    <option value="">None</option>
                     {optionlist.map((option) => (
-                        <Option key={option.id} value={option.optionValue}>
+                        <option key={option.id} value={option.optionValue}>
                             {option.optionValue}
-                        </Option>
+                        </option>
                     ))}
-                </Select>
+                </select>
+                {isTouched && isRequired && inputValue.trim() === '' && (
+                    <Typography className="text-red-500">
+                        Field is required
+                    </Typography>
+                )}
             </div>
             <Button
                 variant="text"

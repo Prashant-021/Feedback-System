@@ -10,6 +10,7 @@ import {
     PresentationChartBarIcon,
     UserCircleIcon,
     DocumentPlusIcon,
+    HandThumbUpIcon,
 } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 
@@ -17,7 +18,7 @@ const DefaultSpeedDial: React.FC = () => {
     const Navigate = useNavigate()
     return (
         //   <div className="relative w-full h-80">
-        <div className="fixed z-40 bottom-0 right-0 block sm:hidden">
+        <div className="fixed z-40 bottom-[15px] right-[15px] block sm:hidden">
             <SpeedDial>
                 <SpeedDialHandler>
                     <IconButton size="lg" className="rounded-full">
@@ -38,6 +39,18 @@ const DefaultSpeedDial: React.FC = () => {
                             className="h-5 w-5"
                             onClick={() => {
                                 Navigate('/forms')
+                            }}
+                        />
+                    </SpeedDialAction>
+                    <SpeedDialAction>
+                        <HandThumbUpIcon
+                            className="h-5 w-5"
+                            onClick={() => {
+                                Navigate('/formresponse', {
+                                    state: {
+                                        category: 'All',
+                                    },
+                                })
                             }}
                         />
                     </SpeedDialAction>

@@ -80,14 +80,14 @@ const CategoryWiseForm: React.FC = () => {
         return <Loader />
     }
     return (
-        <div className="w-full ms-2">
-            <div className="flex justify-between w-[99%] rounded-lg px-5 py-2 my-2">
-                <Typography variant="h3" color="blue">
-                    Select Form
+        <div className="w-full items-center flex flex-col ms-2">
+            <div className="bg-white rounded-lg p-5 my-5 w-[98%] flex justify-between items-center">
+                <Typography variant="h2" className=" ">
+                    <span className="text-blue-800">Form List</span>
                 </Typography>
                 <div className="w-72">
                     <select
-                        className="p-2 drop-shadow-2xl border-blue-400 rounded-lg"
+                        className=" py-3 outline-0 float-right bg-blue-100 border-b-2 drop-shadow-2xl border-blue-400"
                         value={categoryType}
                         onChange={(event) => {
                             setCategoryType(event.target.value)
@@ -104,15 +104,15 @@ const CategoryWiseForm: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <Card className="overflow-hidden w-[99%] ">
+            <Card className="overflow-hidden w-[98%] ">
                 <CardBody className="p-0 overflow-scroll px-0 h-[30rem]">
-                    <table className=" w-full table-fixed text-left">
+                    <table className=" w-full table-auto text-left">
                         <thead>
-                            <tr className="sticky top-0">
+                            <tr className="sticky top-0 z-30 border-blue-400 bg-blue-500">
                                 {TABLE_HEAD.map((head, index) => (
                                     <th
                                         key={head}
-                                        className="cursor-pointer border-y  border-blue-400 bg-blue-500 p-4"
+                                        className="cursor-pointer border-y  p-4"
                                     >
                                         <Typography
                                             color="white"
@@ -141,7 +141,10 @@ const CategoryWiseForm: React.FC = () => {
                                         : 'p-4 border-b border-blue-gray-50'
 
                                     return (
-                                        <tr key={nanoid()}>
+                                        <tr
+                                            key={nanoid()}
+                                            className="even:bg-blue-gray-50/50"
+                                        >
                                             <td className={classes}>
                                                 <div className="flex flex-col">
                                                     <Typography

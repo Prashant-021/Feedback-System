@@ -41,14 +41,6 @@ const Createform: React.FC = () => {
             },
         ],
     })
-    // const [createdComponents, setCreatedComponents] = useState<ComponentData[]>(
-    //     formTemplate != null
-    //         ? formTemplate.questions.map((question) => ({
-    //               id: nanoid(),
-    //               contentValue: question,
-    //           }))
-    //         : []
-    // )
     useEffect(() => {
         if (formStatus === 'edit') {
             setIsLoading(true)
@@ -74,26 +66,12 @@ const Createform: React.FC = () => {
             categoryName: value.categoryName,
         }))
     }
-    // useEffect(() => {
-    //     if (formTemplate != null) {
-    //         setCreatedComponents(
-    //             formTemplate.questions.map((question) => ({
-    //                 id: nanoid(),
-    //                 contentValue: question,
-    //             }))
-    //         )
-    //         setFormTemplate(formTemplate)
-    //     }
-    // }, [formTemplate, formId])
-
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
     )
 
     const handleClick = (): void => {
         const newComponent: IQuestion = {
-            // id: nanoid(),
-            // contentValue: {
             id: nanoid(),
             questionTitle: '',
             type: '',
@@ -101,10 +79,6 @@ const Createform: React.FC = () => {
             options: [],
             answerValue: '',
         }
-        // setCreatedComponents((prevComponents) => [
-        //     ...prevComponents,
-        //     newComponent,
-        // ])
         const updatedQuestionsList = [...formTemplate.questions, newComponent]
         setFormTemplate((prevState) => ({
             ...prevState,
@@ -124,54 +98,15 @@ const Createform: React.FC = () => {
             return { ...prevState, questions: updatedQuestions }
         })
     }
-    // const getQuestions = (): IQuestion[] => {
-    //     return createdComponents.map((component) => {
-    //         return component.contentValue
-    //     })
-    // }
     const handleQuestionChange = (index: number, value: IQuestion): void => {
-        // const updatedquestion = value
-        // setFormTemplate((prevState) => ({
-        //     ...prevState,
-        //     questions: { ...prevState.questions, updatedquestion },
-        // }))
-        // updatedComponents[index].contentValue = {
-        //     id: value.id,
-        //     questionTitle: value.questionTitle,
-        //     type: value.type,
-        //     options: value.options,
-        //     required: value.required,
-        //     answerValue: '',
-        // }
-        // setCreatedComponents(updatedComponents)
-        // console.log(getQuestions())
-        // setFormTemplate((prevState) => {
-        //     const updatedTemplate: IFormTemplate = {
-        //         ...prevState,
-        //         questions: getQuestions(),
-        //     }
-        //     return updatedTemplate
-        // })
         setFormTemplate((prevState) => {
-            const updatedQuestions = [...prevState.questions] // Create a copy of the questions array
-            updatedQuestions[index] = value // Update the question at the specified index
-            return { ...prevState, questions: updatedQuestions } // Update the formTemplate state with the updated questions array
+            const updatedQuestions = [...prevState.questions]
+            updatedQuestions[index] = value
+            return { ...prevState, questions: updatedQuestions }
         })
-        // console.log(value)
-        // console.log(formTemplate.questions)
     }
 
     const handleSave = (): void => {
-        // FormService.updateform(formId, updatedTemplate)
-        //     .then(() => {
-        //         successNotify('Form Updated Successfully!!')
-        //     })
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
-
-        // return updatedTemplate
-        // })
         console.log(formTemplate)
         setIsLoading(true)
         if (formStatus === 'add') {

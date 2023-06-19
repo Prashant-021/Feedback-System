@@ -5,8 +5,8 @@ import {
     ListItemPrefix,
     Radio,
     Rating,
-    Select,
-    Option,
+    // Select,
+    // Option,
     Typography,
     Button,
 } from '@material-tailwind/react'
@@ -116,7 +116,7 @@ const IndividualResponse: React.FC = () => {
                                                 }}
                                                 value={option.optionValue}
                                                 checked={answerType.includes(
-                                                    option.optionValue
+                                                    option.id
                                                 )}
                                                 disabled
                                             />
@@ -137,14 +137,11 @@ const IndividualResponse: React.FC = () => {
                 return (
                     <div className="w-72 flex-col flex">
                         <label htmlFor="">{questionTitle}</label>
-                        <Select
+                        <Input
                             variant="static"
                             value={answerType as string}
                             disabled
-                            // onChange={'selected'}
-                        >
-                            <Option>All</Option>
-                        </Select>
+                        ></Input>
                     </div>
                 )
             case 'rating':

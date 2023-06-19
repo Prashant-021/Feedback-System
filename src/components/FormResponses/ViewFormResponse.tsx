@@ -42,11 +42,12 @@ const ViewFormResponse: React.FC = () => {
     }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
-            <div className="my-4 w-[90%]">
-                <Typography variant="h2" className="mb-3 ">
-                    {/* Category:{' '} */}
-                    <span className="text-blue-800">{categoryType}</span>
+            <div className="bg-white rounded-lg p-5 mt-5 w-[98%] flex justify-between items-center">
+                <Typography variant="h2" className=" ">
+                    <span className="text-blue-800">Form Responses</span>
                 </Typography>
+            </div>
+            <div className="my-4 w-[98%]">
                 <Button
                     className="float-left items-center gap-3"
                     color="blue"
@@ -61,20 +62,17 @@ const ViewFormResponse: React.FC = () => {
                     <ArrowUturnLeftIcon className="h-5 w-5" />
                 </Button>
             </div>
-            <div className="w-[90%] flex items-center justify-center">
-                <Card className="overflow-scroll h-full w-full">
+            <div className="w-[98%] flex items-center justify-center">
+                <Card className="overflow-x-scroll h-[60vh] w-full">
                     <table className="w-full min-w-max table-auto text-left">
                         <thead>
-                            <tr>
+                            <tr className="sticky top-0 z-20 border-blue-400 bg-blue-500">
                                 {TABLE_HEAD.map((head) => (
-                                    <th
-                                        key={head}
-                                        className="border-b border-blue-400 bg-blue-500 p-4 "
-                                    >
+                                    <th key={head} className="border-b p-4">
                                         <Typography
                                             variant="small"
                                             color="white"
-                                            className="font-normal leading-none"
+                                            className="font-normal leading-none bg-blue-500"
                                         >
                                             {head}
                                         </Typography>

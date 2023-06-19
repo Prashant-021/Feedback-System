@@ -23,7 +23,7 @@ const Sidebar: React.FC = () => {
     }
     return (
         <div
-            className={`fixed drop-shadow-lg min-h-screen z-20 transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[15rem] bg-white  group`}
+            className={`fixed drop-shadow-lg min-h-screen z-50 transition-width duration-700 overflow-hidden hidden sm:block w-[3.5rem] hover:w-[15rem] bg-white  group`}
         >
             <List className=" top-14 max-w-fit">
                 <ListItem

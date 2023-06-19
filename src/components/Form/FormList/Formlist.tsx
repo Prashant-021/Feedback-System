@@ -98,9 +98,9 @@ const FormList: React.FC = () => {
     }
     return (
         <div className="w-full p-2 sm:p-10">
-            <div className="bg-white rounded-lg p-5 mb-2">
-                <Typography variant="h3" color="blue-gray">
-                    Forms list
+            <div className="bg-white rounded-lg  p-5 mb-2">
+                <Typography variant="h2" className="mb-3 ">
+                    <span className="text-blue-800">Form List</span>
                 </Typography>
             </div>
             <Card className=" w-full">
@@ -149,19 +149,19 @@ const FormList: React.FC = () => {
                     <div className="flex flex-col items-center justify-end gap-4 md:flex-row"> */}
                     </div>
                 </CardHeader>
-                <CardBody className="p-0 mt-4 overflow-scroll px-0 h-[47vh]">
+                <CardBody className="p-0 mt-4 overflow-scroll  px-0 h-[47vh]">
                     <table className=" w-full min-w-max table-auto text-left">
                         <thead className=" bg-white">
-                            <tr className="sticky top-0">
+                            <tr className="sticky top-0 z-30 border-blue-400 bg-blue-500 ">
                                 {TABLE_HEAD.map((head, index) => (
                                     <th
                                         key={head}
-                                        className="cursor-pointer sticky top-0  border-blue-400 bg-blue-500 p-4"
+                                        className="cursor-pointer p-4"
                                     >
                                         <Typography
                                             variant="small"
                                             color="white"
-                                            className="flex items-center justify-between gap-2 font-bold leading-none"
+                                            className="flex bg-blue-500 items-center justify-between gap-2 font-bold leading-none"
                                         >
                                             {head}{' '}
                                             {index !== TABLE_HEAD.length && (
