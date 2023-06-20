@@ -87,13 +87,13 @@ const CategoryWiseForm: React.FC = () => {
     }
     return (
         <div className="w-full items-center flex flex-col ms-2">
-            <div className="bg-white rounded-lg p-5 my-5 w-[98%] flex justify-between items-center">
-                <Typography variant="h2" className=" ">
+            <div className="bg-white rounded-lg p-3 my-5 w-[98%] flex justify-between items-center">
+                <Typography variant="h4" className=" ">
                     <span className="text-blue-800">Form List</span>
                 </Typography>
                 <div className="w-72">
                     <select
-                        className=" py-3 outline-0 float-right bg-blue-100 border-b-2 drop-shadow-2xl border-blue-400"
+                        className=" py-2 outline-0 float-right border-b-2 drop-shadow-2xl border-blue-400"
                         value={categoryType}
                         onChange={(event) => {
                             setCategoryType(event.target.value)

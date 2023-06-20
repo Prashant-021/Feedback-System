@@ -7,6 +7,7 @@ import {
     Button,
     Input,
     Textarea,
+    Typography,
 } from '@material-tailwind/react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addCategory, updateCategory } from '../redux/slice/slice'
@@ -33,6 +34,11 @@ const AddCategory: React.FC<Props> = ({
     const [categoryName, setCategoryName] = useState('')
     const [categoryDescription, setCategoryDescription] = useState('')
     const [isEdit, setIsEdit] = useState(false)
+    const [touched, setTouched] = useState(false)
+    const [errors, setErrors] = useState({
+        title: '',
+        description: '',
+    })
     const dispatch = useDispatch()
     const storedCategory = useSelector(
         (state: RootState) => state.category.category
@@ -54,16 +60,32 @@ const AddCategory: React.FC<Props> = ({
     const clearInputs = (): void => {
         setCategoryName('')
         setCategoryDescription('')
+        setErrors({ title: '', description: '' })
     }
     const handleSave = (): void => {
+        setErrors({ title: '', description: '' })
+        setTouched(true)
         if (categoryName === '') {
-            alert('Please enter a category name')
+            setErrors((prevErrors) => ({
+                ...prevErrors,
+                title: 'Please enter a category name',
+            }))
         } else {
             if (categoryDescription === '') {
-                alert('Please enter a category description')
+                setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    description: 'Please enter a category description',
+                }))
+                setTouched(true)
+                return
             } else {
                 if (categoryName.length > 15) {
-                    alert('Category name Should be less than 15 Characters')
+                    setErrors((prevErrors) => ({
+                        ...prevErrors,
+                        title: 'Category name should be less than 15 characters',
+                    }))
+                    setTouched(true)
+                    return
                 } else {
                     const categoryExist = storedCategory.find(
                         (c) => c.title === categoryName
@@ -92,7 +114,11 @@ const AddCategory: React.FC<Props> = ({
                             })
                     } else {
                         if (categoryExist !== undefined) {
-                            errorNotify('Category Already exists')
+                            setErrors((prevErrors) => ({
+                                ...prevErrors,
+                                title: 'Category already exists',
+                            }))
+                            return
                         } else {
                             dispatch(
                                 addCategory({
@@ -120,6 +146,7 @@ const AddCategory: React.FC<Props> = ({
                 }
             }
             clearInputs()
+            setTouched(false)
             handleOpen()
         }
     }
@@ -131,20 +158,55 @@ const AddCategory: React.FC<Props> = ({
                 </DialogHeader>
                 <DialogBody className="flex justify-center " divider>
                     <div className="flex flex-col gap-4">
-                        <Input
-                            label="Category Name"
-                            value={categoryName}
-                            onChange={(e) => {
-                                setCategoryName(e.target.value)
-                            }}
-                        />
-                        <Textarea
-                            label="Category Description"
-                            value={categoryDescription}
-                            onChange={(e) => {
-                                setCategoryDescription(e.target.value)
-                            }}
-                        />
+                        <div>
+                            <Input
+                                label="Category Name"
+                                value={categoryName}
+                                onChange={(e) => {
+                                    setCategoryName(e.target.value)
+                                }}
+                                onBlur={(e) => {
+                                    if (e.target.value === '') {
+                                        setErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            title: 'Please enter a category name',
+                                        }))
+                                    } else if (e.target.value.length > 15) {
+                                        setErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            title: 'Category name should be less than 15 characters',
+                                        }))
+                                    }
+                                }}
+                            />
+                            <Typography variant="small" color="red">
+                                {errors.title.length > 0 && touched
+                                    ? errors.title
+                                    : ''}
+                            </Typography>
+                        </div>
+                        <div>
+                            <Textarea
+                                label="Category Description"
+                                value={categoryDescription}
+                                onChange={(e) => {
+                                    setCategoryDescription(e.target.value)
+                                }}
+                                onBlur={(e) => {
+                                    if (e.target.value === '') {
+                                        setErrors((prevErrors) => ({
+                                            ...prevErrors,
+                                            title: 'Please enter a category description',
+                                        }))
+                                    }
+                                }}
+                            />
+                            <Typography variant="small" color="red">
+                                {errors.description.length > 0 && touched
+                                    ? errors.description
+                                    : ''}
+                            </Typography>
+                        </div>
                     </div>
                 </DialogBody>
                 <DialogFooter>

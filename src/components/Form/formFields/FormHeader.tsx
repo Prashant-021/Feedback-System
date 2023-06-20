@@ -1,6 +1,6 @@
 import CategoryService from '../../../FirebaseFiles/handle/categoryFunctions'
 
-import { Input, Option, Select } from '@material-tailwind/react'
+import { Input, Option, Select, Textarea } from '@material-tailwind/react'
 import React, { type FC, useState, useEffect } from 'react'
 import { type ICategory, type IFormHeader } from '../../../interface'
 import { errorNotify } from '../../../utils'
@@ -45,7 +45,7 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
                     setTitle(e.target.value)
                 }}
             />
-            <Input
+            <Textarea
                 className="placeholder-black text-black"
                 variant="static"
                 label=""

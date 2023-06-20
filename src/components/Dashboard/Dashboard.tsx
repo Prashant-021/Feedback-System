@@ -58,8 +58,8 @@ const Dashboard: React.FC = () => {
         <>
             {user != null ? (
                 <div className="w-full">
-                    <div className="bg-white rounded-lg p-5 mb-2 m-8">
-                        <Typography variant="h2" className="mb-3 ">
+                    <div className="bg-white rounded-lg p-3 mb-2 m-8">
+                        <Typography variant="h4" className="mb-3 ">
                             <span className="text-blue-800">Category List</span>
                         </Typography>
                     </div>

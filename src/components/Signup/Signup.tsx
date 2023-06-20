@@ -118,9 +118,13 @@ const Signup: React.FC = () => {
                                 />
                                 {Boolean(errors.name) &&
                                     Boolean(touched.name) && (
-                                        <p className="text-red-600 absolute">
+                                        <Typography
+                                            variant="small"
+                                            color="red"
+                                            className="absolute"
+                                        >
                                             {errors.name}
-                                        </p>
+                                        </Typography>
                                     )}
                             </div>
 
@@ -136,9 +140,13 @@ const Signup: React.FC = () => {
                                 />
                                 {Boolean(errors.email) &&
                                     Boolean(touched.email) && (
-                                        <p className="text-red-600 absolute">
+                                        <Typography
+                                            variant="small"
+                                            color="red"
+                                            className="absolute"
+                                        >
                                             {errors.email}
-                                        </p>
+                                        </Typography>
                                     )}
                             </div>
                             <div className="inputGroup pb-2 pt-4">
@@ -185,9 +193,13 @@ const Signup: React.FC = () => {
                                 </div>
                                 {Boolean(errors.password) &&
                                     Boolean(touched.password) && (
-                                        <p className="text-red-600 absolute">
+                                        <Typography
+                                            variant="small"
+                                            color="red"
+                                            className="absolute"
+                                        >
                                             {errors.password}
-                                        </p>
+                                        </Typography>
                                     )}
                             </div>
                             <div className="inputGroup pb-5 pt-4">
@@ -203,9 +215,13 @@ const Signup: React.FC = () => {
                                 />
                                 {Boolean(errors.confirmPassword) &&
                                     Boolean(touched.confirmPassword) && (
-                                        <p className="text-red-600 absolute">
+                                        <Typography
+                                            variant="small"
+                                            color="red"
+                                            className="absolute"
+                                        >
                                             {errors.confirmPassword}
-                                        </p>
+                                        </Typography>
                                     )}
                             </div>
                             <div className="inputGroup pb-4 mb-3">
@@ -225,9 +241,13 @@ const Signup: React.FC = () => {
                                 />
                                 {Boolean(errors.profilepicture) &&
                                     Boolean(touched.profilepicture) && (
-                                        <p className="text-red-600 absolute">
+                                        <Typography
+                                            variant="small"
+                                            color="red"
+                                            className="absolute"
+                                        >
                                             {errors.profilepicture}
-                                        </p>
+                                        </Typography>
                                     )}
                             </div>
                         </CardBody>

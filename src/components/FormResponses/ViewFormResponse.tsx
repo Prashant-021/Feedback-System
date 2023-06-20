@@ -47,8 +47,8 @@ const ViewFormResponse: React.FC = () => {
     }
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
-            <div className="bg-white rounded-lg p-5 mt-5 w-[98%] flex justify-between items-center">
-                <Typography variant="h2" className=" ">
+            <div className="bg-white rounded-lg p-3 mt-5 w-[98%] flex justify-between items-center">
+                <Typography variant="h4" className=" ">
                     <span className="text-blue-800">Form Responses</span>
                 </Typography>
             </div>

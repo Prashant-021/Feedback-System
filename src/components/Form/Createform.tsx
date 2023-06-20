@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Button, Tooltip } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 import Question from './Question'
 import {
     ArrowUturnLeftIcon,
@@ -138,13 +138,11 @@ const Createform: React.FC = () => {
     return (
         <div className="w-full min-h-min flex flex-col flex-grow items-center">
             <div className="my-4 w-[90%] md:w-[70%]">
-                <Tooltip content="Save the form">
-                    <Link to={'/forms'}>
-                        <Button className="float-left items-center gap-3">
-                            <ArrowUturnLeftIcon className="h-5 w-5" />
-                        </Button>
-                    </Link>
-                </Tooltip>
+                <Link to={'/forms'}>
+                    <Button className="float-left items-center gap-3">
+                        <ArrowUturnLeftIcon className="h-5 w-5" />
+                    </Button>
+                </Link>
                 <Button
                     className="float-right"
                     onClick={handleSave}

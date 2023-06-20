@@ -10,7 +10,7 @@ import {
     PowerIcon,
     // Bars4Icon,
     // ArrowLeftIcon,
-    HandThumbUpIcon,
+    EyeIcon,
 } from '@heroicons/react/24/solid'
 // import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
@@ -57,7 +57,7 @@ const Sidebar: React.FC = () => {
                     }}
                 >
                     <ListItemPrefix>
-                        <HandThumbUpIcon className="h-5 w-5" />
+                        <EyeIcon className="h-5 w-5" />
                     </ListItemPrefix>
                     <p className="hidden group-hover:block">View Responses</p>
                 </ListItem>

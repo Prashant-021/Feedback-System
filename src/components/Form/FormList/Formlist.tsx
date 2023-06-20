@@ -99,8 +99,8 @@ const FormList: React.FC = () => {
     }
     return (
         <div className="w-full p-2 sm:p-10">
-            <div className="bg-white rounded-lg flex justify-between  p-5 mb-2">
-                <Typography variant="h2" className="">
+            <div className="bg-white rounded-lg flex justify-between  p-3 mb-2">
+                <Typography variant="h4" className="">
                     <span className="text-blue-800">Form List</span>
                 </Typography>
                 <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
