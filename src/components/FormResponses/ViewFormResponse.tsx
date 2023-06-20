@@ -1,17 +1,26 @@
-import { Button, Card, Typography } from '@material-tailwind/react'
+import { Button, Card, CardBody, Typography } from '@material-tailwind/react'
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
-import { ArrowUturnLeftIcon } from '@heroicons/react/24/solid'
+import {
+    ArrowUturnLeftIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
+} from '@heroicons/react/24/solid'
 import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import { type IFormTemplate } from '../../interface'
 import Loader from '../Loader/Loader'
-import { nanoid } from '@reduxjs/toolkit'
 
 interface IFormResponse extends IFormTemplate {
     Email: string
 }
+type IColumn = Record<string, string>
 
-const TABLE_HEAD = ['Email', 'View Response']
+const TABLE_HEAD = [
+    { label: 'Email', key: 'Email' },
+    { label: 'View Response', key: 'View Response' },
+]
+const columns: Array<{ label: string; key: string }> = TABLE_HEAD
+
 const ViewFormResponse: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
@@ -42,6 +51,51 @@ const ViewFormResponse: React.FC = () => {
                 setIsLoading(false)
             })
     }, [categoryType])
+    const getRows = (): IColumn[] => {
+        const rows: IColumn[] = []
+        TABLE_ROWS.map((row) =>
+            rows.push({
+                Email: row.Email ?? 'Not Provided',
+            })
+        )
+        return rows
+    }
+    const TableRows = getRows()
+    const rowsPerPage = 5
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortColumn, setSortColumn] = useState('')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+
+    const totalPages = Math.ceil(TableRows.length / rowsPerPage)
+    const startIndex = (currentPage - 1) * rowsPerPage
+    const endIndex = startIndex + rowsPerPage
+    const sortedData = [...TableRows].sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a[sortColumn] < b[sortColumn] ? -1 : 1
+        } else {
+            return a[sortColumn] > b[sortColumn] ? -1 : 1
+        }
+    })
+
+    const handleSort = (columnKey: string): void => {
+        setSortColumn(columnKey)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    }
+
+    const handlePageChange = (pageNumber: number): void => {
+        setCurrentPage(pageNumber)
+    }
+
+    const renderSortIndicator = (columnKey: string): JSX.Element | null => {
+        if (columnKey === sortColumn) {
+            return sortOrder === 'asc' ? (
+                <ArrowUpIcon className="w-4 h-4 inline" />
+            ) : (
+                <ArrowDownIcon className="w-4 h-4 inline" />
+            )
+        }
+        return null
+    }
     if (isLoading) {
         return <Loader />
     }
@@ -67,80 +121,115 @@ const ViewFormResponse: React.FC = () => {
                     <ArrowUturnLeftIcon className="h-5 w-5" />
                 </Button>
             </div>
-            <div className="w-[98%] flex items-center justify-center">
-                <Card className="overflow-x-scroll h-[60vh] w-full">
-                    <table className="w-full min-w-max table-auto text-left">
-                        <thead>
-                            <tr className="sticky top-0 z-20 border-blue-400 bg-blue-500">
-                                {TABLE_HEAD.map((head) => (
-                                    <th key={head} className="border-b p-4">
-                                        <Typography
-                                            variant="small"
-                                            color="white"
-                                            className="font-normal leading-none bg-blue-500"
-                                        >
-                                            {head}
-                                        </Typography>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {TABLE_ROWS.length !== 0 ? (
-                                TABLE_ROWS.map(({ Email }, index) => (
-                                    <tr
-                                        key={nanoid()}
-                                        className="even:bg-blue-gray-50/50"
-                                    >
-                                        <td className="p-4">
-                                            <Typography
-                                                variant="small"
-                                                color="blue-gray"
-                                                className="font-normal"
-                                            >
-                                                {Email ?? 'Not Provided'}
-                                            </Typography>
-                                        </td>
-                                        <td className="p-4">
-                                            <Button
-                                                size="sm"
-                                                variant="text"
+            <div className="w-[98%] flex items-center justify-center ">
+                <Card className="w-full h-[50vh]">
+                    <CardBody className="px-0">
+                        <nav className="bg-white flex items-center justify-between border-t border-gray-200 sm:px-6 mb-3">
+                            <div className="hidden sm:block">
+                                <p className="text-sm text-gray-700">
+                                    Showing {startIndex + 1} to{' '}
+                                    {Math.min(endIndex, TableRows.length)} of{' '}
+                                    {TableRows.length} entries
+                                </p>
+                            </div>
+                            <div className="flex-1 flex justify-between sm:justify-end gap-2">
+                                <Button
+                                    variant="filled"
+                                    className="relative inline-flex items-center px-4 py-2  text-sm font-medium"
+                                    onClick={() => {
+                                        handlePageChange(currentPage - 1)
+                                    }}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    variant="filled"
+                                    onClick={() => {
+                                        handlePageChange(currentPage + 1)
+                                    }}
+                                    disabled={currentPage === totalPages}
+                                    className="relative inline-flex items-center px-4 py-2  text-sm font-medium"
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </nav>
+                        <div className="bg-white shadow overflow-hidden sm:rounded-b-lg">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-blue-500 ">
+                                    <tr>
+                                        {columns.map((column, index) => (
+                                            <th
+                                                key={column.key}
+                                                className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
                                                 onClick={() => {
-                                                    Navigate(
-                                                        '/formResponse/individualform',
-                                                        {
-                                                            state: {
-                                                                category:
-                                                                    TABLE_ROWS[
-                                                                        index
-                                                                    ],
-                                                            },
-                                                        }
-                                                    )
+                                                    handleSort(column.key)
                                                 }}
                                             >
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue"
-                                                    className="font-medium"
-                                                >
-                                                    View
-                                                </Typography>
-                                            </Button>
-                                        </td>
+                                                {column.label}
+                                                {index < columns.length - 1
+                                                    ? renderSortIndicator(
+                                                          column.key
+                                                      )
+                                                    : ''}
+                                            </th>
+                                        ))}
                                     </tr>
-                                ))
-                            ) : (
-                                <tr className=" h-full">
-                                    <td colSpan={3} className="h-[52vh]">
-                                        <div className="w-full flex justify-center">
-                                            No Responses avaliable
-                                        </div>
-                                    </td>
-                                </tr>
-                            )}
-                        </tbody>
-                    </table>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {sortedData
+                                        .slice(startIndex, endIndex)
+                                        .map((row, index) => (
+                                            <tr key={index}>
+                                                {columns.map((column, index) =>
+                                                    index <
+                                                    columns.length - 1 ? (
+                                                        <td
+                                                            key={column.key}
+                                                            className="px-6 py-4 whitespace-nowrap"
+                                                        >
+                                                            {row[column.key]}
+                                                        </td>
+                                                    ) : (
+                                                        <td
+                                                            key={column.key}
+                                                            className="px-6 py-4 whitespace-nowrap"
+                                                        >
+                                                            <Button
+                                                                size="sm"
+                                                                variant="outlined"
+                                                                onClick={() => {
+                                                                    Navigate(
+                                                                        '/formResponse/individualform',
+                                                                        {
+                                                                            state: {
+                                                                                category:
+                                                                                    TABLE_ROWS[
+                                                                                        index
+                                                                                    ],
+                                                                            },
+                                                                        }
+                                                                    )
+                                                                }}
+                                                            >
+                                                                <Typography
+                                                                    variant="small"
+                                                                    color="blue"
+                                                                    className="font-medium"
+                                                                >
+                                                                    View
+                                                                </Typography>
+                                                            </Button>
+                                                        </td>
+                                                    )
+                                                )}
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    </CardBody>
                 </Card>
             </div>
         </div>

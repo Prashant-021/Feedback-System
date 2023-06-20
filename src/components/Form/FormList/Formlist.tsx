@@ -17,15 +17,12 @@ import {
 import { type IFormTemplate } from '../../../interface'
 import { useNavigate } from 'react-router-dom'
 import { errorNotify, successNotify } from '../../../utils'
-// import DialogInfo from './dialogInfo/DialogInfo'
 import FormService from '../../../FirebaseFiles/handle/requestFunctions'
 import { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
 import Loader from '../../Loader/Loader'
-// import DataTable from '../../Table/DataTable'
 
 const TABLE_HEAD = [
-    { label: 'Id', key: 'Id' },
     { label: 'Title', key: 'Title' },
     { label: 'Category', key: 'Category' },
     { label: 'Actions', key: 'Actions' },
@@ -33,9 +30,7 @@ const TABLE_HEAD = [
 const columns: Array<{ label: string; key: string }> = TABLE_HEAD
 
 type IColumn = Record<string, string>
-// const date = new Date()
 const FormList: React.FC = () => {
-    // const [open, setOpen] = useState<boolean>(false)
     const [refresh, setRefresh] = useState(false)
     const [TABLE_ROWS, setTableRows] = useState<IFormTemplate[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -175,16 +170,11 @@ const FormList: React.FC = () => {
             </div>
             <Card className=" w-full">
                 <CardBody className="p-0 px-0 ">
-                    {/* <DataTable
-                        data={getRows()}
-                        columns={TABLE_HEAD}
-                        rowsPerPage={5}
-                    /> */}
                     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-blue-500 ">
                                 <tr>
-                                    {columns.map((column) => (
+                                    {columns.map((column, index) => (
                                         <th
                                             key={column.key}
                                             className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
@@ -193,7 +183,11 @@ const FormList: React.FC = () => {
                                             }}
                                         >
                                             {column.label}
-                                            {renderSortIndicator(column.key)}
+                                            {index < columns.length - 1
+                                                ? renderSortIndicator(
+                                                      column.key
+                                                  )
+                                                : ''}
                                         </th>
                                     ))}
                                 </tr>
@@ -204,7 +198,7 @@ const FormList: React.FC = () => {
                                     .map((row, index) => (
                                         <tr key={index}>
                                             {columns.map((column, index) =>
-                                                index !== 3 ? (
+                                                index < columns.length - 1 ? (
                                                     <td
                                                         key={column.key}
                                                         className="px-6 py-4 whitespace-nowrap"
@@ -302,122 +296,6 @@ const FormList: React.FC = () => {
                             </div>
                         </nav>
                     </div>
-                    {/* <table className=" w-full min-w-max table-auto text-left">
-                        <thead className=" bg-white">
-                            <tr className="sticky top-0 z-30 border-blue-400 bg-blue-500 ">
-                                {TABLE_HEAD.map((head, index) => (
-                                    <th
-                                        key={head}
-                                        className="cursor-pointer p-4"
-                                    >
-                                        <Typography
-                                            variant="small"
-                                            color="white"
-                                            className="flex bg-blue-500 items-center justify-between gap-2 font-bold leading-none"
-                                        >
-                                            {head}{' '}
-                                        </Typography>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {TABLE_ROWS.map(
-                                ({ title, categoryName, id }, index) => {
-                                    const isLast = index === TABLE_ROWS.length
-                                    const classes = isLast
-                                        ? 'p-4'
-                                        : 'p-4 border-b border-blue-gray-50'
-
-                                    return (
-                                        <tr key={nanoid()}>
-                                            <td className={classes}>
-                                                <div className="flex items-center gap-3">
-                                                    <div className="flex flex-col">
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-normal"
-                                                        >
-                                                            {title}
-                                                        </Typography>
-                                                    </div>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {categoryName}
-                                                    </Typography>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Typography
-                                                    variant="small"
-                                                    color="blue-gray"
-                                                    className="font-normal"
-                                                >
-                                                    {getDate(date)}
-                                                </Typography>
-                                            </td>
-                                            <td className={classes}>
-                                                <Tooltip content="Edit Form">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="blue-gray"
-                                                        onClick={() => {
-                                                            Navigate(
-                                                                `/forms/createform/${id}`,
-                                                                {
-                                                                    state: {
-                                                                        formStatus:
-                                                                            'edit',
-                                                                    },
-                                                                }
-                                                            )
-                                                        }}
-                                                    >
-                                                        <PencilIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip content="Generate Link">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="blue"
-                                                        onClick={() => {
-                                                            generateLink(id)
-                                                        }}
-                                                    >
-                                                        <LinkIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                                <Tooltip content="Delete">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="red"
-                                                        onClick={() => {
-                                                            const response =
-                                                                confirm(
-                                                                    'Are you sure want to delete ?'
-                                                                )
-                                                            if (response)
-                                                                handleDelete(id)
-                                                        }}
-                                                    >
-                                                        <TrashIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
-                            )}
-                        </tbody>
-                    </table> */}
                 </CardBody>
             </Card>
         </div>

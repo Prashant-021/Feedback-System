@@ -1,18 +1,13 @@
-import { EyeIcon } from '@heroicons/react/24/solid'
+import { EyeIcon, ArrowUpIcon, ArrowDownIcon } from '@heroicons/react/24/solid'
 import {
     Card,
     Typography,
-    // Option,
     CardBody,
     Tooltip,
     IconButton,
+    Button,
 } from '@material-tailwind/react'
-import {
-    type IFormTemplate,
-    // type ICategory,
-    // type RootState,
-} from '../../interface'
-// import { useNavigate } from 'react-router-dom'
+import { type IFormTemplate } from '../../interface'
 import FormService from '../../FirebaseFiles/handle/requestFunctions'
 import React, { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
@@ -20,14 +15,20 @@ import Loader from '../Loader/Loader'
 import { useLocation, useNavigate } from 'react-router-dom'
 import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
 import { errorNotify } from '../../utils'
-// import { useSelector } from 'react-redux'
 
-// let categories: ICategory[] = []
 interface IFormResponse extends IFormTemplate {
     Email: string
 }
+type IColumn = Record<string, string>
 
-const TABLE_HEAD = ['Category', 'Forms', 'View Responses']
+const TABLE_HEAD = [
+    { label: 'Category', key: 'Category' },
+    { label: 'Forms', key: 'Forms' },
+    { label: 'No of Responses', key: 'No of Responses' },
+    { label: 'View Responses', key: 'View Responses' },
+]
+const columns: Array<{ label: string; key: string }> = TABLE_HEAD
+
 const CategoryWiseForm: React.FC = () => {
     const location = useLocation()
     const { category } = location.state
@@ -36,7 +37,6 @@ const CategoryWiseForm: React.FC = () => {
     const Navigate = useNavigate()
     const [categories, setCategories] = useState<string[]>([])
     const [categoryType, setCategoryType] = useState<string>(category)
-
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
@@ -60,6 +60,17 @@ const CategoryWiseForm: React.FC = () => {
                 setIsLoading(false)
             })
     }, [])
+    const getRows = (): IColumn[] => {
+        const rows: IColumn[] = []
+        TABLE_ROWS.map((row) =>
+            rows.push({
+                Id: row.id,
+                Category: row.categoryName,
+                Forms: row.title,
+            })
+        )
+        return rows
+    }
     useEffect(() => {
         setIsLoading(true)
         FormService.getAllForms(categoryType)
@@ -81,7 +92,42 @@ const CategoryWiseForm: React.FC = () => {
                 setIsLoading(false)
             })
     }, [categoryType])
+    const TableRows = getRows()
+    const rowsPerPage = 5
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortColumn, setSortColumn] = useState('')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
+    const totalPages = Math.ceil(TableRows.length / rowsPerPage)
+    const startIndex = (currentPage - 1) * rowsPerPage
+    const endIndex = startIndex + rowsPerPage
+    const sortedData = [...TableRows].sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a[sortColumn] < b[sortColumn] ? -1 : 1
+        } else {
+            return a[sortColumn] > b[sortColumn] ? -1 : 1
+        }
+    })
+
+    const handleSort = (columnKey: string): void => {
+        setSortColumn(columnKey)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    }
+
+    const handlePageChange = (pageNumber: number): void => {
+        setCurrentPage(pageNumber)
+    }
+
+    const renderSortIndicator = (columnKey: string): JSX.Element | null => {
+        if (columnKey === sortColumn) {
+            return sortOrder === 'asc' ? (
+                <ArrowUpIcon className="w-4 h-4 inline" />
+            ) : (
+                <ArrowDownIcon className="w-4 h-4 inline" />
+            )
+        }
+        return null
+    }
     if (isLoading) {
         return <Loader />
     }
@@ -110,95 +156,100 @@ const CategoryWiseForm: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <Card className="overflow-hidden w-[98%] ">
-                <CardBody className="p-0 overflow-scroll px-0 h-[30rem]">
-                    <table className=" w-full table-auto text-left">
-                        <thead>
-                            <tr className="sticky top-0 z-30 border-blue-400 bg-blue-500">
-                                {TABLE_HEAD.map((head, index) => (
-                                    <th
-                                        key={head}
-                                        className="cursor-pointer border-y  p-4"
-                                    >
-                                        <Typography
-                                            color="white"
-                                            className="flex items-center justify-between gap-2 font-bold leading-none "
-                                        >
-                                            {head}{' '}
-                                        </Typography>
-                                    </th>
-                                ))}
-                            </tr>
-                        </thead>
-                        <tbody className="">
-                            {TABLE_ROWS.length !== 0 ? (
-                                TABLE_ROWS.map(
-                                    ({ title, categoryName, id }, index) => {
-                                        const isLast =
-                                            index === TABLE_ROWS.length - 1
-                                        const classes = isLast
-                                            ? 'p-4'
-                                            : 'p-4 border-b border-blue-gray-50'
-
-                                        return (
-                                            <tr
-                                                key={nanoid()}
-                                                className="even:bg-blue-gray-50/50"
-                                            >
-                                                <td className={classes}>
-                                                    <div className="flex flex-col">
-                                                        <Typography
-                                                            variant="small"
-                                                            color="blue-gray"
-                                                            className="font-normal"
-                                                        >
-                                                            {categoryName}
-                                                        </Typography>
-                                                    </div>
-                                                </td>
-                                                <td className={classes}>
-                                                    <div className="flex items-center gap-3">
-                                                        <div className="flex flex-col">
-                                                            <Typography
-                                                                variant="small"
-                                                                color="blue-gray"
-                                                                className="font-normal"
-                                                            >
-                                                                {title}
-                                                            </Typography>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td className={classes}>
-                                                    <Tooltip content="View Responses">
-                                                        <IconButton
-                                                            variant="text"
-                                                            color="blue"
-                                                            onClick={(): void => {
-                                                                Navigate(
-                                                                    `/formresponse/${categoryName}`
-                                                                )
-                                                            }}
-                                                        >
-                                                            <EyeIcon className="h-4 w-4" />
-                                                        </IconButton>
-                                                    </Tooltip>
-                                                </td>
-                                            </tr>
-                                        )
-                                    }
-                                )
-                            ) : (
+            <Card className="overflow-hidden w-[98%] mb-4 h-[50vh]">
+                <CardBody className="p-0 px-0">
+                    <div className="bg-white shadow overflow-hidden table-fixed sm:rounded-lg ">
+                        <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 ">
+                            <div className="hidden sm:block">
+                                <p className="text-sm text-gray-700">
+                                    Showing {startIndex + 1} to{' '}
+                                    {Math.min(endIndex, TableRows.length)} of{' '}
+                                    {TableRows.length} entries
+                                </p>
+                            </div>
+                            <div className="flex-1 flex justify-between sm:justify-end gap-3">
+                                <Button
+                                    variant="filled"
+                                    className="relative inline-flex items-center px-4 py-2  text-sm font-medium"
+                                    onClick={() => {
+                                        handlePageChange(currentPage - 1)
+                                    }}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    variant="filled"
+                                    className="relative inline-flex items-center px-4 py-2  text-sm font-medium"
+                                    onClick={() => {
+                                        handlePageChange(currentPage + 1)
+                                    }}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </nav>
+                        <table className="min-w-full divide-y overflow-x-scroll divide-gray-200">
+                            <thead className="bg-blue-500 ">
                                 <tr>
-                                    <td></td>
-                                    <td className="flex justify-center ms-24 h-[25rem] items-center">
-                                        No Form Avaliable
-                                    </td>
-                                    <td></td>
+                                    {columns.map((column, index) => (
+                                        <th
+                                            key={column.key}
+                                            className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
+                                            onClick={() => {
+                                                handleSort(column.key)
+                                            }}
+                                        >
+                                            {column.label}
+                                            {index < columns.length - 1
+                                                ? renderSortIndicator(
+                                                      column.key
+                                                  )
+                                                : ''}
+                                        </th>
+                                    ))}
                                 </tr>
-                            )}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {sortedData
+                                    .slice(startIndex, endIndex)
+                                    .map((row, index) => (
+                                        <tr key={index}>
+                                            {columns.map((column, index) =>
+                                                index < columns.length - 1 ? (
+                                                    <td
+                                                        key={column.key}
+                                                        className="px-6 py-4 whitespace-nowrap"
+                                                    >
+                                                        {row[column.key]}
+                                                    </td>
+                                                ) : (
+                                                    <td
+                                                        key={column.key}
+                                                        className="px-6 py-4 whitespace-nowrap"
+                                                    >
+                                                        <Tooltip content="View Responses">
+                                                            <IconButton
+                                                                variant="outlined"
+                                                                color="blue"
+                                                                onClick={(): void => {
+                                                                    Navigate(
+                                                                        `/formresponse/${row.Category}`
+                                                                    )
+                                                                }}
+                                                            >
+                                                                <EyeIcon className="h-4 w-4" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </td>
+                                                )
+                                            )}
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </CardBody>
             </Card>
         </div>
