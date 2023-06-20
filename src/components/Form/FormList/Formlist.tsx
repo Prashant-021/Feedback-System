@@ -1,13 +1,13 @@
 import {
     PencilIcon,
     DocumentPlusIcon,
+    ArrowUpIcon,
+    ArrowDownIcon,
     LinkIcon,
     TrashIcon,
 } from '@heroicons/react/24/solid'
 import {
     Card,
-    // CardHeader,
-    // Input,
     Typography,
     Button,
     CardBody,
@@ -16,15 +16,24 @@ import {
 } from '@material-tailwind/react'
 import { type IFormTemplate } from '../../../interface'
 import { useNavigate } from 'react-router-dom'
-import { errorNotify, getDate, successNotify } from '../../../utils'
+import { errorNotify, successNotify } from '../../../utils'
 // import DialogInfo from './dialogInfo/DialogInfo'
 import FormService from '../../../FirebaseFiles/handle/requestFunctions'
 import { useEffect, useState } from 'react'
 import { nanoid } from '@reduxjs/toolkit'
 import Loader from '../../Loader/Loader'
+// import DataTable from '../../Table/DataTable'
 
-const TABLE_HEAD = ['Title', 'Category', 'Last Modified', 'Actions']
-const date = new Date()
+const TABLE_HEAD = [
+    { label: 'Id', key: 'Id' },
+    { label: 'Title', key: 'Title' },
+    { label: 'Category', key: 'Category' },
+    { label: 'Actions', key: 'Actions' },
+]
+const columns: Array<{ label: string; key: string }> = TABLE_HEAD
+
+type IColumn = Record<string, string>
+// const date = new Date()
 const FormList: React.FC = () => {
     // const [open, setOpen] = useState<boolean>(false)
     const [refresh, setRefresh] = useState(false)
@@ -32,7 +41,6 @@ const FormList: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const Navigate = useNavigate()
-    // const [searchCategory, setSearchCategory] = useState('')
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
@@ -65,6 +73,19 @@ const FormList: React.FC = () => {
             },
         })
     }
+    const getRows = (): IColumn[] => {
+        const rows: IColumn[] = []
+        TABLE_ROWS.map((row) =>
+            rows.push({
+                Id: row.id,
+                Title: row.title,
+                Category: row.categoryName,
+            })
+        )
+        return rows
+    }
+    const TableRows = getRows()
+    const rowsPerPage = 5
     const handleDelete = (id: string): void => {
         FormService.deleteForm(id)
             .then(() => {
@@ -94,6 +115,41 @@ const FormList: React.FC = () => {
             })
         console.log(link)
     }
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortColumn, setSortColumn] = useState('')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
+
+    const totalPages = Math.ceil(TableRows.length / rowsPerPage)
+    const startIndex = (currentPage - 1) * rowsPerPage
+    const endIndex = startIndex + rowsPerPage
+    const sortedData = [...TableRows].sort((a, b) => {
+        if (sortOrder === 'asc') {
+            return a[sortColumn] < b[sortColumn] ? -1 : 1
+        } else {
+            return a[sortColumn] > b[sortColumn] ? -1 : 1
+        }
+    })
+
+    const handleSort = (columnKey: string): void => {
+        setSortColumn(columnKey)
+        setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')
+    }
+
+    const handlePageChange = (pageNumber: number): void => {
+        setCurrentPage(pageNumber)
+    }
+
+    const renderSortIndicator = (columnKey: string): JSX.Element | null => {
+        if (columnKey === sortColumn) {
+            return sortOrder === 'asc' ? (
+                <ArrowUpIcon className="w-4 h-4 inline" />
+            ) : (
+                <ArrowDownIcon className="w-4 h-4 inline" />
+            )
+        }
+        return null
+    }
+
     if (isLoading) {
         return <Loader />
     }
@@ -118,8 +174,135 @@ const FormList: React.FC = () => {
                 </div>
             </div>
             <Card className=" w-full">
-                <CardBody className="p-0 mt-4 overflow-scroll  px-0 h-[47vh]">
-                    <table className=" w-full min-w-max table-auto text-left">
+                <CardBody className="p-0 px-0 ">
+                    {/* <DataTable
+                        data={getRows()}
+                        columns={TABLE_HEAD}
+                        rowsPerPage={5}
+                    /> */}
+                    <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                        <table className="min-w-full divide-y divide-gray-200">
+                            <thead className="bg-blue-500 ">
+                                <tr>
+                                    {columns.map((column) => (
+                                        <th
+                                            key={column.key}
+                                            className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
+                                            onClick={() => {
+                                                handleSort(column.key)
+                                            }}
+                                        >
+                                            {column.label}
+                                            {renderSortIndicator(column.key)}
+                                        </th>
+                                    ))}
+                                </tr>
+                            </thead>
+                            <tbody className="bg-white divide-y divide-gray-200">
+                                {sortedData
+                                    .slice(startIndex, endIndex)
+                                    .map((row, index) => (
+                                        <tr key={index}>
+                                            {columns.map((column, index) =>
+                                                index !== 3 ? (
+                                                    <td
+                                                        key={column.key}
+                                                        className="px-6 py-4 whitespace-nowrap"
+                                                    >
+                                                        {row[column.key]}
+                                                    </td>
+                                                ) : (
+                                                    <td key={column.key}>
+                                                        <Tooltip content="Edit Form">
+                                                            <IconButton
+                                                                variant="text"
+                                                                color="blue-gray"
+                                                                onClick={() => {
+                                                                    Navigate(
+                                                                        `/forms/createform/${row.Id}`,
+                                                                        {
+                                                                            state: {
+                                                                                formStatus:
+                                                                                    'edit',
+                                                                            },
+                                                                        }
+                                                                    )
+                                                                }}
+                                                            >
+                                                                <PencilIcon className="h-4 w-4" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                        <Tooltip content="Generate Link">
+                                                            <IconButton
+                                                                variant="text"
+                                                                color="blue"
+                                                                onClick={() => {
+                                                                    generateLink(
+                                                                        row.Id
+                                                                    )
+                                                                }}
+                                                            >
+                                                                <LinkIcon className="h-4 w-4" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                        <Tooltip content="Delete">
+                                                            <IconButton
+                                                                variant="text"
+                                                                color="red"
+                                                                onClick={() => {
+                                                                    const response =
+                                                                        confirm(
+                                                                            'Are you sure want to delete ?'
+                                                                        )
+                                                                    if (
+                                                                        response
+                                                                    )
+                                                                        handleDelete(
+                                                                            row.Id
+                                                                        )
+                                                                }}
+                                                            >
+                                                                <TrashIcon className="h-4 w-4" />
+                                                            </IconButton>
+                                                        </Tooltip>
+                                                    </td>
+                                                )
+                                            )}
+                                        </tr>
+                                    ))}
+                            </tbody>
+                        </table>
+                        <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                            <div className="hidden sm:block">
+                                <p className="text-sm text-gray-700">
+                                    Showing {startIndex + 1} to{' '}
+                                    {Math.min(endIndex, TableRows.length)} of{' '}
+                                    {TableRows.length} entries
+                                </p>
+                            </div>
+                            <div className="flex-1 flex justify-between sm:justify-end">
+                                <button
+                                    onClick={() => {
+                                        handlePageChange(currentPage - 1)
+                                    }}
+                                    disabled={currentPage === 1}
+                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                                >
+                                    Previous
+                                </button>
+                                <button
+                                    onClick={() => {
+                                        handlePageChange(currentPage + 1)
+                                    }}
+                                    disabled={currentPage === totalPages}
+                                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        </nav>
+                    </div>
+                    {/* <table className=" w-full min-w-max table-auto text-left">
                         <thead className=" bg-white">
                             <tr className="sticky top-0 z-30 border-blue-400 bg-blue-500 ">
                                 {TABLE_HEAD.map((head, index) => (
@@ -234,7 +417,7 @@ const FormList: React.FC = () => {
                                 }
                             )}
                         </tbody>
-                    </table>
+                    </table> */}
                 </CardBody>
             </Card>
         </div>
