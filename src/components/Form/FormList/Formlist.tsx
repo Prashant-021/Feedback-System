@@ -1,8 +1,4 @@
 import {
-    // MagnifyingGlassIcon,
-    ChevronUpDownIcon,
-} from '@heroicons/react/24/outline'
-import {
     PencilIcon,
     DocumentPlusIcon,
     LinkIcon,
@@ -137,12 +133,6 @@ const FormList: React.FC = () => {
                                             className="flex bg-blue-500 items-center justify-between gap-2 font-bold leading-none"
                                         >
                                             {head}{' '}
-                                            {index !== TABLE_HEAD.length && (
-                                                <ChevronUpDownIcon
-                                                    strokeWidth={2}
-                                                    className="h-4 w-4"
-                                                />
-                                            )}
                                         </Typography>
                                     </th>
                                 ))}

@@ -85,9 +85,9 @@ const ViewFormResponse: React.FC = () => {
                                 ))}
                             </tr>
                         </thead>
-                        {TABLE_ROWS.length !== 0 ? (
-                            <tbody>
-                                {TABLE_ROWS.map(({ Email }, index) => (
+                        <tbody>
+                            {TABLE_ROWS.length !== 0 ? (
+                                TABLE_ROWS.map(({ Email }, index) => (
                                     <tr
                                         key={nanoid()}
                                         className="even:bg-blue-gray-50/50"
@@ -129,13 +129,17 @@ const ViewFormResponse: React.FC = () => {
                                             </Button>
                                         </td>
                                     </tr>
-                                ))}
-                            </tbody>
-                        ) : (
-                            <div className="flex justify-end h-[30rem] items-center">
-                                No Responses avaliable
-                            </div>
-                        )}
+                                ))
+                            ) : (
+                                <tr className=" h-full">
+                                    <td colSpan={3} className="h-[52vh]">
+                                        <div className="w-full flex justify-center">
+                                            No Responses avaliable
+                                        </div>
+                                    </td>
+                                </tr>
+                            )}
+                        </tbody>
                     </table>
                 </Card>
             </div>

@@ -1,4 +1,3 @@
-import { ChevronUpDownIcon } from '@heroicons/react/24/outline'
 import { EyeIcon } from '@heroicons/react/24/solid'
 import {
     Card,
@@ -37,6 +36,7 @@ const CategoryWiseForm: React.FC = () => {
     const Navigate = useNavigate()
     const [categories, setCategories] = useState<string[]>([])
     const [categoryType, setCategoryType] = useState<string>(category)
+
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
@@ -81,6 +81,7 @@ const CategoryWiseForm: React.FC = () => {
                 setIsLoading(false)
             })
     }, [categoryType])
+
     if (isLoading) {
         return <Loader />
     }
@@ -124,74 +125,77 @@ const CategoryWiseForm: React.FC = () => {
                                             className="flex items-center justify-between gap-2 font-bold leading-none "
                                         >
                                             {head}{' '}
-                                            {index !==
-                                                TABLE_HEAD.length - 1 && (
-                                                <ChevronUpDownIcon
-                                                    strokeWidth={2}
-                                                    className="h-4 w-4"
-                                                />
-                                            )}
                                         </Typography>
                                     </th>
                                 ))}
                             </tr>
                         </thead>
                         <tbody className="">
-                            {TABLE_ROWS.map(
-                                ({ title, categoryName, id }, index) => {
-                                    const isLast =
-                                        index === TABLE_ROWS.length - 1
-                                    const classes = isLast
-                                        ? 'p-4'
-                                        : 'p-4 border-b border-blue-gray-50'
+                            {TABLE_ROWS.length !== 0 ? (
+                                TABLE_ROWS.map(
+                                    ({ title, categoryName, id }, index) => {
+                                        const isLast =
+                                            index === TABLE_ROWS.length - 1
+                                        const classes = isLast
+                                            ? 'p-4'
+                                            : 'p-4 border-b border-blue-gray-50'
 
-                                    return (
-                                        <tr
-                                            key={nanoid()}
-                                            className="even:bg-blue-gray-50/50"
-                                        >
-                                            <td className={classes}>
-                                                <div className="flex flex-col">
-                                                    <Typography
-                                                        variant="small"
-                                                        color="blue-gray"
-                                                        className="font-normal"
-                                                    >
-                                                        {categoryName}
-                                                    </Typography>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <div className="flex items-center gap-3">
+                                        return (
+                                            <tr
+                                                key={nanoid()}
+                                                className="even:bg-blue-gray-50/50"
+                                            >
+                                                <td className={classes}>
                                                     <div className="flex flex-col">
                                                         <Typography
                                                             variant="small"
                                                             color="blue-gray"
                                                             className="font-normal"
                                                         >
-                                                            {title}
+                                                            {categoryName}
                                                         </Typography>
                                                     </div>
-                                                </div>
-                                            </td>
-                                            <td className={classes}>
-                                                <Tooltip content="View Responses">
-                                                    <IconButton
-                                                        variant="text"
-                                                        color="blue"
-                                                        onClick={(): void => {
-                                                            Navigate(
-                                                                `/formresponse/${categoryName}`
-                                                            )
-                                                        }}
-                                                    >
-                                                        <EyeIcon className="h-4 w-4" />
-                                                    </IconButton>
-                                                </Tooltip>
-                                            </td>
-                                        </tr>
-                                    )
-                                }
+                                                </td>
+                                                <td className={classes}>
+                                                    <div className="flex items-center gap-3">
+                                                        <div className="flex flex-col">
+                                                            <Typography
+                                                                variant="small"
+                                                                color="blue-gray"
+                                                                className="font-normal"
+                                                            >
+                                                                {title}
+                                                            </Typography>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Tooltip content="View Responses">
+                                                        <IconButton
+                                                            variant="text"
+                                                            color="blue"
+                                                            onClick={(): void => {
+                                                                Navigate(
+                                                                    `/formresponse/${categoryName}`
+                                                                )
+                                                            }}
+                                                        >
+                                                            <EyeIcon className="h-4 w-4" />
+                                                        </IconButton>
+                                                    </Tooltip>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }
+                                )
+                            ) : (
+                                <tr>
+                                    <td></td>
+                                    <td className="flex justify-center ms-24 h-[25rem] items-center">
+                                        No Form Avaliable
+                                    </td>
+                                    <td></td>
+                                </tr>
                             )}
                         </tbody>
                     </table>
