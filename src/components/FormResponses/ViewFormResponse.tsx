@@ -122,8 +122,8 @@ const ViewFormResponse: React.FC = () => {
                 </Button>
             </div>
             <div className="w-[98%] flex items-center justify-center ">
-                <Card className="w-full h-[50vh]">
-                    <CardBody className="px-0">
+                <Card className="w-full ">
+                    <CardBody className="px-2 pb-0 sm:px-0">
                         <nav className="bg-white flex items-center justify-between border-t border-gray-200 sm:px-6 mb-3">
                             <div className="hidden sm:block">
                                 <p className="text-sm text-gray-700">
@@ -155,7 +155,7 @@ const ViewFormResponse: React.FC = () => {
                                 </Button>
                             </div>
                         </nav>
-                        <div className="bg-white shadow overflow-hidden sm:rounded-b-lg">
+                        <div className="bg-white shadow overflow-x-scroll  h-[50vh]">
                             <table className="min-w-full divide-y divide-gray-200">
                                 <thead className="bg-blue-500 ">
                                     <tr>
@@ -167,7 +167,9 @@ const ViewFormResponse: React.FC = () => {
                                                     handleSort(column.key)
                                                 }}
                                             >
-                                                {column.label}
+                                                <Typography variant="small">
+                                                    {column.label}
+                                                </Typography>
                                                 {index < columns.length - 1
                                                     ? renderSortIndicator(
                                                           column.key

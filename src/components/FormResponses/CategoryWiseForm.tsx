@@ -24,7 +24,7 @@ type IColumn = Record<string, string>
 const TABLE_HEAD = [
     { label: 'Category', key: 'Category' },
     { label: 'Forms', key: 'Forms' },
-    { label: 'No of Responses', key: 'No of Responses' },
+    // { label: 'No of Responses', key: 'No of Responses' },
     { label: 'View Responses', key: 'View Responses' },
 ]
 const columns: Array<{ label: string; key: string }> = TABLE_HEAD
@@ -156,7 +156,7 @@ const CategoryWiseForm: React.FC = () => {
                     </select>
                 </div>
             </div>
-            <Card className="overflow-hidden w-[98%] mb-4 h-[50vh]">
+            <Card className="overflow-hidden w-[98%] mb-4 ">
                 <CardBody className="p-0 px-0">
                     <div className="bg-white shadow overflow-hidden table-fixed sm:rounded-lg ">
                         <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6 ">
@@ -190,65 +190,70 @@ const CategoryWiseForm: React.FC = () => {
                                 </Button>
                             </div>
                         </nav>
-                        <table className="min-w-full divide-y overflow-x-scroll divide-gray-200">
-                            <thead className="bg-blue-500 ">
-                                <tr>
-                                    {columns.map((column, index) => (
-                                        <th
-                                            key={column.key}
-                                            className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-                                            onClick={() => {
-                                                handleSort(column.key)
-                                            }}
-                                        >
-                                            {column.label}
-                                            {index < columns.length - 1
-                                                ? renderSortIndicator(
-                                                      column.key
-                                                  )
-                                                : ''}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {sortedData
-                                    .slice(startIndex, endIndex)
-                                    .map((row, index) => (
-                                        <tr key={index}>
-                                            {columns.map((column, index) =>
-                                                index < columns.length - 1 ? (
-                                                    <td
-                                                        key={column.key}
-                                                        className="px-6 py-4 whitespace-nowrap"
-                                                    >
-                                                        {row[column.key]}
-                                                    </td>
-                                                ) : (
-                                                    <td
-                                                        key={column.key}
-                                                        className="px-6 py-4 whitespace-nowrap"
-                                                    >
-                                                        <Tooltip content="View Responses">
-                                                            <IconButton
-                                                                variant="outlined"
-                                                                color="blue"
-                                                                onClick={(): void => {
-                                                                    Navigate(
-                                                                        `/formresponse/${row.Category}`
-                                                                    )
-                                                                }}
-                                                            >
-                                                                <EyeIcon className="h-4 w-4" />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                    </td>
-                                                )
-                                            )}
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+                        <div className="overflow-x-scroll h-[50vh]">
+                            <table className="min-w-full divide-y  divide-gray-200">
+                                <thead className="bg-blue-500 ">
+                                    <tr>
+                                        {columns.map((column, index) => (
+                                            <th
+                                                key={column.key}
+                                                className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
+                                                onClick={() => {
+                                                    handleSort(column.key)
+                                                }}
+                                            >
+                                                <Typography variant="small">
+                                                    {column.label}
+                                                </Typography>
+                                                {index < columns.length - 1
+                                                    ? renderSortIndicator(
+                                                          column.key
+                                                      )
+                                                    : ''}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {sortedData
+                                        .slice(startIndex, endIndex)
+                                        .map((row, index) => (
+                                            <tr key={index}>
+                                                {columns.map((column, index) =>
+                                                    index <
+                                                    columns.length - 1 ? (
+                                                        <td
+                                                            key={column.key}
+                                                            className="px-6 py-4 whitespace-nowrap"
+                                                        >
+                                                            {row[column.key]}
+                                                        </td>
+                                                    ) : (
+                                                        <td
+                                                            key={column.key}
+                                                            className="px-6 py-4 whitespace-nowrap"
+                                                        >
+                                                            <Tooltip content="View Responses">
+                                                                <IconButton
+                                                                    variant="outlined"
+                                                                    color="blue"
+                                                                    onClick={(): void => {
+                                                                        Navigate(
+                                                                            `/formresponse/${row.Category}`
+                                                                        )
+                                                                    }}
+                                                                >
+                                                                    <EyeIcon className="h-4 w-4" />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </td>
+                                                    )
+                                                )}
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </CardBody>
             </Card>

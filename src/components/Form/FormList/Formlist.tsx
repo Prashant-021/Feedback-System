@@ -80,7 +80,7 @@ const FormList: React.FC = () => {
         return rows
     }
     const TableRows = getRows()
-    const rowsPerPage = 5
+    const rowsPerPage = 6
     const handleDelete = (id: string): void => {
         FormService.deleteForm(id)
             .then(() => {
@@ -168,7 +168,7 @@ const FormList: React.FC = () => {
                     </Button>
                 </div>
             </div>
-            <Card className=" w-full h-[50vh]">
+            <Card className=" w-full">
                 <CardBody className="p-0 px-0 ">
                     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
                         <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
@@ -202,101 +202,109 @@ const FormList: React.FC = () => {
                                 </Button>
                             </div>
                         </nav>
-                        <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-blue-500 ">
-                                <tr>
-                                    {columns.map((column, index) => (
-                                        <th
-                                            key={column.key}
-                                            className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
-                                            onClick={() => {
-                                                handleSort(column.key)
-                                            }}
-                                        >
-                                            {column.label}
-                                            {index < columns.length - 1
-                                                ? renderSortIndicator(
-                                                      column.key
-                                                  )
-                                                : ''}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
-                                {sortedData
-                                    .slice(startIndex, endIndex)
-                                    .map((row, index) => (
-                                        <tr key={index}>
-                                            {columns.map((column, index) =>
-                                                index < columns.length - 1 ? (
-                                                    <td
-                                                        key={column.key}
-                                                        className="px-6 py-4 whitespace-nowrap"
-                                                    >
-                                                        {row[column.key]}
-                                                    </td>
-                                                ) : (
-                                                    <td key={column.key}>
-                                                        <Tooltip content="Edit Form">
-                                                            <IconButton
-                                                                variant="text"
-                                                                color="blue-gray"
-                                                                onClick={() => {
-                                                                    Navigate(
-                                                                        `/forms/createform/${row.Id}`,
-                                                                        {
-                                                                            state: {
-                                                                                formStatus:
-                                                                                    'edit',
-                                                                            },
-                                                                        }
-                                                                    )
-                                                                }}
-                                                            >
-                                                                <PencilIcon className="h-4 w-4" />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                        <Tooltip content="Generate Link">
-                                                            <IconButton
-                                                                variant="text"
-                                                                color="blue"
-                                                                onClick={() => {
-                                                                    generateLink(
-                                                                        row.Id
-                                                                    )
-                                                                }}
-                                                            >
-                                                                <LinkIcon className="h-4 w-4" />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                        <Tooltip content="Delete">
-                                                            <IconButton
-                                                                variant="text"
-                                                                color="red"
-                                                                onClick={() => {
-                                                                    const response =
-                                                                        confirm(
-                                                                            'Are you sure want to delete ?'
+                        <div className="overflow-x-scroll table-auto  h-[45vh]">
+                            <table className="min-w-full divide-y divide-gray-200">
+                                <thead className="bg-blue-500 ">
+                                    <tr>
+                                        {columns.map((column, index) => (
+                                            <th
+                                                key={column.key}
+                                                className="px-6 py-3 text-left text-xs font-bold text-white uppercase tracking-wider"
+                                                onClick={() => {
+                                                    handleSort(column.key)
+                                                }}
+                                            >
+                                                <Typography variant="small">
+                                                    {column.label}
+                                                </Typography>
+                                                {index < columns.length - 1
+                                                    ? renderSortIndicator(
+                                                          column.key
+                                                      )
+                                                    : ''}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody className="bg-white divide-y divide-gray-200">
+                                    {sortedData
+                                        .slice(startIndex, endIndex)
+                                        .map((row, index) => (
+                                            <tr key={index}>
+                                                {columns.map((column, index) =>
+                                                    index <
+                                                    columns.length - 1 ? (
+                                                        <td
+                                                            key={column.key}
+                                                            className="px-6 py-4 whitespace-nowrap"
+                                                        >
+                                                            {row[column.key]}
+                                                        </td>
+                                                    ) : (
+                                                        <td
+                                                            key={column.key}
+                                                            className="flex"
+                                                        >
+                                                            <Tooltip content="Edit Form">
+                                                                <IconButton
+                                                                    variant="text"
+                                                                    color="blue-gray"
+                                                                    onClick={() => {
+                                                                        Navigate(
+                                                                            `/forms/createform/${row.Id}`,
+                                                                            {
+                                                                                state: {
+                                                                                    formStatus:
+                                                                                        'edit',
+                                                                                },
+                                                                            }
                                                                         )
-                                                                    if (
-                                                                        response
-                                                                    )
-                                                                        handleDelete(
+                                                                    }}
+                                                                >
+                                                                    <PencilIcon className="h-4 w-4" />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                            <Tooltip content="Generate Link">
+                                                                <IconButton
+                                                                    variant="text"
+                                                                    color="blue"
+                                                                    onClick={() => {
+                                                                        generateLink(
                                                                             row.Id
                                                                         )
-                                                                }}
-                                                            >
-                                                                <TrashIcon className="h-4 w-4" />
-                                                            </IconButton>
-                                                        </Tooltip>
-                                                    </td>
-                                                )
-                                            )}
-                                        </tr>
-                                    ))}
-                            </tbody>
-                        </table>
+                                                                    }}
+                                                                >
+                                                                    <LinkIcon className="h-4 w-4" />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                            <Tooltip content="Delete">
+                                                                <IconButton
+                                                                    variant="text"
+                                                                    color="red"
+                                                                    onClick={() => {
+                                                                        const response =
+                                                                            confirm(
+                                                                                'Are you sure want to delete ?'
+                                                                            )
+                                                                        if (
+                                                                            response
+                                                                        )
+                                                                            handleDelete(
+                                                                                row.Id
+                                                                            )
+                                                                    }}
+                                                                >
+                                                                    <TrashIcon className="h-4 w-4" />
+                                                                </IconButton>
+                                                            </Tooltip>
+                                                        </td>
+                                                    )
+                                                )}
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </CardBody>
             </Card>
