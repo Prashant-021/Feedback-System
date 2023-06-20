@@ -168,9 +168,40 @@ const FormList: React.FC = () => {
                     </Button>
                 </div>
             </div>
-            <Card className=" w-full">
+            <Card className=" w-full h-[50vh]">
                 <CardBody className="p-0 px-0 ">
                     <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+                        <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
+                            <div className="hidden sm:block">
+                                <p className="text-sm text-gray-700">
+                                    Showing {startIndex + 1} to{' '}
+                                    {Math.min(endIndex, TableRows.length)} of{' '}
+                                    {TableRows.length} entries
+                                </p>
+                            </div>
+                            <div className="flex-1 flex justify-between sm:justify-end gap-3">
+                                <Button
+                                    className="float-left items-center gap-3"
+                                    color="blue"
+                                    onClick={() => {
+                                        handlePageChange(currentPage - 1)
+                                    }}
+                                    disabled={currentPage === 1}
+                                >
+                                    Previous
+                                </Button>
+                                <Button
+                                    className="float-left items-center gap-3"
+                                    color="blue"
+                                    onClick={() => {
+                                        handlePageChange(currentPage + 1)
+                                    }}
+                                    disabled={currentPage === totalPages}
+                                >
+                                    Next
+                                </Button>
+                            </div>
+                        </nav>
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-blue-500 ">
                                 <tr>
@@ -266,35 +297,6 @@ const FormList: React.FC = () => {
                                     ))}
                             </tbody>
                         </table>
-                        <nav className="bg-white px-4 py-3 flex items-center justify-between border-t border-gray-200 sm:px-6">
-                            <div className="hidden sm:block">
-                                <p className="text-sm text-gray-700">
-                                    Showing {startIndex + 1} to{' '}
-                                    {Math.min(endIndex, TableRows.length)} of{' '}
-                                    {TableRows.length} entries
-                                </p>
-                            </div>
-                            <div className="flex-1 flex justify-between sm:justify-end">
-                                <button
-                                    onClick={() => {
-                                        handlePageChange(currentPage - 1)
-                                    }}
-                                    disabled={currentPage === 1}
-                                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                                >
-                                    Previous
-                                </button>
-                                <button
-                                    onClick={() => {
-                                        handlePageChange(currentPage + 1)
-                                    }}
-                                    disabled={currentPage === totalPages}
-                                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
-                                >
-                                    Next
-                                </button>
-                            </div>
-                        </nav>
                     </div>
                 </CardBody>
             </Card>
