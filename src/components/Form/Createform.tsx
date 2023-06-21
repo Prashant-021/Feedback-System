@@ -27,6 +27,8 @@ const Createform: React.FC = () => {
     const Navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false)
+    const [isFormChanged, setIsFormChanged] = useState(false) // New state variable to track form changes
+
     const bottomRef = useRef<HTMLDivElement>(null)
     const [formTemplate, setFormTemplate] = useState<IFormTemplate>({
         id: formId,
@@ -77,8 +79,8 @@ const Createform: React.FC = () => {
     const handleClick = (): void => {
         const newComponent: IQuestion = {
             id: nanoid(),
-            questionTitle: '',
-            type: '',
+            questionTitle: 'Question',
+            type: 'shortAnswer',
             required: false,
             options: [],
             answerValue: '',
@@ -93,6 +95,7 @@ const Createform: React.FC = () => {
             () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
             10
         )
+        setIsFormChanged(true)
     }
 
     const handleDelete = (index: number): void => {
@@ -109,6 +112,7 @@ const Createform: React.FC = () => {
             updatedQuestions[index] = value
             return { ...prevState, questions: updatedQuestions }
         })
+        setIsFormChanged(true)
     }
 
     const handleSave = (): void => {
@@ -118,6 +122,7 @@ const Createform: React.FC = () => {
             FormService.addNewForm(formTemplate)
                 .then(() => {
                     successNotify('Form Saved successfully')
+                    setIsFormChanged(false)
                 })
                 .catch(() => {
                     errorNotify('Error while Adding Form')
@@ -150,7 +155,11 @@ const Createform: React.FC = () => {
                         <ArrowUturnLeftIcon className="h-5 w-5" />
                     </Button>
                 </Link>
-                <Button className="float-right" onClick={handleSave}>
+                <Button
+                    className="float-right"
+                    onClick={handleSave}
+                    disabled={!isFormChanged}
+                >
                     Save
                 </Button>
             </div>

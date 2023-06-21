@@ -158,7 +158,7 @@ const AddCategory: React.FC<Props> = ({
                 </DialogHeader>
                 <DialogBody className="flex justify-center " divider>
                     <div className="flex flex-col gap-4">
-                        <div>
+                        <div className="mb-4">
                             <Input
                                 label="Category Name"
                                 value={categoryName}
@@ -179,13 +179,17 @@ const AddCategory: React.FC<Props> = ({
                                     }
                                 }}
                             />
-                            <Typography variant="small" color="red">
+                            <Typography
+                                variant="small"
+                                color="red"
+                                className="absolute"
+                            >
                                 {errors.title.length > 0 && touched
                                     ? errors.title
                                     : ''}
                             </Typography>
                         </div>
-                        <div>
+                        <div className="mb-4">
                             <Textarea
                                 label="Category Description"
                                 value={categoryDescription}
@@ -196,12 +200,17 @@ const AddCategory: React.FC<Props> = ({
                                     if (e.target.value === '') {
                                         setErrors((prevErrors) => ({
                                             ...prevErrors,
-                                            title: 'Please enter a category description',
+                                            description:
+                                                'Please enter a category description',
                                         }))
                                     }
                                 }}
                             />
-                            <Typography variant="small" color="red">
+                            <Typography
+                                variant="small"
+                                color="red"
+                                className="absolute"
+                            >
                                 {errors.description.length > 0 && touched
                                     ? errors.description
                                     : ''}

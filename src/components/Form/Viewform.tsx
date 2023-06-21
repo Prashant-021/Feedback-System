@@ -94,9 +94,9 @@ const Viewform: React.FC = () => {
                 return (
                     <MultipleChoice
                         questionTitle={questionTitle}
-                        key={uniqueid}
                         onChange={updateOption}
                         isRequired={isRequired}
+                        key={uniqueid}
                         id={id}
                         optionlist={questionOptions as Ioption[]}
                     />
@@ -105,22 +105,22 @@ const Viewform: React.FC = () => {
                 return (
                     <Checkboxes
                         questionTitle={questionTitle}
-                        optionlist={questionOptions as Ioption[]}
                         onChange={updateOption}
                         isRequired={isRequired}
                         key={uniqueid}
                         id={id}
+                        optionlist={questionOptions as Ioption[]}
                     />
                 )
             case 'dropdown':
                 return (
                     <Dropdown
                         questionTitle={questionTitle}
-                        optionlist={questionOptions as Ioption[]}
-                        id={id}
-                        isRequired={isRequired}
-                        key={uniqueid}
                         onChange={updateOption}
+                        isRequired={isRequired}
+                        optionlist={questionOptions as Ioption[]}
+                        key={uniqueid}
+                        id={id}
                     />
                 )
             case 'rating':
@@ -138,10 +138,13 @@ const Viewform: React.FC = () => {
         }
     }
     const clearValues = (): void => {
+        console.log('hello')
         inputValueRef.current = {}
         if (form?.questions != null) {
             for (const question of form?.questions) {
+                console.log(question.answerValue)
                 question.answerValue = ''
+                console.log(question.answerValue)
             }
         }
     }
@@ -195,6 +198,7 @@ const Viewform: React.FC = () => {
             <div className="w-[90%] md:w-8/12 mt-7">
                 <form
                     onSubmit={handleSubmit}
+                    onReset={clearValues}
                     className="formQuestions gap-4 grid "
                 >
                     <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit">
@@ -229,12 +233,7 @@ const Viewform: React.FC = () => {
                     ))}
                     <div className="submitBtn flex justify-between">
                         <Button type="submit">Submit</Button>
-                        <Button
-                            variant="text"
-                            className="p-2"
-                            type="reset"
-                            onClick={clearValues}
-                        >
+                        <Button variant="text" className="p-2" type="reset">
                             Clear Form
                         </Button>
                     </div>

@@ -1,5 +1,5 @@
-import { Button, Input, Typography } from '@material-tailwind/react'
-import React, { useRef, useState } from 'react'
+import { Button, Typography } from '@material-tailwind/react'
+import React, { useState } from 'react'
 
 interface Props {
     questionTitle: string
@@ -14,7 +14,7 @@ const ShortAnswer: React.FC<Props> = ({
     isRequired,
     id,
 }) => {
-    const inputRef = useRef<HTMLInputElement>(null)
+    // const inputRef = useRef<HTMLInputElement>(null)
     const [inputValue, setInputValue] = useState('')
     const [isTouched, setIsTouched] = useState(false)
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -25,24 +25,23 @@ const ShortAnswer: React.FC<Props> = ({
     }
 
     const handleClearSelection = (): void => {
-        if (inputRef.current != null) {
-            inputRef.current.value = ''
-            setInputValue('')
-            onChange('', id)
-        }
+        // if (inputRef.current != null) {
+        // inputRef.current.value = ''
+        setInputValue('')
+        onChange('', id)
     }
 
     return (
         <>
             <div className="w-[40%]">
-                <Input
-                    label={questionTitle}
-                    size="lg"
-                    variant="static"
+                <p>{questionTitle}</p>
+                <input
+                    // label={questionTitle}
+                    // size="lg"
+                    // variant="static"
                     className="w-[40%]"
                     onChange={handleChange}
                     value={inputValue}
-                    ref={inputRef}
                     required={isRequired}
                 />
             </div>

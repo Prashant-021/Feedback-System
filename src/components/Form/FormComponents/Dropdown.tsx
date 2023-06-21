@@ -74,7 +74,11 @@ const Dropdown: React.FC<DropdownProps> = ({
                     ))}
                 </select>
                 {isTouched && isRequired && inputValue.trim() === '' && (
-                    <Typography className="text-red-500">
+                    <Typography
+                        variant="small"
+                        color="red"
+                        className="absolute"
+                    >
                         Field is required
                     </Typography>
                 )}
