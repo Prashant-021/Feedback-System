@@ -214,14 +214,16 @@ const FormList: React.FC = () => {
                                                     handleSort(column.key)
                                                 }}
                                             >
-                                                <Typography variant="small">
-                                                    {column.label}
-                                                </Typography>
-                                                {index < columns.length - 1
-                                                    ? renderSortIndicator(
-                                                          column.key
-                                                      )
-                                                    : ''}
+                                                <div className="flex">
+                                                    <Typography variant="small">
+                                                        {column.label}
+                                                    </Typography>
+                                                    {index < columns.length - 1
+                                                        ? renderSortIndicator(
+                                                              column.key
+                                                          )
+                                                        : ''}
+                                                </div>
                                             </th>
                                         ))}
                                     </tr>

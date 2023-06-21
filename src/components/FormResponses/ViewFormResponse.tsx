@@ -5,6 +5,7 @@ import {
     ArrowUturnLeftIcon,
     ArrowUpIcon,
     ArrowDownIcon,
+    EyeIcon,
 } from '@heroicons/react/24/solid'
 import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import { type IFormTemplate } from '../../interface'
@@ -24,7 +25,7 @@ const columns: Array<{ label: string; key: string }> = TABLE_HEAD
 const ViewFormResponse: React.FC = () => {
     const location = useLocation()
     const path = location.pathname.split('/')
-    const categoryType = path[path.length - 1]
+    const categoryType = path[path.length - 1].replaceAll('%20', ' ')
     const Navigate = useNavigate()
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
@@ -124,7 +125,7 @@ const ViewFormResponse: React.FC = () => {
             <div className="w-[98%] flex items-center justify-center ">
                 <Card className="w-full ">
                     <CardBody className="px-2 pb-0 sm:px-0">
-                        <nav className="bg-white flex items-center justify-between border-t border-gray-200 sm:px-6 mb-3">
+                        <nav className="bg-white flex items-center justify-between sm:px-6 mb-3">
                             <div className="hidden sm:block">
                                 <p className="text-sm text-gray-700">
                                     Showing {startIndex + 1} to{' '}
@@ -167,14 +168,16 @@ const ViewFormResponse: React.FC = () => {
                                                     handleSort(column.key)
                                                 }}
                                             >
-                                                <Typography variant="small">
-                                                    {column.label}
-                                                </Typography>
-                                                {index < columns.length - 1
-                                                    ? renderSortIndicator(
-                                                          column.key
-                                                      )
-                                                    : ''}
+                                                <div className="flex">
+                                                    <Typography variant="small">
+                                                        {column.label}
+                                                    </Typography>
+                                                    {index < columns.length - 1
+                                                        ? renderSortIndicator(
+                                                              column.key
+                                                          )
+                                                        : ' '}
+                                                </div>
                                             </th>
                                         ))}
                                     </tr>
@@ -184,48 +187,28 @@ const ViewFormResponse: React.FC = () => {
                                         .slice(startIndex, endIndex)
                                         .map((row, index) => (
                                             <tr key={index}>
-                                                {columns.map((column, index) =>
-                                                    index <
-                                                    columns.length - 1 ? (
-                                                        <td
-                                                            key={column.key}
-                                                            className="px-6 py-4 whitespace-nowrap"
-                                                        >
-                                                            {row[column.key]}
-                                                        </td>
-                                                    ) : (
-                                                        <td
-                                                            key={column.key}
-                                                            className="px-6 py-4 whitespace-nowrap"
-                                                        >
-                                                            <Button
-                                                                size="sm"
-                                                                variant="outlined"
-                                                                onClick={() => {
-                                                                    Navigate(
-                                                                        '/formResponse/individualform',
-                                                                        {
-                                                                            state: {
-                                                                                category:
-                                                                                    TABLE_ROWS[
-                                                                                        index
-                                                                                    ],
-                                                                            },
-                                                                        }
-                                                                    )
-                                                                }}
-                                                            >
-                                                                <Typography
-                                                                    variant="small"
-                                                                    color="blue"
-                                                                    className="font-medium"
-                                                                >
-                                                                    View
-                                                                </Typography>
-                                                            </Button>
-                                                        </td>
-                                                    )
-                                                )}
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    {row.Email}
+                                                </td>
+                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                    <Button
+                                                        size="sm"
+                                                        variant="outlined"
+                                                        onClick={() => {
+                                                            Navigate(
+                                                                '/formResponse/individualform',
+                                                                {
+                                                                    state: {
+                                                                        category:
+                                                                            TABLE_ROWS[0],
+                                                                    },
+                                                                }
+                                                            )
+                                                        }}
+                                                    >
+                                                        <EyeIcon className="h-5 w-5" />
+                                                    </Button>
+                                                </td>
                                             </tr>
                                         ))}
                                 </tbody>

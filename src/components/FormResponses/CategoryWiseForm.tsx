@@ -18,17 +18,17 @@ import { errorNotify } from '../../utils'
 
 interface IFormResponse extends IFormTemplate {
     Email: string
+    noOfResponses: number
 }
 type IColumn = Record<string, string>
 
 const TABLE_HEAD = [
     { label: 'Category', key: 'Category' },
     { label: 'Forms', key: 'Forms' },
-    // { label: 'No of Responses', key: 'No of Responses' },
+    { label: 'No of Responses', key: 'NoOfResponses' },
     { label: 'View Responses', key: 'View Responses' },
 ]
 const columns: Array<{ label: string; key: string }> = TABLE_HEAD
-
 const CategoryWiseForm: React.FC = () => {
     const location = useLocation()
     const { category } = location.state
@@ -37,6 +37,9 @@ const CategoryWiseForm: React.FC = () => {
     const Navigate = useNavigate()
     const [categories, setCategories] = useState<string[]>([])
     const [categoryType, setCategoryType] = useState<string>(category)
+    const [currentPage, setCurrentPage] = useState(1)
+    const [sortColumn, setSortColumn] = useState('')
+    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
@@ -62,15 +65,17 @@ const CategoryWiseForm: React.FC = () => {
     }, [])
     const getRows = (): IColumn[] => {
         const rows: IColumn[] = []
-        TABLE_ROWS.map((row) =>
+        TABLE_ROWS.map(async (row) =>
             rows.push({
                 Id: row.id,
                 Category: row.categoryName,
+                NoOfResponses: String(row.responseCount),
                 Forms: row.title,
             })
         )
         return rows
     }
+
     useEffect(() => {
         setIsLoading(true)
         FormService.getAllForms(categoryType)
@@ -94,9 +99,6 @@ const CategoryWiseForm: React.FC = () => {
     }, [categoryType])
     const TableRows = getRows()
     const rowsPerPage = 5
-    const [currentPage, setCurrentPage] = useState(1)
-    const [sortColumn, setSortColumn] = useState('')
-    const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
 
     const totalPages = Math.ceil(TableRows.length / rowsPerPage)
     const startIndex = (currentPage - 1) * rowsPerPage
@@ -202,14 +204,16 @@ const CategoryWiseForm: React.FC = () => {
                                                     handleSort(column.key)
                                                 }}
                                             >
-                                                <Typography variant="small">
-                                                    {column.label}
-                                                </Typography>
-                                                {index < columns.length - 1
-                                                    ? renderSortIndicator(
-                                                          column.key
-                                                      )
-                                                    : ''}
+                                                <div className="flex">
+                                                    <Typography variant="small">
+                                                        {column.label}
+                                                    </Typography>
+                                                    {index < columns.length - 1
+                                                        ? renderSortIndicator(
+                                                              column.key
+                                                          )
+                                                        : ''}
+                                                </div>
                                             </th>
                                         ))}
                                     </tr>

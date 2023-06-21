@@ -63,7 +63,7 @@ const Dashboard: React.FC = () => {
                             <span className="text-blue-800">Category List</span>
                         </Typography>
                     </div>
-                    <div className=" m-8 pb-3 flex gap-4 flex-wrap justify-start h-fit">
+                    <div className=" m-8 pb-3 flex gap-4 flex-wrap justify-center lg:justify-start h-fit">
                         <Tooltip content="Add Category">
                             <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
                                 <Button

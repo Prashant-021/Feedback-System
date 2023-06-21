@@ -18,10 +18,6 @@ const Viewform: React.FC = () => {
     const formId = location.pathname.split('/')
     const [isLoading, setIsLoading] = useState(true)
     const [form, setForm] = useState<IFormTemplate>()
-    // const errors: Record<string, string> = {}
-    // const [validationErrors, setValidationErrors] = useState<
-    //     Record<string, string>
-    // >({})
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
             .then((formDoc) => {
@@ -42,12 +38,16 @@ const Viewform: React.FC = () => {
     })
     const handleSubmit = (event: React.FormEvent): void => {
         event.preventDefault()
-        FormResponseService.addResponse({ ...inputValueRef.current, ...form })
+        FormResponseService.addResponse({
+            ...inputValueRef.current,
+            ...form,
+        })
             .then(() => {
                 successNotify('Form submitted successfully')
             })
-            .catch(() => {
+            .catch((err) => {
                 errorNotify('Form Submission Failed')
+                console.log(err)
             })
     }
 

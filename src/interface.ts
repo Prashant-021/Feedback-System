@@ -53,6 +53,7 @@ export interface IFormTemplate {
     description: string
     categoryName: string
     questions: IQuestion[]
+    responseCount: number
 }
 
 export interface ICategory {

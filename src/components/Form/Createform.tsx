@@ -33,6 +33,7 @@ const Createform: React.FC = () => {
         description: '',
         categoryName: '',
         questions: [],
+        responseCount: 0,
     })
     useEffect(() => {
         if (sessionStorage.length === 0) {
@@ -96,6 +97,7 @@ const Createform: React.FC = () => {
             updatedQuestions.splice(index, 1)
             return { ...prevState, questions: updatedQuestions }
         })
+        setDisable(false)
     }
     const handleQuestionChange = (index: number, value: IQuestion): void => {
         setFormTemplate((prevState) => {
@@ -103,6 +105,7 @@ const Createform: React.FC = () => {
             updatedQuestions[index] = value
             return { ...prevState, questions: updatedQuestions }
         })
+        console.log('Hello')
     }
 
     const handleSave = (): void => {

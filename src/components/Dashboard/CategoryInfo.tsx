@@ -99,7 +99,6 @@ const CategoryInfo: React.FC<Props> = ({ categoryValue, updateList }) => {
                             )
                             if (response) {
                                 dispatch(deleteCategory(categoryValue.id))
-                                console.log(categoryValue.id)
                                 handleDelete(categoryValue.id)
                             }
                         }}
