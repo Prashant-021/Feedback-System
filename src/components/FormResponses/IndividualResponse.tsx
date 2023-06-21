@@ -178,7 +178,7 @@ const IndividualResponse: React.FC = () => {
                     <ArrowUturnLeftIcon className="h-5 w-5" />
                 </Button>
             </div>
-            <div className="flex items-center flex-col w-full mb-10 gap-4 h-[77vh] overflow-scroll">
+            <div className="flex items-center flex-col w-full mb-10 gap-4 h-[70vh] overflow-scroll">
                 <div className="formHeader rounded-lg shadow-xl bg-white py-12 border-blue-600 border-t-8  px-6 md:p-11 h-fit w-[90%] md:w-8/12">
                     <Typography variant="h3" color="blue-gray" className="mb-2">
                         {category?.title ?? ''}

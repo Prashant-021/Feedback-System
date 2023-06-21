@@ -13,12 +13,13 @@ import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import Loader from '../Loader/Loader'
 import { errorNotify, successNotify } from '../../utils'
 import RatingBar from './FormComponents/RatingBar'
-// import { Formik } from 'formik'
+
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
     const [isLoading, setIsLoading] = useState(true)
-    const [form, setForm] = useState<IFormTemplate>()
+    const [form, setForm] = useState<IFormTemplate | null>()
+    const [submitted, setSubmitted] = useState<boolean>(false)
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
             .then((formDoc) => {
@@ -45,6 +46,8 @@ const Viewform: React.FC = () => {
         })
             .then(() => {
                 successNotify('Form submitted successfully')
+                // setForm(null)
+                setSubmitted(true)
             })
             .catch((err) => {
                 errorNotify('Form Submission Failed')
@@ -134,17 +137,49 @@ const Viewform: React.FC = () => {
                 return null
         }
     }
-    // const clearValues = (): void => {
-    //     inputValueRef.current = {}
-    //     if (form?.questions != null) {
-    //         for (const question of form?.questions) {
-    //             question.answerValue = ''
-    //         }
-    //     }
-    //     // setValidationErrors({})
-    // }
+    const clearValues = (): void => {
+        inputValueRef.current = {}
+        if (form?.questions != null) {
+            for (const question of form?.questions) {
+                question.answerValue = ''
+            }
+        }
+    }
     if (isLoading) {
         return <Loader />
+    }
+    if (submitted) {
+        return (
+            <div className="flex items-center flex-col w-full my-20 sm:me-16 gap-4">
+                <div className="formHeader rounded-lg shadow-xl bg-white py-12 border-blue-600 border-t-8  px-6 md:p-11 h-fit w-[90%] md:w-8/12">
+                    <Typography variant="h3" color="blue-gray" className="mb-2">
+                        {form?.title ?? ''}
+                    </Typography>
+                    <Typography valiant="h4">
+                        {form?.description ?? ''}
+                    </Typography>
+                    <Typography valiant="h4">
+                        Category: {form?.categoryName ?? ''}
+                    </Typography>
+                </div>
+                <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8 w-[90%] md:w-8/12  px-6 md:p-11 h-fit">
+                    <h3>Form Submitted as</h3>
+                    <Input
+                        type="email"
+                        variant="static"
+                        className="bg-gray-100 outline-0"
+                        placeholder="Enter Email"
+                        value={inputValueRef.current.Email}
+                        onChange={(event) => {
+                            inputValueRef.current = {
+                                Email: event.target.value,
+                            }
+                        }}
+                        disabled
+                    />
+                </div>
+            </div>
+        )
     }
     return (
         <div className="flex items-center flex-col w-full my-20 sm:me-16 gap-4">
@@ -162,10 +197,6 @@ const Viewform: React.FC = () => {
                     onSubmit={handleSubmit}
                     className="formQuestions gap-4 grid "
                 >
-                    {/* <Formik
-                    initialValues={form as IFormTemplate}
-                    onSubmit={handleSubmit}
-                > */}
                     <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit">
                         <Input
                             type="email"
@@ -194,29 +225,20 @@ const Viewform: React.FC = () => {
                                     question.id
                                 )}
                             </div>
-                            {/* <p>{errors[question.id]}</p>
-                        <Typography
-                            variant="small"
-                            color="red"
-                            className="absolute"
-                        >
-                            {errors[question.id] ?? ''}
-                        </Typography> */}
                         </div>
                     ))}
                     <div className="submitBtn flex justify-between">
                         <Button type="submit">Submit</Button>
-                        {/* <Button
+                        <Button
                             variant="text"
                             className="p-2"
                             type="reset"
                             onClick={clearValues}
                         >
                             Clear Form
-                        </Button> */}
+                        </Button>
                     </div>
                 </form>
-                {/* </Formik> */}
             </div>
         </div>
     )

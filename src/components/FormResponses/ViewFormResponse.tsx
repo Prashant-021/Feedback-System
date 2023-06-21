@@ -62,7 +62,7 @@ const ViewFormResponse: React.FC = () => {
         return rows
     }
     const TableRows = getRows()
-    const rowsPerPage = 5
+    const rowsPerPage = 4
     const [currentPage, setCurrentPage] = useState(1)
     const [sortColumn, setSortColumn] = useState('')
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
@@ -187,10 +187,10 @@ const ViewFormResponse: React.FC = () => {
                                         .slice(startIndex, endIndex)
                                         .map((row, index) => (
                                             <tr key={index}>
-                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                <td className="px-6 py-3 whitespace-nowrap">
                                                     {row.Email}
                                                 </td>
-                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                <td className="px-6 py-3 whitespace-nowrap">
                                                     <Button
                                                         size="sm"
                                                         variant="outlined"
@@ -200,7 +200,9 @@ const ViewFormResponse: React.FC = () => {
                                                                 {
                                                                     state: {
                                                                         category:
-                                                                            TABLE_ROWS[0],
+                                                                            TABLE_ROWS[
+                                                                                index
+                                                                            ],
                                                                     },
                                                                 }
                                                             )
