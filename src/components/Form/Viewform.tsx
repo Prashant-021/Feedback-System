@@ -13,6 +13,7 @@ import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import Loader from '../Loader/Loader'
 import { errorNotify, successNotify } from '../../utils'
 import RatingBar from './FormComponents/RatingBar'
+// import { Formik } from 'formik'
 const Viewform: React.FC = () => {
     const location = useLocation()
     const formId = location.pathname.split('/')
@@ -133,15 +134,15 @@ const Viewform: React.FC = () => {
                 return null
         }
     }
-    const clearValues = (): void => {
-        inputValueRef.current = {}
-        if (form?.questions != null) {
-            for (const question of form?.questions) {
-                question.answerValue = ''
-            }
-        }
-        // setValidationErrors({})
-    }
+    // const clearValues = (): void => {
+    //     inputValueRef.current = {}
+    //     if (form?.questions != null) {
+    //         for (const question of form?.questions) {
+    //             question.answerValue = ''
+    //         }
+    //     }
+    //     // setValidationErrors({})
+    // }
     if (isLoading) {
         return <Loader />
     }
@@ -161,6 +162,10 @@ const Viewform: React.FC = () => {
                     onSubmit={handleSubmit}
                     className="formQuestions gap-4 grid "
                 >
+                    {/* <Formik
+                    initialValues={form as IFormTemplate}
+                    onSubmit={handleSubmit}
+                > */}
                     <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit">
                         <Input
                             type="email"
@@ -201,16 +206,17 @@ const Viewform: React.FC = () => {
                     ))}
                     <div className="submitBtn flex justify-between">
                         <Button type="submit">Submit</Button>
-                        <Button
+                        {/* <Button
                             variant="text"
                             className="p-2"
                             type="reset"
                             onClick={clearValues}
                         >
                             Clear Form
-                        </Button>
+                        </Button> */}
                     </div>
                 </form>
+                {/* </Formik> */}
             </div>
         </div>
     )

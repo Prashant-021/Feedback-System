@@ -17,12 +17,13 @@ import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
 import { errorNotify, successNotify } from '../../utils'
 import Loader from '../Loader/Loader'
+// ...existing code...
+
 const Createform: React.FC = () => {
     const location = useLocation()
     const { formStatus } = location.state
     const path = location.pathname.split('/')
     const formId = path[path.length - 1]
-    const [disable, setDisable] = useState<boolean>(true)
     const Navigate = useNavigate()
 
     const [isLoading, setIsLoading] = useState(false)
@@ -35,11 +36,13 @@ const Createform: React.FC = () => {
         questions: [],
         responseCount: 0,
     })
+
     useEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
         }
     }, [Navigate])
+
     useEffect(() => {
         if (formStatus === 'edit') {
             setIsLoading(true)
@@ -57,6 +60,7 @@ const Createform: React.FC = () => {
                 })
         }
     }, [formStatus, formId])
+
     const handleHeaderValueChange = (value: IFormHeader): void => {
         setFormTemplate((prevFormTemplate) => ({
             ...prevFormTemplate,
@@ -65,6 +69,7 @@ const Createform: React.FC = () => {
             categoryName: value.categoryName,
         }))
     }
+
     const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(
         undefined
     )
@@ -88,7 +93,6 @@ const Createform: React.FC = () => {
             () => bottomRef.current?.scrollIntoView({ behavior: 'smooth' }),
             10
         )
-        setDisable(false)
     }
 
     const handleDelete = (index: number): void => {
@@ -97,15 +101,14 @@ const Createform: React.FC = () => {
             updatedQuestions.splice(index, 1)
             return { ...prevState, questions: updatedQuestions }
         })
-        setDisable(false)
     }
+
     const handleQuestionChange = (index: number, value: IQuestion): void => {
         setFormTemplate((prevState) => {
             const updatedQuestions = [...prevState.questions]
             updatedQuestions[index] = value
             return { ...prevState, questions: updatedQuestions }
         })
-        console.log('Hello')
     }
 
     const handleSave = (): void => {
@@ -135,6 +138,7 @@ const Createform: React.FC = () => {
                 })
         }
     }
+
     if (isLoading) {
         return <Loader />
     }
@@ -146,11 +150,7 @@ const Createform: React.FC = () => {
                         <ArrowUturnLeftIcon className="h-5 w-5" />
                     </Button>
                 </Link>
-                <Button
-                    className="float-right"
-                    onClick={handleSave}
-                    disabled={disable}
-                >
+                <Button className="float-right" onClick={handleSave}>
                     Save
                 </Button>
             </div>
