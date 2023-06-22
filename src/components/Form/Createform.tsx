@@ -17,9 +17,8 @@ import FormHeader from './formFields/FormHeader'
 import { nanoid } from '@reduxjs/toolkit'
 import { errorNotify, successNotify } from '../../utils'
 import Loader from '../Loader/Loader'
-// ...existing code...
 
-const Createform: React.FC = () => {
+const Createform: React.FC = React.memo(() => {
     const location = useLocation()
     const { formStatus } = location.state
     const path = location.pathname.split('/')
@@ -214,6 +213,7 @@ const Createform: React.FC = () => {
             </div>
         </div>
     )
-}
+})
+Createform.displayName = 'Createform'
 
 export default Createform
