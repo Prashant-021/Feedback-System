@@ -48,7 +48,7 @@ const Checkboxes: React.FC<CheckboxesProps> = ({
 
     return (
         <div>
-            <Typography>
+            <Typography variant="small" className="text-gray-700">
                 {questionTitle}{' '}
                 {isRequired && <span className="text-red-500">*</span>}
             </Typography>

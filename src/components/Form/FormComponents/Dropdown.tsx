@@ -18,7 +18,6 @@ const Dropdown: React.FC<DropdownProps> = ({
     id,
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>('')
-    const [inputValue, setInputValue] = useState<string>('')
     const [isTouched, setIsTouched] = useState(false)
 
     const handleSelectChange = (value: string | undefined): void => {
@@ -41,25 +40,17 @@ const Dropdown: React.FC<DropdownProps> = ({
     const handleClearSelection = (): void => {
         setSelectedOption('')
         setIsTouched(true)
-        setInputValue('')
     }
-
-    const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setInputValue(event.target.value)
-    }
-
     return (
         <>
-            <div className="w-72 mt-3 gap-4 flex flex-col">
-                <Typography>
+            <div className="w-40 mt-3 gap-4 flex flex-col">
+                <Typography variant="small" className="text-gray-700">
                     {questionTitle}{' '}
                     {isRequired && <span className="text-red-500">*</span>}
                 </Typography>
                 <select
                     // variant="static"
-                    className="py-4 bg-white border-b-2 border-gray-500 outline-none"
+                    className=" py-4 bg-white border-b-2 border-gray-300 text-gray-700 outline-none"
                     value={selectedOption}
                     onChange={(event) => {
                         handleSelectChange(event.target.value)
@@ -73,7 +64,7 @@ const Dropdown: React.FC<DropdownProps> = ({
                         </option>
                     ))}
                 </select>
-                {isTouched && isRequired && inputValue.trim() === '' && (
+                {isTouched && isRequired && (
                     <Typography
                         variant="small"
                         color="red"
@@ -90,11 +81,6 @@ const Dropdown: React.FC<DropdownProps> = ({
             >
                 clear selection
             </Button>
-            <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-            />
         </>
     )
 }

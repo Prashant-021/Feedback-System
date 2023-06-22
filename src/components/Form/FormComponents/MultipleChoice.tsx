@@ -50,7 +50,7 @@ const MultipleChoice: React.FC<Props> = ({
 
     return (
         <div>
-            <Typography>
+            <Typography variant="small" className="text-gray-700">
                 {questionTitle}{' '}
                 {isRequired && <span className="text-red-500">*</span>}
             </Typography>
@@ -89,7 +89,7 @@ const MultipleChoice: React.FC<Props> = ({
                 ))}
             </List>
             {isTouched && isRequired && inputValue.trim() === '' && (
-                <Typography className="text-red-500">
+                <Typography variant="small" color="red" className="absolute">
                     Field is required
                 </Typography>
             )}

@@ -1,4 +1,4 @@
-import { Button, Typography } from '@material-tailwind/react'
+import { Button, Input, Typography } from '@material-tailwind/react'
 import React, { useState } from 'react'
 
 interface Props {
@@ -34,11 +34,11 @@ const ShortAnswer: React.FC<Props> = ({
     return (
         <>
             <div className="w-[40%]">
-                <p>{questionTitle}</p>
-                <input
-                    // label={questionTitle}
-                    // size="lg"
-                    // variant="static"
+                {/* <p>{questionTitle}</p> */}
+                <Input
+                    label={questionTitle}
+                    size="lg"
+                    variant="static"
                     className="w-[40%]"
                     onChange={handleChange}
                     value={inputValue}

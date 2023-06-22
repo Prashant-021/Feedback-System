@@ -38,7 +38,7 @@ const RatingBar: React.FC<Props> = ({
 
     return (
         <>
-            <Typography>
+            <Typography variant="small" className="text-gray-700">
                 {questionTitle}{' '}
                 {isRequired && <span className="text-red-500">*</span>}
             </Typography>
@@ -56,7 +56,7 @@ const RatingBar: React.FC<Props> = ({
                 </Typography>
             </div>
             {errorMessage.length > 0 && (
-                <Typography className="mt-2 text-red-500">
+                <Typography variant="small" color="red" className="absolute">
                     {errorMessage}
                 </Typography>
             )}
