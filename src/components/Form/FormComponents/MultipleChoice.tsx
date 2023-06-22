@@ -25,7 +25,6 @@ const MultipleChoice: React.FC<Props> = ({
     isRequired,
 }) => {
     const [selectedOption, setSelectedOption] = useState<string>('')
-    const [inputValue, setInputValue] = useState<string>('')
     const [isTouched, setIsTouched] = useState(false)
 
     const handleValueChange = (
@@ -39,13 +38,6 @@ const MultipleChoice: React.FC<Props> = ({
     const handleClearSelection = (): void => {
         setSelectedOption('')
         setIsTouched(true)
-        setInputValue('')
-    }
-
-    const handleInputChange = (
-        event: React.ChangeEvent<HTMLInputElement>
-    ): void => {
-        setInputValue(event.target.value)
     }
 
     return (
@@ -88,7 +80,7 @@ const MultipleChoice: React.FC<Props> = ({
                     </ListItem>
                 ))}
             </List>
-            {isTouched && isRequired && inputValue.trim() === '' && (
+            {isTouched && isRequired && (
                 <Typography variant="small" color="red" className="absolute">
                     Field is required
                 </Typography>
@@ -100,11 +92,6 @@ const MultipleChoice: React.FC<Props> = ({
             >
                 clear selection
             </Button>
-            <input
-                type="text"
-                value={inputValue}
-                onChange={handleInputChange}
-            />
         </div>
     )
 }

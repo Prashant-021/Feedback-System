@@ -20,6 +20,7 @@ const Viewform: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [form, setForm] = useState<IFormTemplate | null>()
     const [submitted, setSubmitted] = useState<boolean>(false)
+    const [clearForm, setClearForm] = useState<boolean>(false)
     useEffect(() => {
         FormService.getForm(formId[formId.length - 1])
             .then((formDoc) => {
@@ -143,6 +144,11 @@ const Viewform: React.FC = () => {
                 question.answerValue = ''
             }
         }
+        setClearForm(true)
+    }
+    if (clearForm) {
+        successNotify('Form Cleared')
+        setClearForm(false)
     }
     if (isLoading) {
         return <Loader />
@@ -194,7 +200,6 @@ const Viewform: React.FC = () => {
             <div className="w-[90%] md:w-8/12 mt-7">
                 <form
                     onSubmit={handleSubmit}
-                    onReset={clearValues}
                     className="formQuestions gap-4 grid "
                 >
                     <div className="emailSection rounded-lg shadow-xl bg-white py-12 border-transparent hover:border-blue-600 border-t-8  px-6 md:p-11 h-fit">
@@ -229,7 +234,12 @@ const Viewform: React.FC = () => {
                     ))}
                     <div className="submitBtn flex justify-between">
                         <Button type="submit">Submit</Button>
-                        <Button variant="text" className="p-2" type="reset">
+                        <Button
+                            variant="text"
+                            className="p-2"
+                            type="button"
+                            onClick={clearValues}
+                        >
                             Clear Form
                         </Button>
                     </div>

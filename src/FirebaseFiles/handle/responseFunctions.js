@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
 import { firestore } from '../FirebaseSetup'
 import {
     collection,
@@ -27,15 +28,15 @@ class FormResponseService {
         return responseDocRef
     }
 
-    getAllResponse = (categoryType) => {
-        if (categoryType) {
+    getAllResponse = async (categoryType) => {
+        if (categoryType.length > 0) {
             const categoryQuery = query(
                 formCollectionRef,
                 where('categoryName', '==', categoryType)
             )
-            return getDocs(categoryQuery)
+            return await getDocs(categoryQuery)
         } else {
-            return getDocs(formCollectionRef)
+            return await getDocs(formCollectionRef)
         }
     }
 }
