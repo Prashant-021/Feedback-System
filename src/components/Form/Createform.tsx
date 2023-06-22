@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { memo, useEffect, useRef, useState } from 'react'
 import { Button } from '@material-tailwind/react'
 import Question from './Question'
 import {
@@ -18,7 +18,7 @@ import { nanoid } from '@reduxjs/toolkit'
 import { errorNotify, successNotify } from '../../utils'
 import Loader from '../Loader/Loader'
 
-const Createform: React.FC = React.memo(() => {
+const Createform: React.FC = () => {
     const location = useLocation()
     const { formStatus } = location.state
     const path = location.pathname.split('/')
@@ -112,6 +112,7 @@ const Createform: React.FC = React.memo(() => {
             return { ...prevState, questions: updatedQuestions }
         })
         setIsFormChanged(true)
+        console.log('question value changed')
     }
 
     const handleSave = (): void => {
@@ -213,7 +214,6 @@ const Createform: React.FC = React.memo(() => {
             </div>
         </div>
     )
-})
-Createform.displayName = 'Createform'
+}
 
-export default Createform
+export default memo(Createform)

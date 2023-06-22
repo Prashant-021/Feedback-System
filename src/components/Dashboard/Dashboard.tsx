@@ -63,32 +63,34 @@ const Dashboard: React.FC = () => {
                             <span className="text-blue-800">Category List</span>
                         </Typography>
                     </div>
-                    <div className=" m-8 pb-3 flex gap-4 flex-wrap justify-center lg:justify-start h-fit">
-                        <Tooltip content="Add Category">
-                            <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
-                                <Button
-                                    variant="text"
-                                    className="justify-center flex hover:bg-blue-400"
-                                    onClick={handleOpen}
-                                >
-                                    <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />
-                                </Button>
-                                <AddCategory
-                                    open={open}
-                                    handleOpen={handleOpen}
-                                    updateList={increment}
-                                />
-                            </Card>
-                        </Tooltip>
-                        {categoryList?.map((category): JSX.Element => {
-                            return (
-                                <CategoryInfo
-                                    key={nanoid()}
-                                    categoryValue={category}
-                                    updateList={increment}
-                                />
-                            )
-                        })}
+                    <div className=" m-8 pb-3  flex justify-center items-center h-fit">
+                        <div className="grid gap-3 grid-cols-1 sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:w-[90%]">
+                            <Tooltip content="Add Category">
+                                <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
+                                    <Button
+                                        variant="text"
+                                        className="justify-center flex hover:bg-blue-400"
+                                        onClick={handleOpen}
+                                    >
+                                        <PlusIcon className="h-40 w-40 text-[#e2e2e2]" />
+                                    </Button>
+                                    <AddCategory
+                                        open={open}
+                                        handleOpen={handleOpen}
+                                        updateList={increment}
+                                    />
+                                </Card>
+                            </Tooltip>
+                            {categoryList?.map((category): JSX.Element => {
+                                return (
+                                    <CategoryInfo
+                                        key={nanoid()}
+                                        categoryValue={category}
+                                        updateList={increment}
+                                    />
+                                )
+                            })}
+                        </div>
                     </div>
                 </div>
             ) : (
