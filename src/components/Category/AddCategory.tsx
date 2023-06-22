@@ -110,7 +110,7 @@ const AddCategory: React.FC<Props> = ({
                                 updateList()
                             })
                             .catch((err) => {
-                                console.log('Error updating category', err)
+                                errorNotify(err)
                             })
                     } else {
                         if (categoryExist !== undefined) {

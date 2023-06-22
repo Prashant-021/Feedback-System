@@ -91,7 +91,7 @@ const CategoryWiseForm: React.FC = () => {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching forms:', error)
+                errorNotify(error)
             })
             .finally(() => {
                 setIsLoading(false)

@@ -9,13 +9,7 @@ import {
     Typography,
 } from '@material-tailwind/react'
 import { type ICategory } from '../../interface'
-import {
-    PencilIcon,
-    // DocumentPlusIcon,
-    // LinkIcon,
-    TrashIcon,
-} from '@heroicons/react/24/solid'
-// import { deleteCategory } from '../redux/slice/slice'
+import { PencilIcon, TrashIcon } from '@heroicons/react/24/solid'
 import { useDispatch } from 'react-redux'
 import AddCategory from '../Category/AddCategory'
 import { useNavigate } from 'react-router-dom'

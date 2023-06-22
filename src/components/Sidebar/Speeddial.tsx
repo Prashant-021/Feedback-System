@@ -10,7 +10,7 @@ import {
     PresentationChartBarIcon,
     UserCircleIcon,
     DocumentPlusIcon,
-    HandThumbUpIcon,
+    EyeIcon,
 } from '@heroicons/react/24/solid'
 import { useNavigate } from 'react-router-dom'
 
@@ -43,7 +43,7 @@ const DefaultSpeedDial: React.FC = () => {
                         />
                     </SpeedDialAction>
                     <SpeedDialAction>
-                        <HandThumbUpIcon
+                        <EyeIcon
                             className="h-5 w-5"
                             onClick={() => {
                                 Navigate('/formresponse', {

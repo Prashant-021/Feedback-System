@@ -10,6 +10,7 @@ import {
 import FormResponseService from '../../FirebaseFiles/handle/responseFunctions'
 import { type IFormTemplate } from '../../interface'
 import Loader from '../Loader/Loader'
+import { errorNotify } from '../../utils'
 
 interface IFormResponse extends IFormTemplate {
     Email: string
@@ -46,7 +47,7 @@ const ViewFormResponse: React.FC = () => {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching forms:', error)
+                errorNotify(error)
             })
             .finally(() => {
                 setIsLoading(false)

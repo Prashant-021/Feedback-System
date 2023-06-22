@@ -2,17 +2,13 @@ import { firestore } from '../FirebaseSetup'
 import {
     collection,
     addDoc,
-    // doc,
     updateDoc,
     deleteDoc,
     getDocs,
-    // query,
-    // where,
-    // getDoc,
     where,
     query,
-    // getDoc,
 } from 'firebase/firestore'
+import { errorNotify } from '../../utils'
 
 const categoryCollectionRef = collection(firestore, 'Category')
 class CategoryService {
@@ -31,8 +27,8 @@ class CategoryService {
                     updateDoc(doc.ref, updatedField)
                 })
             })
-            .catch((error) => {
-                console.error('Error updating category:', error)
+            .catch(() => {
+                errorNotify('Error updating category')
             })
     }
 
@@ -47,7 +43,7 @@ class CategoryService {
                 deleteDoc(doc.ref)
             })
         } catch (error) {
-            console.error('Error Updating category:', error)
+            errorNotify('Error Updating category')
         }
     }
 

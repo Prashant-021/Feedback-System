@@ -15,7 +15,7 @@ import {
     Typography,
 } from '@material-tailwind/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
-import { successNotify } from '../../utils'
+import { errorNotify, successNotify } from '../../utils'
 
 const initialValues: IUser = {
     profilepicture: null,
@@ -76,7 +76,7 @@ const Signup: React.FC = () => {
                 }
             }
             reader.onerror = () => {
-                console.error('File reading error')
+                errorNotify('File reading error')
             }
             reader.readAsDataURL(file)
         }

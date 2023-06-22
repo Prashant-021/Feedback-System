@@ -116,7 +116,6 @@ const Createform: React.FC = () => {
     }
 
     const handleSave = (): void => {
-        console.log(formTemplate)
         setIsLoading(true)
         if (formStatus === 'add') {
             FormService.addNewForm(formTemplate)

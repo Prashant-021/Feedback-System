@@ -55,7 +55,7 @@ const FormList: React.FC = () => {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching forms:', error)
+                errorNotify(error)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -85,11 +85,10 @@ const FormList: React.FC = () => {
         FormService.deleteForm(id)
             .then(() => {
                 successNotify('Form Deleted Successfully!!')
-                console.log('Form deleted')
                 setRefresh((prevState) => !prevState)
             })
             .catch(() => {
-                console.log('There was error deleting form')
+                errorNotify('There was error deleting form')
             })
             .finally(() => {
                 setIsLoading(false)
@@ -108,7 +107,6 @@ const FormList: React.FC = () => {
             .catch(() => {
                 errorNotify('Failed to copy form link')
             })
-        console.log(link)
     }
     const [currentPage, setCurrentPage] = useState(1)
     const [sortColumn, setSortColumn] = useState('')

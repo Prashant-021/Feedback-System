@@ -29,7 +29,7 @@ const Viewform: React.FC = () => {
                 }
             })
             .catch((error) => {
-                console.error('Error fetching category:', error)
+                errorNotify(error)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -50,8 +50,7 @@ const Viewform: React.FC = () => {
                 setSubmitted(true)
             })
             .catch((err) => {
-                errorNotify('Form Submission Failed')
-                console.log(err)
+                errorNotify(err)
             })
     }
 
@@ -138,13 +137,10 @@ const Viewform: React.FC = () => {
         }
     }
     const clearValues = (): void => {
-        console.log('hello')
         inputValueRef.current = {}
         if (form?.questions != null) {
             for (const question of form?.questions) {
-                console.log(question.answerValue)
                 question.answerValue = ''
-                console.log(question.answerValue)
             }
         }
     }

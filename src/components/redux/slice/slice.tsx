@@ -64,7 +64,6 @@ const categorySlice = createSlice({
             if (!categoryExists) {
                 state.category = updatedCategory
             } else {
-                console.log('error')
                 errorNotify('Category already exists')
             }
         },
