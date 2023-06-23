@@ -2,19 +2,9 @@ import CategoryService from '../../../FirebaseFiles/handle/categoryFunctions'
 
 import { Input, Option, Select, Textarea } from '@material-tailwind/react'
 import React, { type FC, useState, useEffect } from 'react'
-import { type ICategory, type IFormHeader } from '../../../interface'
+import { type IFormHeader } from '../../../interface'
 import { errorNotify } from '../../../utils'
-const categories: ICategory[] = []
-await CategoryService.getAllCategory()
-    .then((querySnapshot) => {
-        // const data: ICategory[] = []
-        querySnapshot.forEach((doc) => {
-            categories.push(doc.data() as ICategory)
-        })
-    })
-    .catch((err) => {
-        errorNotify(err)
-    })
+
 interface Props {
     headerInfo: (formHead: IFormHeader) => void
     savedData: IFormHeader
@@ -22,13 +12,28 @@ interface Props {
 
 const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
     const [title, setTitle] = useState<string>(savedData.title)
+    const [categories, setCategories] = useState<string[]>([])
     const [description, setDescription] = useState<string>(
         savedData.description
     )
     const [categoryType, setCategoryType] = useState<string>(
         savedData.categoryName
     )
-
+    useEffect(() => {
+        CategoryService.getAllCategory()
+            .then((querySnapshot) => {
+                const data: string[] = []
+                querySnapshot.forEach((doc) => {
+                    data.push(doc.data().title)
+                })
+                if (JSON.stringify(data) !== JSON.stringify(categories)) {
+                    setCategories(data)
+                }
+            })
+            .catch((err) => {
+                errorNotify(err)
+            })
+    }, [])
     useEffect(() => {
         headerInfo({ title, description, categoryName: categoryType })
     }, [title, description, categoryType])
@@ -63,9 +68,9 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
                         setCategoryType(event as string)
                     }}
                 >
-                    {categories.map((category) => (
-                        <Option key={category.title} value={category.title}>
-                            {category.title}
+                    {categories?.map((category) => (
+                        <Option key={category} value={category}>
+                            {category}
                         </Option>
                     ))}
                 </Select>
