@@ -30,11 +30,11 @@ const ViewFormResponse: React.FC = () => {
     const Navigate = useNavigate()
     const [TABLE_ROWS, setTableRows] = useState<IFormResponse[]>([])
     const [isLoading, setIsLoading] = useState(true)
-    useEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
+    // useEffect(() => {
+    //     if (sessionStorage.length === 0) {
+    //         Navigate('/login')
+    //     }
+    // }, [Navigate])
     useEffect(() => {
         FormResponseService.getAllResponse(categoryType)
             .then((querySnapshot) => {

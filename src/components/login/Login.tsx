@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { LoginSchema } from '../../schema'
-import { type currentUser, type RootState } from '../../interface'
-import { useSelector } from 'react-redux'
+import { type currentUser } from '../../interface'
+// import { useSelector } from 'react-redux'
 import {
     Button,
     Card,
@@ -13,7 +13,10 @@ import {
     Typography,
 } from '@material-tailwind/react'
 import { EyeSlashIcon, EyeIcon } from '@heroicons/react/24/solid'
-import { successNotify } from '../../utils'
+import { errorNotify, successNotify } from '../../utils'
+// import UserService from '../../FirebaseFiles/handle/userInfo'
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../../FirebaseFiles/FirebaseSetup'
 
 const initialValues: currentUser = {
     Email: '',
@@ -22,7 +25,7 @@ const initialValues: currentUser = {
 const Login: React.FC = () => {
     const [showPassword, setshowPassword] = useState<boolean>(false)
     const Navigate = useNavigate()
-    const users = useSelector((state: RootState) => state.user?.userList)
+    // const users = useSelector((state: RootState) => state.user?.userList)
 
     useEffect(() => {
         if (sessionStorage.length !== 0) {
@@ -36,25 +39,19 @@ const Login: React.FC = () => {
         handleBlur,
         handleChange,
         handleSubmit,
-        setFieldError,
+        // setFieldError,
     } = useFormik({
         initialValues,
         validationSchema: LoginSchema,
-        onSubmit: (values: currentUser) => {
-            const currentUser = users.find(
-                (user) => values.Email === user.email
-            )
-            if (currentUser != null) {
-                if (currentUser.password === values.password) {
+        onSubmit: async (values: currentUser) => {
+            signInWithEmailAndPassword(auth, values.Email, values.password)
+                .then(() => {
+                    successNotify('Welcome')
                     Navigate('/dashboard')
-                    successNotify('Welcome Back!!')
-                    sessionStorage.setItem('currentUser', values.Email)
-                } else {
-                    setFieldError('password', 'Invalid Password')
-                }
-            } else {
-                setFieldError('Email', 'User not found')
-            }
+                })
+                .catch((err) => {
+                    errorNotify(err.message)
+                })
         },
     })
     return (

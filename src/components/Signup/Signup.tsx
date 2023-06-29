@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useFormik } from 'formik'
 import { SignUpSchema } from '../../schema'
-import { type RootState, type IUser } from '../../interface'
-import { useDispatch, useSelector } from 'react-redux'
-import { addUser } from '../redux/slice/slice'
+import { type IUser } from '../../interface'
 import {
     Button,
     Card,
@@ -16,6 +14,9 @@ import {
 } from '@material-tailwind/react'
 import { EyeIcon, EyeSlashIcon } from '@heroicons/react/24/solid'
 import { errorNotify, successNotify } from '../../utils'
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { auth } from '../../FirebaseFiles/FirebaseSetup'
+// import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
 
 const initialValues: IUser = {
     profilepicture: null,
@@ -25,18 +26,15 @@ const initialValues: IUser = {
     confirmPassword: '',
 }
 const Signup: React.FC = () => {
-    const users = useSelector((state: RootState) => state.user?.userList)
-
     const [showPassword, setshowPassword] = useState<boolean>(false)
     const Navigate = useNavigate()
+    // useEffect(() => {
+    //     if (sessionStorage.length !== 0) {
+    //         Navigate('/dashboard')
+    //     }
+    // }, [Navigate])
 
-    useEffect(() => {
-        if (sessionStorage.length !== 0) {
-            Navigate('/dashboard')
-        }
-    }, [Navigate])
-
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     const {
         values,
         touched,
@@ -50,16 +48,22 @@ const Signup: React.FC = () => {
         initialValues,
         validationSchema: SignUpSchema,
         onSubmit: (values: IUser) => {
-            const userExists = users.find((user) => user.name === values.name)
-            if (userExists == null) {
-                dispatch(addUser(values))
-                sessionStorage.setItem('currentUser', values.email)
-                successNotify(`Welcome !!! ${values.name}`)
-                Navigate('/dashboard')
-            } else {
-                alert('User Already Exists')
-                resetForm()
-            }
+            createUserWithEmailAndPassword(auth, values.email, values.password)
+                .then(async (res) => {
+                    console.log(res.user)
+                    successNotify(`Welcome ${values.name}`)
+                    Navigate('/dashboard')
+                    const user = res.user
+                    console.log(values.name)
+                    await updateProfile(user, {
+                        displayName: values.name,
+                    })
+                })
+                .catch((err) => {
+                    errorNotify(err.message)
+                    resetForm()
+                    return false
+                })
         },
     })
 
@@ -67,12 +71,22 @@ const Signup: React.FC = () => {
         event: React.ChangeEvent<HTMLInputElement>
     ): void => {
         const file = event.currentTarget.files?.[0]
-        if (file != null) {
+        if (file !== undefined) {
+            // const storage = getStorage()
+            // const storageRef = ref(storage, 'profilepictures/' + file.name)
+
             const reader = new FileReader()
-            reader.onload = async (e: ProgressEvent<FileReader>) => {
-                if (e.target != null) {
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+                if (e.target !== null) {
                     const imageUrl = e.target.result as string
-                    await setFieldValue('profilepicture', imageUrl)
+                    setFieldValue('profilepicture', imageUrl)
+                        .then(() => {
+                            console.log(imageUrl)
+                        })
+                        .catch((error) => {
+                            errorNotify('Error setting profile picture')
+                            console.error(error)
+                        })
                 }
             }
             reader.onerror = () => {
@@ -81,6 +95,31 @@ const Signup: React.FC = () => {
             reader.readAsDataURL(file)
         }
     }
+    // const handleFileChange = async (
+    //     event: React.ChangeEvent<HTMLInputElement>
+    // ): Promise<void> => {
+    //     const file = event.currentTarget.files?.[0]
+    //     if (file !== undefined) {
+    //         const storage = getStorage()
+    //         const storageRef = ref(storage, 'profilepictures/' + file.name)
+
+    //         try {
+    //             // Upload the file to Firebase Storage
+    //             await uploadBytes(storageRef, file)
+
+    //             // Get the download URL for the uploaded file
+    //             const downloadURL = await getDownloadURL(storageRef)
+
+    //             // Set the download URL as the profile picture value
+    //             await setFieldValue('profilepicture', downloadURL)
+
+    //             console.log(downloadURL)
+    //         } catch (error) {
+    //             errorNotify('Error uploading profile picture')
+    //             console.error(error)
+    //         }
+    //     }
+    // }
     return (
         <div className="flex h-screen w-full">
             <div className="w-[50%] items-center hidden md:flex">

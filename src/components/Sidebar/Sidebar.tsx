@@ -18,8 +18,11 @@ import { useNavigate } from 'react-router-dom'
 const Sidebar: React.FC = () => {
     const Navigate = useNavigate()
     function handleSubmit(): void {
-        Navigate('/login')
-        sessionStorage.clear()
+        const response = confirm('Are you sure you want to Log out?')
+        if (response) {
+            Navigate('/login')
+            sessionStorage.clear()
+        }
     }
     return (
         <div

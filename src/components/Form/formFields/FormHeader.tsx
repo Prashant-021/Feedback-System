@@ -65,6 +65,7 @@ const FormHeader: FC<Props> = ({ headerInfo, savedData }) => {
                     label="Select Category"
                     value={categoryType}
                     onChange={(event) => {
+                        console.log(event)
                         setCategoryType(event as string)
                     }}
                 >

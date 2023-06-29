@@ -1,27 +1,41 @@
 import React from 'react'
 import {
-    Avatar,
+    // Avatar,
     Menu,
     MenuHandler,
     MenuItem,
     MenuList,
 } from '@material-tailwind/react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
+// import UserService from '../../FirebaseFiles/handle/userInfo'
 import { useNavigate } from 'react-router-dom'
-import { type RootState } from '../../interface'
+import { auth } from '../../FirebaseFiles/FirebaseSetup'
+import { signOut } from 'firebase/auth'
+import { errorNotify } from '../../utils'
+// import { type RootState } from '../../interface'
 
 const Header: React.FC = () => {
     const Navigate = useNavigate()
-    const users = useSelector((state: RootState) => state.user?.userList)
-    const loggedInUser = sessionStorage.getItem('currentUser')
-    const user = users.find((user) => user.email === loggedInUser)
+    // const users = useSelector((state: RootState) => state.user?.userList)
+    // const loggedInUser = JSON.parse(sessionStorage.getItem('currentUser') ?? '')
+    // const user = users.find((user) => user.email === loggedInUser)
+    const currentUser = auth.currentUser
+    console.log(currentUser)
     function handleSubmit(value: string): void {
         Navigate(`/${value}`)
         if (value === 'login') {
             sessionStorage.clear()
+            signOut(auth)
+                .then(() => {
+                    Navigate(`/${value}`)
+                    // Sign-out successful.
+                })
+                .catch((error) => {
+                    // An error happened.
+                    errorNotify(error.message)
+                })
         }
     }
-
     return (
         <nav className="bg-white drop-shadow-md  h-22 w-full border-gray-200 dark:bg-gray-900 sticky top-0 z-50">
             <div className=" flex flex-wrap items-center justify-between mx-auto px-4 py-2">
@@ -39,10 +53,12 @@ const Header: React.FC = () => {
                                 data-dropdown-toggle="user-dropdown"
                                 data-dropdown-placement="bottom"
                             >
-                                <Avatar
-                                    src={user?.profilepicture as string}
+                                {' '}
+                                demo
+                                {/* <Avatar
+                                    src={loggedInUser.ProfileImage as string}
                                     alt="user"
-                                />
+                                /> */}
                             </button>
                         </MenuHandler>
                         <MenuList className="divide-y divide-slate-200">

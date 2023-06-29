@@ -1,24 +1,24 @@
 import React, { useLayoutEffect } from 'react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { type RootState } from '../../interface'
+// import { type RootState } from '../../interface'
 
 const Profile: React.FC = () => {
-    const users = useSelector((state: RootState) => state.user?.userList)
-    const loggedInUser = sessionStorage.getItem('currentUser')
-    const user = users.find((user) => user.email === loggedInUser)
+    // const users = useSelector((state: RootState) => state.user?.userList)
+    const loggedInUser = JSON.parse(sessionStorage.getItem('currentUser') ?? '')
+    // const user = users.find((user) => user.email === loggedInUser)
     const Navigate = useNavigate()
     useLayoutEffect(() => {
         if (sessionStorage.length === 0) {
             Navigate('/login')
         }
     }, [Navigate])
-    return user != null ? (
+    return loggedInUser != null ? (
         <div className="lg:flex flex-grow min-h-min w-full ">
             <div className="lg:w-1/5 py-3  bg-[#005ae6] flex items-center justify-center relative">
                 <div className="overflow-hidden flex items-center justify-center lg:absolute rounded-full  drop-shadow-2xl h-60 w-60 md:h-80 md:w-80 right-auto bottom-0 lg:bottom-auto lg:-right-40 ">
                     <img
-                        src={user.profilepicture as string}
+                        src={loggedInUser.ProfileImage as string}
                         alt=""
                         className="h-[100%] w-[100%]"
                     />
@@ -35,11 +35,11 @@ const Profile: React.FC = () => {
                     <div className="my-4">
                         <h1 className="text-1xl mb-2">
                             <span className="font-bold">Name: </span>{' '}
-                            {user.name}
+                            {loggedInUser.Name}
                         </h1>
                         <h1 className="text-1xl mb-2">
                             <span className="font-bold">Email: </span>{' '}
-                            {user.email}
+                            {loggedInUser.Email}
                         </h1>
                     </div>
                 </div>

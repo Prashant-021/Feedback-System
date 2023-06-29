@@ -41,11 +41,6 @@ const CategoryWiseForm: React.FC = () => {
     const [sortColumn, setSortColumn] = useState('')
     const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc')
     useEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
-    useEffect(() => {
         setIsLoading(true)
         CategoryService.getAllCategory()
             .then((querySnapshot) => {

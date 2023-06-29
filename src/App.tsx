@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Login from './components/login/Login'
@@ -18,10 +18,18 @@ import ViewFormResponse from './components/FormResponses/ViewFormResponse'
 import IndividualResponse from './components/FormResponses/IndividualResponse'
 import ErrorBoundary from './components/404/ErrorBoundary'
 import PageNotFound from './components/404/PageNotFound'
+import { auth } from './FirebaseFiles/FirebaseSetup'
 
 const App: React.FC = () => {
     const title = useLocation()
     let hideHeader: boolean = false
+    const [userLoggedin, setUserLoggedin] = useState(false)
+    useEffect(() => {
+        auth.onAuthStateChanged(() => {
+            console.log(user)
+        })
+    }, [])
+
     if (
         title.pathname.includes('/login') ||
         title.pathname.includes('/signup') ||

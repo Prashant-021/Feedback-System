@@ -1,24 +1,24 @@
 import { Button, Card, Tooltip, Typography } from '@material-tailwind/react'
 import { nanoid } from '@reduxjs/toolkit'
 import React, { useEffect, useReducer, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { type ICategory, type RootState } from '../../interface'
+import { useDispatch } from 'react-redux'
+// import { useNavigate } from 'react-router-dom'
+import { type ICategory } from '../../interface'
 import CategoryInfo from './CategoryInfo'
 
 import { PlusIcon } from '@heroicons/react/24/solid'
 import AddCategory from '../Category/AddCategory'
 import CategoryService from '../../FirebaseFiles/handle/categoryFunctions'
+import UserService from '../../FirebaseFiles/handle/userInfo'
 import Loader from '../Loader/Loader'
 import { setInitialCategory } from '../redux/slice/slice'
 import { errorNotify } from '../../utils'
 
 const Dashboard: React.FC = () => {
-    const users = useSelector((state: RootState) => state.user?.userList)
     const dispatch = useDispatch()
-    const loggedInUser = sessionStorage.getItem('currentUser')
-    const user = users.find((user) => user.email === loggedInUser)
-    const Navigate = useNavigate()
+    // const loggedInUser = sessionStorage.getItem('currentUser')
+    const user = UserService.getUser
+    // const Navigate = useNavigate()
     const [open, setOpen] = useState(false)
     const [categoryList, setCategoryList] = useState<ICategory[]>()
     const [isLoading, setIsLoading] = useState(true)
@@ -42,11 +42,11 @@ const Dashboard: React.FC = () => {
                 setIsLoading(false)
             })
     }, [state])
-    useEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
+    // useEffect(() => {
+    //     if (loggedInUser != null) {
+    //         Navigate('/login')
+    //     }
+    // }, [loggedInUser])
 
     const handleOpen = (): void => {
         setOpen(!open)
@@ -66,7 +66,7 @@ const Dashboard: React.FC = () => {
                     <div className=" m-8 pb-3  flex justify-center items-center h-fit">
                         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2  md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 sm:w-[90%]">
                             <Tooltip content="Add Category">
-                                <Card className=" w-60 scale-95 hover:scale-100 transition-scale duration-300">
+                                <Card className=" w-full max-w-md scale-95 hover:scale-100 transition-scale duration-300">
                                     <Button
                                         variant="text"
                                         className="justify-center flex hover:bg-blue-400"

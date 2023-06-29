@@ -36,11 +36,11 @@ const FormList: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true)
 
     const Navigate = useNavigate()
-    useEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
+    // useEffect(() => {
+    //     if (sessionStorage.length === 0) {
+    //         Navigate('/login')
+    //     }
+    // }, [Navigate])
 
     useEffect(() => {
         setIsLoading(true)

@@ -12,13 +12,23 @@ export const successNotify = (message: string): Id =>
         autoClose: 2000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true,
+        pauseOnHover: false,
         draggable: true,
         progress: undefined,
         theme: 'light',
     })
 
-export const errorNotify = (message: string): Id => toast.error(message, {})
+export const errorNotify = (message: string): Id =>
+    toast.error(message, {
+        position: 'top-right',
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: false,
+        draggable: true,
+        progress: undefined,
+        theme: 'light',
+    })
 
 export const truncate = (str: string, len: number): string => {
     if (str.length > len) {

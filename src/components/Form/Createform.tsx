@@ -38,11 +38,11 @@ const Createform: React.FC = () => {
         responseCount: 0,
     })
 
-    useEffect(() => {
-        if (sessionStorage.length === 0) {
-            Navigate('/login')
-        }
-    }, [Navigate])
+    // useEffect(() => {
+    //     if (sessionStorage.length === 0) {
+    //         Navigate('/login')
+    //     }
+    // }, [Navigate])
 
     useEffect(() => {
         if (formStatus === 'edit') {
@@ -112,7 +112,6 @@ const Createform: React.FC = () => {
             return { ...prevState, questions: updatedQuestions }
         })
         setIsFormChanged(true)
-        console.log('question value changed')
     }
 
     const handleSave = (): void => {
@@ -122,6 +121,7 @@ const Createform: React.FC = () => {
                 .then(() => {
                     successNotify('Form Saved successfully')
                     setIsFormChanged(false)
+                    Navigate('/forms')
                 })
                 .catch(() => {
                     errorNotify('Error while Adding Form')
